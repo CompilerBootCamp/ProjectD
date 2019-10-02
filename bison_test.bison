@@ -1,3 +1,4 @@
+
 /*
 * bison tbison.y
 * gcc -o tbsion tbsion.tab.c -lm
@@ -8,114 +9,156 @@
 */
 
 %{
-  #include <stdio.h>
-  #include <math.h>
-  int yylex (void);
-  void yyerror (char const *);
+#include <stdio.h>
+#include <math.h>
+int yylex (void);
+void yyerror (char const *);
 %}
 %define api.value.type {double}
 %token NUM
 
 %%
+//-----------------------------------------------------
 
-program: 
-	statement
-	| statement ';' statement
-	
+program:
+    statement
+    | statement ';' statement
+
 statement:
-	assignment
-	| print
-	| return
-	| if
-	| loop
-	| declaration
+    assignment
+    | print
+    | return
+    | if
+    | loop
+    | declaration
 
 
 assignment:
-	primay ':=' expression
+    primay ':=' expression
 
 print:
-	print expression ';'',' expression
+    print expression ';'',' expression
 
 return:
-	'return' expression
+    'return' expression
 
 if:
-	'if' exression 'then' body 'end'
-	| 'if' expression 'then' body 'else' body 'end'
+    'if' exression 'then' body 'end'
+    | 'if' expression 'then' body 'else' body 'end'
 
 
 loop:
-	'while' expression loop_body
-	| 'for' identifier in type_indication loop_body
+    'while' expression loop_body
+    | 'for' identifier in type_indication loop_body
 
 loop_body:
-	'loop' body 'end'
+    'loop' body 'end'
 
 
 declaration:
-	'var' identifier ';'
-	| 'var' identifier := expression ';'
+    'var' identifier ';'
+    | 'var' identifier := expression ';'
 
 expression:
-	relation
-	| relation 'and' relation
+    relation
+    | relation 'and' relation
 
 relation:
-	factor
-	| relation '<' factor
-	| relation '<=' factor
-	| relation '>' factor
-	| relation '>=' factor
-	| relation '=' factor
-	| relation '/=' factor
+    factor
+    | relation '<' factor
+    | relation '<=' factor
+    | relation '>' factor
+    | relation '>=' factor
+    | relation '=' factor
+    | relation '/=' factor
 
 factor:
-	term
-	| term '+' term
-	| term '-' term
+    term
+    | term '+' term
+    | term '-' term
 
 term:
-	unary
-	| unary '*' unary
-	| unary '/' unary
+    unary
+    | unary '*' unary
+    | unary '/' unary
 
 unary:
-	primary
-	| '+' primary
-	| '-' primary
-	| 'not' primary
-	| '+' primary 'is' type_indicator
-	| '-' primary 'is' type_indicator
-	| 'not' primary 'is' type_indicator
-	| literal
-	| '(' expression ')'
-	
+    primary
+    | '+' primary
+    | '-' primary
+    | 'not' primary
+    | '+' primary 'is' type_indicator
+    | '-' primary 'is' type_indicator
+    | 'not' primary 'is' type_indicator
+    | literal
+    | '(' expression ')'
+
 primary:
-	identifier
-	| identifier tail
-	| 'readInt'
-	| 'readReal'
-	| 'readString'
+    identifier
+    | identifier tail
+    | 'readInt'
+    | 'readReal'
+    | 'readString'
 
-tail: 
-	'.' integerliteral
-	| '.' identifier
-	| '[' expression ']'
-	| '(' expression ')'
-	| '(' expression ',' expression ')'
-	
+tail:
+    '.' integerliteral
+    | '.' identifier
+    | '[' expression ']'
+    | '(' expression ')'
+    | '(' expression ',' expression ')'
 
-input:
-  %empty
+typeIndicator:
+    'int' | 'real' | 'bool' | 'string'
+    | empty         // no type
+    | [ ]           // vector type
+    | {    }           // tuple type
+    | 'func'        // functional type
+    | expression .. expression //todo
+
+literal:
+    integerlteral
+    | realliteral
+    | booleanliteral
+    | stringLiteral
+    | arrayLiteral
+    | tupleLiteral
+
+arrayLiteral:
+    | '[' expression ']'
+    | '[' expression',' expression ']'
+
+tupleLiteral :
+
+    { [[ Identifier := ] Expression {, [ Identifier := ] Expression } ] } //todo
+
+functionLiteral:
+    'func' funBody
+    | 'func' parameters funBody
+
+Parameters:
+    identifier
+    | identifier ',' identifier
+
+funBody:
+    'is' body 'end'
+    | => expression
+
+body:
+    declaration
+    | statement
+    | expression
+
+//    ---------------------------------------------------------------------------
+        input:
+%empty
 | input line
 ;
 line:
-  '\n'
-| exp '\n'      { printf ("%.10g\n", $1); }
-;
+    '\n'
+    | exp '\n'      { printf ("%.10g\n", $1); }
+    ;
 exp:
-  NUM           { $$ = $1;           }
+NUM           { $$ = $1;           }
 | exp exp '+'   { $$ = $1 + $2;      }
 | exp exp '-'   { $$ = $1 - $2;      }
 | exp exp '*'   { $$ = $1 * $2;      }
@@ -135,29 +178,29 @@ exp:
 int
 yylex (void)
 {
-  int c;
+    int c;
 
-  /* Skip white space.  */
-  while ((c = getchar ()) == ' ' || c == '\t')
-    continue;
-  /* Process numbers.  */
-  if (c == '.' || isdigit (c))
+    /* Skip white space.  */
+    while ((c = getchar ()) == ' ' || c == '\t')
+        continue;
+    /* Process numbers.  */
+    if (c == '.' || isdigit (c))
     {
-      ungetc (c, stdin);
-      scanf ("%lf", &yylval);
-      return NUM;
+        ungetc (c, stdin);
+        scanf ("%lf", &yylval);
+        return NUM;
     }
-  /* Return end-of-input.  */
-  if (c == EOF)
-    return 0;
-  /* Return a single char.  */
-  return c;
+    /* Return end-of-input.  */
+    if (c == EOF)
+        return 0;
+    /* Return a single char.  */
+    return c;
 }
 
 int
 main (void)
 {
-  return yyparse ();
+    return yyparse ();
 }
 
 #include <stdio.h>
@@ -166,5 +209,5 @@ main (void)
 void
 yyerror (char const *s)
 {
-  fprintf (stderr, "%s\n", s);
+    fprintf (stderr, "%s\n", s);
 }
