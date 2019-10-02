@@ -15,7 +15,6 @@ int lines = 0;
 
 %%
 
-[a-zA-Z]+       { }
 "var"		{ return VAR; }
 ";"		{ return SEMICOLON; }
 ":="		{ return ASIIGN; }
@@ -23,7 +22,7 @@ int lines = 0;
 "or"		{ return OR; }
 "xor"		{ return XOR; }
 "<"		{ return LESS; }
-"<="		{ retrun LESSOREQUAL; }
+"<="		{ return LESSOREQUAL; }
 ">="		{ return GREATOREQAL; }
 "="		{ return EQUAL; }
 "/="		{ return DIVIDEQUAL; }
@@ -53,6 +52,7 @@ int lines = 0;
 "in"		{ return IN; }
 "loop"		{ return LOOP; }
 "."		{ return DOT; }
+".."	{ return DOUBLEDOT; }
 "int"		{ return INT; }
 "real"		{ return REAL; }
 "bool"		{ return BOOL; }
@@ -63,6 +63,7 @@ int lines = 0;
 "false"		{ return FALSE; }
 ","		{ return COMMA; }
 "=>"		{ return ARROW; }
+[a-zA-Z]+       { }
 \n              { lines++; }
 .               { }
 

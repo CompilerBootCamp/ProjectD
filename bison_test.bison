@@ -37,7 +37,8 @@ assignment:
     primay ':=' expression
 
 print:
-    print expression ';'',' expression
+    print expression
+	|print expression ',' expression
 
 return:
     'return' expression
@@ -57,7 +58,7 @@ loop_body:
 
 declaration:
     'var' identifier ';'
-    | 'var' identifier := expression ';'
+    | 'var' identifier ':=' expression ';'
 
 expression:
     relation
@@ -109,11 +110,11 @@ tail:
 
 typeIndicator:
     'int' | 'real' | 'bool' | 'string'
-    | empty         // no type
-    | [ ]           // vector type
-    | {    }           // tuple type
+    | 'empty'         // no type
+    | '['']'           // vector type
+    | '{''}'           // tuple type
     | 'func'        // functional type
-    | expression .. expression //todo
+    | expression '..' expression //range
 
 literal:
     integerlteral
@@ -128,8 +129,13 @@ arrayLiteral:
     | '[' expression',' expression ']'
 
 tupleLiteral :
+    '{' '}' 
+    |'{' tupleElement '}'
+	|'{' tupleElement ',' tupleElement '}'
 
-    { [[ Identifier := ] Expression {, [ Identifier := ] Expression } ] } //todo
+tupleElement:
+	expression
+	| identifier ':=' expression
 
 functionLiteral:
     'func' funBody
@@ -141,7 +147,7 @@ Parameters:
 
 funBody:
     'is' body 'end'
-    | => expression
+    | '=>' expression
 
 body:
     declaration
