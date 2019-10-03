@@ -29,7 +29,7 @@ identifier {Alpha}{AlphaDigit}*
 "xor"		{ return XOR; }
 "<"		{ return LESS; }
 "<="		{ return LESSOREQUAL; }
-"<"         { return GREAT; }
+">"         { return GREAT; }
 ">="		{ return GREATOREQUAL; }
 "="		{ return EQUAL; }
 "/="		{ return DIVIDEQUAL; }
