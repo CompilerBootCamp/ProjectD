@@ -9,7 +9,6 @@
 %{
 #include <string.h>
 #include <stdio.h>
-
 int lines = 0;
 %}
 
@@ -17,7 +16,7 @@ int lines = 0;
 
 "var"		{ return VAR; }
 ";"		{ return SEMICOLON; }
-":="		{ return ASIIGN; }
+":="		{ return ASIGN; }
 "and"		{ return AND; }
 "or"		{ return OR; }
 "xor"		{ return XOR; }

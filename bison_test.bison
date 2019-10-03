@@ -13,17 +13,38 @@
 #include <math.h>
 int yylex (void);
 void yyerror (char const *);
+
+struct my_types
+  {
+    union
+    {
+        int     ival;
+        double  dval;
+        bool    bval;
+        std::string* sval;
+    } u;
+  };
 %}
-%define api.value.type {double}
-%token NUM
+
+%define api.value.type {my_types}
+%token<u.dval> NUM
+
+%token<u.bval> booleanliteral
+%token<u.sval> identifier // ??????
+%token<u.ival> integerliteral
+%token<u.dval> realliteral
+%token<u.sval> stringLiteral
 
 %%
 //-----------------------------------------------------
 
 program:
-    statement
-    | statement ';' statement
+    statementList
 
+statementList:
+    statement
+    | statementList ";" statement
+    
 statement:
     assignment
     | print
@@ -32,146 +53,142 @@ statement:
     | loop
     | declaration
 
-
 assignment:
-    primay ':=' expression
+    primary ":=" expression
 
 print:
-    print expression
-	|print expression ',' expression
+    "print" expressionlist
 
 return:
-    'return' expression
+    "return"
+    |"return" expression
 
 if:
-    'if' exression 'then' body 'end'
-    | 'if' expression 'then' body 'else' body 'end'
-
+    "if" expression "then" body "end"
+    | "if" expression "then" body "else" body "end"
 
 loop:
-    'while' expression loop_body
-    | 'for' identifier in type_indication loop_body
+    "while" expression loopBody
+    | "for" identifier "in" typeIndicator loopBody
 
-loop_body:
-    'loop' body 'end'
-
+loopBody:
+    "loop" body "end"
 
 declaration:
-    'var' identifier ';'
-    | 'var' identifier ':=' expression ';'
+    "var" variableDefinitionList
+    
+variableDefinitionList:
+    variableDefinition
+    | variableDefinitionList "," variableDefinition 
+
+variableDefinition:
+    identifier
+    | identifier ":=" expression
 
 expression:
     relation
-    | relation 'and' relation
+    | relation "and" relation
+    | relation "or" relation
+    | relation "xor" relation
 
 relation:
     factor
-    | relation '<' factor
-    | relation '<=' factor
-    | relation '>' factor
-    | relation '>=' factor
-    | relation '=' factor
-    | relation '/=' factor
+    | factor "<" factor
+    | factor "<=" factor
+    | factor ">" factor
+    | factor ">=" factor
+    | factor "=" factor
+    | factor "/=" factor
 
 factor:
     term
-    | term '+' term
-    | term '-' term
+    | factor "+" term
+    | factor "-" term
 
 term:
     unary
-    | unary '*' unary
-    | unary '/' unary
+    | term "*" unary
+    | term "/" unary
 
 unary:
-    primary
-    | '+' primary
-    | '-' primary
-    | 'not' primary
-    | '+' primary 'is' type_indicator
-    | '-' primary 'is' type_indicator
-    | 'not' primary 'is' type_indicator
+    | primary
+    | "+" primary
+    | "-" primary
+    | "not" primary
+    | primary "is" typeIndicator
+    | "+" primary "is" typeIndicator
+    | "-" primary "is" typeIndicator
+    | "not" primary "is" typeIndicator
     | literal
-    | '(' expression ')'
-
+    | "(" expression ")"
+    
 primary:
     identifier
-    | identifier tail
-    | 'readInt'
-    | 'readReal'
-    | 'readString'
+    | primary tail
+    | "readInt" | "readReal" | "readString"
 
 tail:
-    '.' integerliteral
-    | '.' identifier
-    | '[' expression ']'
-    | '(' expression ')'
-    | '(' expression ',' expression ')'
+    "." integerliteral
+    | "." identifier
+    | "[" expression "]"
+    | "(" expressionlist ")"
+    
+expressionlist:
+    expression
+    | expressionlist "," expression
 
 typeIndicator:
-    'int' | 'real' | 'bool' | 'string'
-    | 'empty'         // no type
-    | '['']'           // vector type
-    | '{''}'           // tuple type
-    | 'func'        // functional type
-    | expression '..' expression //range
+    "int" | "real" | "bool" | "string"
+    | "empty"         // no type
+    | "[""]"           // vector type
+    | "{""}"           // tuple type
+    | "func"        // functional type
+    | expression ".." expression //range
 
 literal:
-    integerlteral
+    integerliteral
     | realliteral
     | booleanliteral
     | stringLiteral
     | arrayLiteral
     | tupleLiteral
+    | functionLiteral
+    | "empty"
 
 arrayLiteral:
-    | '[' expression ']'
-    | '[' expression',' expression ']'
+    "[" expressionlist "]"
 
 tupleLiteral :
-    '{' '}' 
-    |'{' tupleElement '}'
-	|'{' tupleElement ',' tupleElement '}'
+    "{" "}" 
+    |"{" tupleElementList "}"
+    
+tupleElementList:
+    tupleElement
+    | tupleElementList "," tupleElement
 
 tupleElement:
 	expression
-	| identifier ':=' expression
+	| identifier ":=" expression
 
 functionLiteral:
-    'func' funBody
-    | 'func' parameters funBody
+    "func" funBody
+    | "func" Parameters funBody
 
 Parameters:
+    '(' identifierList ')'
+
+identifierList:
     identifier
-    | identifier ',' identifier
-
+    | identifierList "," identifier
+    
 funBody:
-    'is' body 'end'
-    | '=>' expression
+    "is" body "end"
+    | "=>" expression
 
-body:
-    declaration
-    | statement
-    | expression
+body: 
+    statementList
 
 //    ---------------------------------------------------------------------------
-        input:
-%empty
-| input line
-;
-line:
-    '\n'
-    | exp '\n'      { printf ("%.10g\n", $1); }
-    ;
-exp:
-NUM           { $$ = $1;           }
-| exp exp '+'   { $$ = $1 + $2;      }
-| exp exp '-'   { $$ = $1 - $2;      }
-| exp exp '*'   { $$ = $1 * $2;      }
-| exp exp '/'   { $$ = $1 / $2;      }
-| exp exp '^'   { $$ = pow ($1, $2); }  /* Exponentiation */
-| exp 'n'       { $$ = -$1;          }  /* Unary minus    */
-;
 
 %%
 
