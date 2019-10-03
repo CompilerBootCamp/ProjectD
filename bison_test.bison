@@ -21,7 +21,7 @@ struct my_types
         int     ival;
         double  dval;
         bool    bval;
-        std::string* sval;
+        char* sval;
     } u;
   };
 %}
@@ -35,6 +35,11 @@ struct my_types
 %token<u.dval> realliteral
 %token<u.sval> stringLiteral
 
+%token PRINT VAR SEMICOLON ASIGN AND OR XOR LESS LESSOREQUAL GREATOREQUAL EQUAL DIVIDEQUAL PLUS
+%token MINUS MULT DIVIDE NOT IS LEFTCIRCLEBRACKET RIGHTCIRCLEBRACKET LEFTSQUAREBRACKET RIGHTSQUAREBRACKET LEFTCURLYBRACKET RIGHTCURLYBRACKET
+%token READINT READREAL READSTRING RETURN DOUBLEDOT INT REAL BOOL STRING EMPTY IF THEN ELSE END WHILE FOR IN LOOP DOT
+%token FUNC TRUE FALSE COMMA ARROW GREAT
+
 %%
 //-----------------------------------------------------
 
@@ -43,7 +48,7 @@ program:
 
 statementList:
     statement
-    | statementList ";" statement
+    | statementList SEMICOLON statement
     
 statement:
     assignment
@@ -54,96 +59,96 @@ statement:
     | declaration
 
 assignment:
-    primary ":=" expression
+    primary ASIGN expression
 
 print:
-    "print" expressionlist
+    PRINT expressionlist
 
 return:
-    "return"
+    RETURN
     |"return" expression
 
 if:
-    "if" expression "then" body "end"
-    | "if" expression "then" body "else" body "end"
+    IF expression THEN body END
+    | IF expression THEN body ELSE body END
 
 loop:
-    "while" expression loopBody
-    | "for" identifier "in" typeIndicator loopBody
+    WHILE expression loopBody
+    | FOR identifier IN typeIndicator loopBody
 
 loopBody:
-    "loop" body "end"
+    LOOP body END
 
 declaration:
-    "var" variableDefinitionList
+    VAR variableDefinitionList
     
 variableDefinitionList:
     variableDefinition
-    | variableDefinitionList "," variableDefinition 
+    | variableDefinitionList COMMA variableDefinition 
 
 variableDefinition:
     identifier
-    | identifier ":=" expression
+    | identifier ASIGN expression
 
 expression:
     relation
-    | relation "and" relation
-    | relation "or" relation
-    | relation "xor" relation
+    | relation AND relation
+    | relation OR relation
+    | relation XOR relation
 
 relation:
     factor
-    | factor "<" factor
-    | factor "<=" factor
-    | factor ">" factor
-    | factor ">=" factor
-    | factor "=" factor
-    | factor "/=" factor
+    | factor LESS factor
+    | factor LESSOREQUAL factor
+    | factor GREAT factor
+    | factor GREATOREQUAL factor
+    | factor EQUAL factor
+    | factor DIVIDEQUAL factor
 
 factor:
     term
-    | factor "+" term
-    | factor "-" term
+    | factor PLUS term
+    | factor MINUS term
 
 term:
     unary
-    | term "*" unary
-    | term "/" unary
+    | term MULT unary
+    | term DIVIDE unary
 
 unary:
     | primary
-    | "+" primary
-    | "-" primary
-    | "not" primary
-    | primary "is" typeIndicator
-    | "+" primary "is" typeIndicator
-    | "-" primary "is" typeIndicator
-    | "not" primary "is" typeIndicator
+    | PLUS primary
+    | MINUS primary
+    | NOT primary
+    | primary IS typeIndicator
+    | PLUS primary IS typeIndicator
+    | MINUS primary IS typeIndicator
+    | NOT primary IS typeIndicator
     | literal
-    | "(" expression ")"
+    | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET   
     
 primary:
     identifier
     | primary tail
-    | "readInt" | "readReal" | "readString"
+    | READINT | READREAL | READSTRING
 
 tail:
-    "." integerliteral
-    | "." identifier
-    | "[" expression "]"
-    | "(" expressionlist ")"
+    DOT integerliteral
+    | DOT identifier
+    | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET
+    | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET
     
 expressionlist:
     expression
-    | expressionlist "," expression
+    | expressionlist COMMA expression
 
 typeIndicator:
-    "int" | "real" | "bool" | "string"
-    | "empty"         // no type
-    | "[""]"           // vector type
-    | "{""}"           // tuple type
-    | "func"        // functional type
-    | expression ".." expression //range
+    INT | REAL | BOOL | STRING
+    | EMPTY         // no type
+    | LEFTSQUAREBRACKET RIGHTSQUAREBRACKET // vector type
+    | LEFTCURLYBRACKET RIGHTCIRCLEBRACKET  // tuple type
+    | FUNC        // functional type
+    | expression DOUBLEDOT expression //range
 
 literal:
     integerliteral
@@ -153,37 +158,37 @@ literal:
     | arrayLiteral
     | tupleLiteral
     | functionLiteral
-    | "empty"
+    | EMPTY
 
 arrayLiteral:
-    "[" expressionlist "]"
+    LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET
 
 tupleLiteral :
-    "{" "}" 
-    |"{" tupleElementList "}"
+    LEFTCURLYBRACKET RIGHTCURLYBRACKET 
+    |LEFTCURLYBRACKET tupleElementList RIGHTCIRCLEBRACKET
     
 tupleElementList:
     tupleElement
-    | tupleElementList "," tupleElement
+    | tupleElementList COMMA tupleElement
 
 tupleElement:
 	expression
-	| identifier ":=" expression
+	| identifier ASIGN expression
 
 functionLiteral:
-    "func" funBody
-    | "func" Parameters funBody
+    FUNC funBody
+    | FUNC Parameters funBody
 
 Parameters:
-    '(' identifierList ')'
+    LEFTCIRCLEBRACKET identifierList RIGHTCIRCLEBRACKET
 
 identifierList:
     identifier
-    | identifierList "," identifier
+    | identifierList COMMA identifier
     
 funBody:
-    "is" body "end"
-    | "=>" expression
+    IS body END
+    | ARROW expression
 
 body: 
     statementList
@@ -192,42 +197,14 @@ body:
 
 %%
 
-/* The lexical analyzer returns a double floating point
-   number on the stack and the token NUM, or the numeric code
-   of the character read if not a number.  It skips all blanks
-   and tabs, and returns 0 for end-of-input.  */
-
-#include <ctype.h>
-int
-yylex (void)
-{
-    int c;
-
-    /* Skip white space.  */
-    while ((c = getchar ()) == ' ' || c == '\t')
-        continue;
-    /* Process numbers.  */
-    if (c == '.' || isdigit (c))
-    {
-        ungetc (c, stdin);
-        scanf ("%lf", &yylval);
-        return NUM;
-    }
-    /* Return end-of-input.  */
-    if (c == EOF)
-        return 0;
-    /* Return a single char.  */
-    return c;
-}
-
 int
 main (void)
 {
-    return yyparse ();
+     yyparse ();     
 }
 
 #include <stdio.h>
-
+#include "lex.yy.c"
 /* Called by yyparse on error.  */
 void
 yyerror (char const *s)

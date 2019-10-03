@@ -12,6 +12,13 @@
 int lines = 0;
 %}
 
+Alpha 	[a-zA-Z_]
+Digit   [0-9] 
+AlphaDigit {Alpha}|{Digit}
+integerliteral  {Digit}+
+realliteral {integerliteral}\.{integerliteral}
+identifier {Alpha}{AlphaDigit}* 
+
 %%
 
 "var"		{ return VAR; }
@@ -22,7 +29,8 @@ int lines = 0;
 "xor"		{ return XOR; }
 "<"		{ return LESS; }
 "<="		{ return LESSOREQUAL; }
-">="		{ return GREATOREQAL; }
+"<"         { return GREAT; }
+">="		{ return GREATOREQUAL; }
 "="		{ return EQUAL; }
 "/="		{ return DIVIDEQUAL; }
 "+"		{ return PLUS; }
@@ -40,7 +48,7 @@ int lines = 0;
 "readInt"	{ return READINT; }
 "readReal"	{ return READREAL; }
 "readString"	{ return READSTRING; }
-"print"		{ return PRINT; }
+"print"		{  return PRINT; }
 "return"	{ return RETURN; }
 "if"		{ return IF; }
 "then"		{ return THEN; }
@@ -62,22 +70,11 @@ int lines = 0;
 "false"		{ return FALSE; }
 ","		{ return COMMA; }
 "=>"		{ return ARROW; }
-[a-zA-Z]+       { }
+{integerliteral} {   yylval.u.ival = atoi(yytext);  return integerliteral;}
+{realliteral}    {   yylval.u.ival = atof(yytext);  return realliteral;}
+{identifier}       { yylval.u.sval = yytext; return identifier;}
 \n              { lines++; }
 .               { }
 
 %%
 
-int main(int argc, char *argv[])
-{
-    if(argc > 1) {
-        if(!(yyin = fopen(argv[1], "r"))) {
-            perror(argv[1]);
-            return 1;
-        }
-    }
-    
-    yylex();
-    printf("%8d%8d%8d\n", lines);
-    return 0;
-}
