@@ -23,7 +23,7 @@ identifier {Alpha}{AlphaDigit}*
 
 "var"		{ return VAR; }
 ";"		{ return SEMICOLON; }
-":="		{ return ASIGN; }
+":="		{ return ASSIGN; }
 "and"		{ return AND; }
 "or"		{ return OR; }
 "xor"		{ return XOR; }

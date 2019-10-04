@@ -35,10 +35,43 @@ struct my_types
 %token<u.dval> realliteral
 %token<u.sval> stringLiteral
 
-%token PRINT VAR SEMICOLON ASIGN AND OR XOR LESS LESSOREQUAL GREATOREQUAL EQUAL DIVIDEQUAL PLUS
-%token MINUS MULT DIVIDE NOT IS LEFTCIRCLEBRACKET RIGHTCIRCLEBRACKET LEFTSQUAREBRACKET RIGHTSQUAREBRACKET LEFTCURLYBRACKET RIGHTCURLYBRACKET
-%token READINT READREAL READSTRING RETURN DOUBLEDOT INT REAL BOOL STRING EMPTY IF THEN ELSE END WHILE FOR IN LOOP DOT
-%token FUNC TRUE FALSE COMMA ARROW GREAT
+// Identidier and numbers
+%token VAR
+
+// Keywords
+%token AND OR XOR NOT IS
+%token READINT READREAL READSTRING PRINT
+%token RETURN IF THEN ELSE END WHILE FOR
+%token IN LOOP
+%token INT REAL BOOL STRING EMPTY
+%token FUNC TRUE FALSE
+
+// Delimiters
+%token LEFTCIRCLEBRACKET    // (
+%token RIGHTCIRCLEBRACKET   // )
+%token LEFTSQUAREBRACKET    // [
+%token RIGHTSQUAREBRACKET   // ]
+%token LEFTCURLYBRACKET     // }
+%token RIGHTCURLYBRACKET    // }
+%token DOT                  // .
+%token DOUBLEDOT            // ..
+%token COMMA                // ,
+%token ARROW                // =>
+
+// Operator signs
+%token ASSIGN               // :=  
+%token SEMICOLON            // ;
+%token LESS                 // <
+%token LESSOREQUAL          // <=
+%token GREAT                // >
+%token GREATOREQUAL         // >=
+%token EQUAL                // =
+%token DIVIDEQUAL           // /=
+%token PLUS                 // +
+%token MINUS                // -
+%token MULT                 // *
+%token DIVIDE               // /
+
 
 %%
 //-----------------------------------------------------
@@ -59,7 +92,7 @@ statement:
     | declaration
 
 assignment:
-    primary ASIGN expression
+    primary ASSIGN expression
 
 print:
     PRINT expressionlist
@@ -88,7 +121,7 @@ variableDefinitionList:
 
 variableDefinition:
     identifier
-    | identifier ASIGN expression
+    | identifier ASSIGN expression
 
 expression:
     relation
@@ -173,7 +206,7 @@ tupleElementList:
 
 tupleElement:
 	expression
-	| identifier ASIGN expression
+	| identifier ASSIGN expression
 
 functionLiteral:
     FUNC funBody
