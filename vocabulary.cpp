@@ -11,10 +11,10 @@
 %token FUNC TRUE FALSE
 
 // Delimiters
-%token LEFTCIRCLEBRACKET		// (
+%token LEFTCIRCLEBRACKET	// (
 %token RIGHTCIRCLEBRACKET	//  )
 %token LEFTCURLYBRACKET		// }
-%token RIGHTCURLYBRACKET		// }
+%token RIGHTCURLYBRACKET	// }
 %token  DOT					// .
 %token COMMA				// ,
 %token ARROW				// =>
