@@ -18,12 +18,12 @@ int lines = 0;
 [a-zA-Z]+       { }
 "var"		{ return VAR; }
 ";"		{ return SEMICOLON; }
-":="		{ return ASIIGN; }
+":="		{ return ASSIGN; }
 "and"		{ return AND; }
 "or"		{ return OR; }
 "xor"		{ return XOR; }
 "<"		{ return LESS; }
-"<="		{ retrun LESSOREQUAL; }
+"<="		{ return LESSOREQUAL; }
 ">="		{ return GREATOREQAL; }
 "="		{ return EQUAL; }
 "/="		{ return DIVIDEQUAL; }
