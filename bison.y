@@ -198,7 +198,7 @@ arrayLiteral:
 
 tupleLiteral :
     LEFTCURLYBRACKET RIGHTCURLYBRACKET 
-    |LEFTCURLYBRACKET tupleElementList RIGHTCIRCLEBRACKET
+    |LEFTCURLYBRACKET tupleElementList RIGHTCURLYBRACKET
     
 tupleElementList:
     tupleElement
