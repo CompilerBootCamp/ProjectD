@@ -1,12 +1,10 @@
-cmake_minimum_required(VERSION 3.15.3)
+cmake_minimum_required(VERSION 3.15)
 project(ProjectD)
 
 include(build/CMakeLists.txt.in)
-include_directories(src)
+include_directories(src src/ast src/visitor src/type_system)
 include_directories(test)
 set(CMAKE_CXX_STANDARD 17)
-
-
 
 # Download and unpack googletest at configure time
 configure_file(build/CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -41,6 +39,6 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 
 # Now simply link against gtest or gtest_main as needed. Eg
-#add_executable(main.cpp)
+add_executable(ProjectD src/main.cpp)
 #target_link_libraries(main.cpp gtest_main)
 #add_test(NAME example_test COMMAND example)
