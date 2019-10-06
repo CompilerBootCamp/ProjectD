@@ -1,0 +1,23 @@
+var a := [5, 6, 7, 1, 2, 3, 4, 9, 8, 0], n = 10;
+
+for i in 0..9 
+loop
+    print a[n];
+end
+
+for i in 0..n-1
+loop
+    for j in 0..n-i-1
+    loop
+        if a[j] > a[j+1] then
+            var temp := a[j];
+            a[j] = a[j+1];
+            a[j+1] = temp;
+        end
+    end
+end
+
+for i in 0..9 
+loop
+    print a[n];
+end

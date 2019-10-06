@@ -186,7 +186,7 @@ typeIndicator:
     INT | REAL | BOOL | STRING
     | EMPTY         // no type
     | LEFTSQUAREBRACKET RIGHTSQUAREBRACKET // vector type
-    | LEFTCURLYBRACKET RIGHTCIRCLEBRACKET  // tuple type
+    | LEFTCURLYBRACKET RIGHTCURLYBRACKET  // tuple type
     | FUNC        // functional type
 
 literal:
@@ -199,7 +199,8 @@ literal:
     | functionLiteral
 
 arrayLiteral:
-    LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET
+    LEFTSQUAREBRACKET RIGHTSQUAREBRACKET
+    | LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET
 
 tupleLiteral :
     LEFTCURLYBRACKET RIGHTCURLYBRACKET 
@@ -245,13 +246,32 @@ yyerror (char const *s)
 }
 
 int
-main (void)
+main (int argc, char *argv[])
 {
-    if ((yyin = fopen( "input.txt", "r" )) == NULL)
+    if (argc == 1)
     {
-        yyin = stdin;
-        printf("STDIN is used\n");
+        if ((yyin = fopen( "input.txt", "r" )) == NULL)
+        {
+            yyin = stdin;
+            printf("STDIN is used\n");
+        }
+        yyparse();
     }
+
+    if(argc == 2)
+    {
+        yyin = fopen(argv[1], "r");
+        yyparse();
+    }
+    
+    if (argc == 3) {
+       yyout = fopen(argv[2],"w");
+
+       yyin = fopen(argv[1], "r");
+       yyparse();
+       fclose(yyout);
+    }
+    
     //yyout = fopen( "out_debug.txt", "w" );  // Write in file
-    yyparse();
+    return 0;
 }
