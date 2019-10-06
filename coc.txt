@@ -1,0 +1,4 @@
+classes in camel case FooBar;
+variables in camel with camel case fooBar;
+utility classes or method with snake case foo_bar;
+namespace with snake case our_namespace;
