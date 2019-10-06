@@ -19,62 +19,63 @@ integerliteral  {Digit}+
 realliteral {integerliteral}\.{integerliteral}
 identifier {Alpha}{AlphaDigit}* 
 
-%%
-
-"var"		{ return VAR; }
-";"		{ return SEMICOLON; }
-":="		{ return ASSIGN; }
-"and"		{ return AND; }
-"or"		{ return OR; }
-"xor"		{ return XOR; }
-"<"		{ return LESS; }
-"<="		{ return LESSOREQUAL; }
-">"         { return GREAT; }
-">="		{ return GREATOREQUAL; }
-"="		{ return EQUAL; }
-"/="		{ return DIVIDEQUAL; }
-"+"		{ return PLUS; }
-"-"		{ return MINUS; }
-"*"		{ return MULT; }
-"/"		{ return DIVIDE; }
-"not"		{ return NOT; }
-"is"		{ return IS; }
-"("		{ return LEFTCIRCLEBRACKET; }
-")"		{ return RIGHTCIRCLEBRACKET; }
-"["		{ return LEFTSQUAREBRACKET; }
-"]"		{ return RIGHTSQUAREBRACKET; }
-"{"		{ return LEFTCURLYBRACKET; }
-"}"		{ return RIGHTCURLYBRACKET; }
-"readInt"	{ return READINT; }
-"readReal"	{ return READREAL; }
-"readString"	{ return READSTRING; }
-"print"		{  return PRINT; }
-"return"	{ return RETURN; }
-"if"		{ return IF; }
-"then"		{ return THEN; }
-"else"		{ return ELSE; }
-"end"		{ return END; }
-"while"		{ return WHILE; }
-"for"		{ return FOR; }
-"in"		{ return IN; }
-"loop"		{ return LOOP; }
-"."		{ return DOT; }
-".."	{ return DOUBLEDOT; }
-"int"		{ return INT; }
-"real"		{ return REAL; }
-"bool"		{ return BOOL; }
-"string"	{ return STRING; }
-"empty"		{ return EMPTY; }
-"func"		{ return FUNC; }
-"true"		{ yylval.u.bval = true; return booleanliteral; }
-"false"		{ yylval.u.bval = false; return booleanliteral; }
-","		{ return COMMA; }
-"=>"		{ return ARROW; }
-{integerliteral} {   yylval.u.ival = atoi(yytext);  return integerliteral;}
-{realliteral}    {   yylval.u.ival = atof(yytext);  return realliteral;}
-{identifier}       { yylval.u.sval = yytext; return identifier;}
-\n              { lines++; }
-.               { }
 
 %%
 
+"var"		{ECHO; return VAR; }
+";"		{ECHO; return SEMICOLON; }
+":="		{ECHO; return ASSIGN; }
+"and"		{ECHO; return AND; }
+"or"		{ECHO; return OR; }
+"xor"		{ECHO; return XOR; }
+"<"		{ECHO; return LESS; }
+"<="		{ECHO; return LESSOREQUAL; }
+">"         {ECHO; return GREAT; }
+">="		{ECHO; return GREATOREQUAL; }
+"="		{ECHO; return EQUAL; }
+"/="		{ECHO; return DIVIDEQUAL; }
+"+"		{ECHO; return PLUS; }
+"-"		{ECHO; return MINUS; }
+"*"		{ECHO; return MULT; }
+"/"		{ECHO; return DIVIDE; }
+"not"		{ECHO; return NOT; }
+"is"		{ECHO; return IS; }
+"("		{ECHO; return LEFTCIRCLEBRACKET; }
+")"		{ECHO; return RIGHTCIRCLEBRACKET; }
+"["		{ECHO; return LEFTSQUAREBRACKET; }
+"]"		{ECHO; return RIGHTSQUAREBRACKET; }
+"{"		{ECHO; return LEFTCURLYBRACKET; }
+"}"		{ECHO; return RIGHTCURLYBRACKET; }
+"readInt"	{ECHO; return READINT; }
+"readReal"	{ECHO; return READREAL; }
+"readString"	{ECHO; return READSTRING; }
+"print"		{ECHO;  return PRINT; }
+"return"	{ECHO; return RETURN; }
+"if"		{ECHO; return IF; }
+"then"		{ECHO; return THEN; }
+"else"		{ECHO; return ELSE; }
+"end"		{ECHO; return END; }
+"while"		{ECHO; return WHILE; }
+"for"		{ECHO; return FOR; }
+"in"		{ECHO; return IN; }
+"loop"		{ECHO; return LOOP; }
+"."		{ECHO; return DOT; }
+".."	{ECHO; return DOUBLEDOT; }
+"int"		{ECHO; return INT; }
+"real"		{ECHO; return REAL; }
+"bool"		{ECHO; return BOOL; }
+"string"	{ECHO; return STRING; }
+"empty"		{ECHO; return EMPTY; }
+"func"		{ECHO; return FUNC; }
+"true"		{ECHO; yylval.u.bval = true; return booleanliteral; }
+"false"		{ECHO; yylval.u.bval = false; return booleanliteral; }
+","		{ECHO; return COMMA; }
+"=>"		{ECHO; return ARROW; }
+{integerliteral} {ECHO;   yylval.u.ival = atoi(yytext);  return integerliteral;}
+{realliteral}    { ECHO;  yylval.u.ival = atof(yytext);  return realliteral;}
+{identifier}       {ECHO; yylval.u.sval = yytext; return identifier;}
+\n              {ECHO; lines++; }
+.               {ECHO; }
+
+
+%%
