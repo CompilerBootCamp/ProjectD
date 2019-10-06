@@ -66,8 +66,8 @@ identifier {Alpha}{AlphaDigit}*
 "string"	{ return STRING; }
 "empty"		{ return EMPTY; }
 "func"		{ return FUNC; }
-"true"		{ return TRUE; }
-"false"		{ return FALSE; }
+"true"		{ yylval.u.bval = true; return booleanliteral; }
+"false"		{ yylval.u.bval = false; return booleanliteral; }
 ","		{ return COMMA; }
 "=>"		{ return ARROW; }
 {integerliteral} {   yylval.u.ival = atoi(yytext);  return integerliteral;}

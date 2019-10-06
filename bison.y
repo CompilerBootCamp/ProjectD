@@ -92,7 +92,7 @@ statement:
     | declaration
 
 assignment:
-    primary ASSIGN expression
+    reference ASSIGN expression
 
 print:
     PRINT expressionlist
@@ -124,11 +124,14 @@ variableDefinition:
     | identifier ASSIGN expression
 
 expression:
+    relationlist
+    
+relationlist:
     relation
-    | relation AND relation
-    | relation OR relation
-    | relation XOR relation
-
+    | relationlist AND relation
+    | relationlist OR relation
+    | relationlist XOR relation
+    
 relation:
     factor
     | factor LESS factor
@@ -149,27 +152,30 @@ term:
     | term DIVIDE unary
 
 unary:
+    reference
+    | reference IS typeIndicator
+    | PLUS reference
+    | MINUS reference
+    | NOT reference
     | primary
     | PLUS primary
     | MINUS primary
     | NOT primary
-    | primary IS typeIndicator
-    | PLUS primary IS typeIndicator
-    | MINUS primary IS typeIndicator
-    | NOT primary IS typeIndicator
-    | literal
-    | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET   
-    
+
 primary:
+      literal
+    | READINT | READREAL | READSTRING //??????
+    | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET  
+    
+reference:
     identifier
-    | primary tail
-    | READINT | READREAL | READSTRING
+    | reference tail
 
 tail:
-    DOT integerliteral
-    | DOT identifier
-    | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET
-    | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET
+    DOT integerliteral // access to unnamed tuple element
+    | DOT identifier // access to named tuple element
+    | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET // access to array element
+    | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET // function call
     
 expressionlist:
     expression
@@ -191,7 +197,6 @@ literal:
     | arrayLiteral
     | tupleLiteral
     | functionLiteral
-    | EMPTY
 
 arrayLiteral:
     LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET
