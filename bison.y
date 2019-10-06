@@ -80,11 +80,12 @@ program:
     statementList
 
 statementList:
-    statement
+    statement 
     | statementList SEMICOLON statement
     
 statement:
-    assignment
+    %empty
+    | assignment
     | print
     | return
     | if
@@ -99,7 +100,7 @@ print:
 
 return:
     RETURN
-    |"return" expression
+    | RETURN expression
 
 if:
     IF expression THEN body END
@@ -107,7 +108,7 @@ if:
 
 loop:
     WHILE expression loopBody
-    | FOR identifier IN typeIndicator loopBody
+    | FOR identifier IN expression DOUBLEDOT expression loopBody
 
 loopBody:
     LOOP body END
@@ -187,7 +188,6 @@ typeIndicator:
     | LEFTSQUAREBRACKET RIGHTSQUAREBRACKET // vector type
     | LEFTCURLYBRACKET RIGHTCIRCLEBRACKET  // tuple type
     | FUNC        // functional type
-    | expression DOUBLEDOT expression //range
 
 literal:
     integerliteral
