@@ -235,12 +235,6 @@ body:
 
 %%
 
-int
-main (void)
-{
-     yyparse ();     
-}
-
 #include <stdio.h>
 #include "lex.yy.c"
 /* Called by yyparse on error.  */
@@ -248,4 +242,16 @@ void
 yyerror (char const *s)
 {
     fprintf (stderr, "%s\n", s);
+}
+
+int
+main (void)
+{
+    if ((yyin = fopen( "input.txt", "r" )) == NULL)
+    {
+        yyin = stdin;
+        printf("STDIN is used\n");
+    }
+    //yyout = fopen( "out_debug.txt", "w" );  // Write in file
+    yyparse();
 }
