@@ -72,7 +72,7 @@ struct my_types
 %token MULT                 // *
 %token DIVIDE               // /
 
-
+%start program
 %%
 //-----------------------------------------------------
 
