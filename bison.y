@@ -242,7 +242,7 @@ body:
 void
 yyerror (char const *s)
 {
-    fprintf (stderr, "%s\n", s);
+    printf ("\n%s: '%s' in line %d\n", s, yytext, yylineno);
 }
 
 int
