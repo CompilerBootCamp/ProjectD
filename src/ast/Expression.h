@@ -6,13 +6,12 @@
 #define PROJECTD_EXPRESSION_H
 
 #include "Node.h"
-#include "Literal.h"
 
-template <class T>
-class Expression: Node<T> {
+class Literal;
+
+class Expression: public Node {
 public:
-    template <class R>
-    virtual R evaluate() = 0;
+    virtual Literal& evaluate() = 0;
 };
 
 

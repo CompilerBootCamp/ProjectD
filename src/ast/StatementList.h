@@ -7,13 +7,19 @@
 
 
 #include "Node.h"
+#include <vector>
+class Statement;
+class AbstractVisitor;
 
-class StatementList: Node {
+class StatementList: public Node {
 
-private:
+public:
     std::vector<Statement*> statements;
 public:
-    virtual void accept(Visitor visitor);
+    StatementList(Statement &);
+    ~StatementList() = default;
+
+    virtual void accept(AbstractVisitor &);
 };
 
 

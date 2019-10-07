@@ -7,20 +7,20 @@
 
 
 #include "Statement.h"
-#include "Expression.h"
 #include <vector>
+#include <memory>
 
+class Expression;
 
-class Print: Statement<Print> {
-private:
-    std::vector<Expression> expressions;
+class Print: public Statement {
+public:
+    std::vector<Expression* > expressions;
 
 public:
-    template <class R>
-    const std::vector<Expression<R>> &getExpressions() const ;
+    Print(Expression &);
+    void accept(AbstractVisitor&);
 
-    template <class R>
-    void addExpr(const Expression<R> &expression);
+    void addExpr(Expression &);
 };
 
 

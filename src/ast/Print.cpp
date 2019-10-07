@@ -3,14 +3,18 @@
 //
 
 #include "Print.h"
-#include "Expression.h"
-#include <vector>
-template <class R>
-void Print::addExpr(const Expression<R> &expression) {
-    this->expressions.push_back(expression)
+#include "../visitor/AbstractVisitor.h"
+
+Print::Print(Expression &expression):expressions()
+{
+    expressions.push_back(&expression);
 }
 
-template<class R>
-const std::vector<Expression<R>> &Print::getExpressions() const {
-    return this->expressions;
+void Print::addExpr(Expression  &expression) {
+    this->expressions.push_back(&expression);
+}
+
+void Print::accept(AbstractVisitor &visitor)
+{
+    visitor.visit(*this);
 }

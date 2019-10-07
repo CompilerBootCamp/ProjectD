@@ -8,7 +8,7 @@
 
 #include "Expression.h"
 
-class UnaryExpr: Expression<UnaryExpr> {
+class UnaryExpr: Expression {
 
 };
 

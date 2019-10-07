@@ -5,33 +5,20 @@
 #ifndef PROJECTD_BINARYEXPR_H
 #define PROJECTD_BINARYEXPR_H
 
-#include "Operation.cpp"
+#include "../type_system/Operation.h"
 #include "Expression.h"
+#include "Literal.h"
 
-
-class BinaryExpr: Expression<BinaryExpr> {
-private:
-    Expression left;
-    Expression right;
+class BinaryExpr: public Expression {
+public:
+    Expression* left;
+    Expression* right;
     Op op;
 public:
-    template <class T>
-    const Expression<T> &getLeft() const;
-
-    template <class T>
-    void setLeft(const Expression<T> &left);
-
-    template <class T>
-    const Expression<T> &getRight() const;
-
-    template <class T>
-    void setRight(const Expression<T> &right);
-
-    void evaluate(){
+    Literal& evaluate(){
         switch (op){
             case ADD:
-
-                break;
+                return left->evaluate() + right->evaluate();
             case DIVIDE:
                 break;
             case MULTIPLY:

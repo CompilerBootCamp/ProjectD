@@ -9,8 +9,7 @@
 #include <utility>
 #include "Literal.h"
 
-template <class T>
-class StringLiteral: Literal<T> {
+class StringLiteral: public Literal {
 private:
     std::string str;
 public:
@@ -20,12 +19,7 @@ private:
 
 
 public:
-    std::string evaluate();
 
-    [[nodiscard]]
-    const std::string &getStr() const ;
-
-    void setStr(const std::string &str) ;
 };
 
 
