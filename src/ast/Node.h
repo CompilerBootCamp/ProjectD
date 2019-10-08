@@ -7,10 +7,15 @@
 
 class AbstractVisitor;
 
-class Node {
-public:
-    virtual ~Node() = default;
-    virtual void accept(AbstractVisitor &) const;
-};
+namespace AST
+{
+
+    class Node
+    {
+    public:
+        virtual ~Node() = default;
+        virtual void accept(AbstractVisitor &) const;
+    };
+}
 
 #endif //PROJECTD_NODE_H

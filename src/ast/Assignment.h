@@ -8,9 +8,13 @@
 
 #include "Node.h"
 
-class Assignment: public Node{
+namespace AST
+{
 
-};
+    class Assignment: public Node
+    {
 
+    };
+}
 
 #endif //PROJECTD_ASSIGNMENT_H

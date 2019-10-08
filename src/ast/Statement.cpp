@@ -3,3 +3,5 @@
 //
 
 #include "Statement.h"
+
+namespace AST{}

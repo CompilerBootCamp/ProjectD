@@ -5,7 +5,9 @@
 #include "../visitor/AbstractVisitor.h"
 #include "Node.h"
 
+namespace AST {
 
-void Node::accept(AbstractVisitor &visitor) const {
-    visitor.visit(*this);
+    void Node::accept(AbstractVisitor &visitor) const {
+        visitor.visit(*this);
+    }
 }

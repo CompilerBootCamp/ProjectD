@@ -8,9 +8,12 @@
 
 #include "Expression.h"
 
-class UnaryExpr: Expression {
+namespace AST{
 
-};
+    class UnaryExpr: Expression {
+
+    };
+}
 
 
 #endif //PROJECTD_UNARYEXPR_H

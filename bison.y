@@ -1,18 +1,26 @@
-
-/*
-* bison tbison.y
-* gcc -o tbsion tbsion.tab.c -lm
-* ./tbsion
-*   2 2 +
-* >>> 4
-*  ^D
-*/
+%require  "3.0"
 
 %{
 #include <stdio.h>
 #include <math.h>
+#include <vector>
+
+#include "src/ast/Node.h"
+#include "src/ast/StatementList.h"
+#include "src/ast/Statement.h"
+#include "src/ast/Expression.h"
+#include "src/ast/ExpressionList.h"
+#include "src/ast/Print.h"
+#include "src/ast/BinaryExpr.h"
+#include "src/ast/Literal.h"
+#include "src/ast/IntLiteral.h"
+
+#include "src/visitor/Interpreter.h"
+
 int yylex (void);
 void yyerror (char const *);
+
+AST::StatementList* root;
 
 struct my_types
   {
@@ -21,13 +29,17 @@ struct my_types
         int     ival;
         double  dval;
         bool    bval;
-        char* sval;
-    } u;
+        char* sval; // ???
+        AST::Node* nval; // empty???
+        AST::StatementList* stlistval;
+        AST::Statement* stval;
+        AST::ExpressionList* exlistval;
+        AST::Expression* exval;
+    } u;    
   };
 %}
 
 %define api.value.type {my_types}
-%token<u.dval> NUM
 
 %token<u.bval> booleanliteral
 %token<u.sval> identifier // ??????
@@ -44,7 +56,7 @@ struct my_types
 %token RETURN IF THEN ELSE END WHILE FOR
 %token IN LOOP
 %token INT REAL BOOL STRING EMPTY
-%token FUNC TRUE FALSE
+%token FUNC
 
 // Delimiters
 %token LEFTCIRCLEBRACKET    // (
@@ -72,31 +84,45 @@ struct my_types
 %token MULT                 // *
 %token DIVIDE               // /
 
+%start program
+
+%type<u.stval> statement print
+%type<u.stlistval> statementList //costyl
+%type<u.exlistval> expressionlist //costyl
+%type<u.exval> expression literal factor term
 
 %%
 //-----------------------------------------------------
 
 program:
-    statementList
+    statementList { root = $1; } ;
 
 statementList:
     statement 
-    | statementList SEMICOLON statement
+        { 
+            $$ = new AST::StatementList($1);
+        }
+    | statementList SEMICOLON statement 
+        {  
+            $1->add_statement($3);
+            $$ = $1;
+        }
+    ;
     
 statement:
-    %empty
+    %empty         
     | assignment
-    | print
-    | return
-    | if
-    | loop
+    | print         
+    | return        
+    | if            
+    | loop          
     | declaration
 
 assignment:
     reference ASSIGN expression
 
 print:
-    PRINT expressionlist
+    PRINT expressionlist { $$ = new AST::Print($2); };
 
 return:
     RETURN
@@ -144,7 +170,7 @@ relation:
 
 factor:
     term
-    | factor PLUS term
+    | factor PLUS term { $$ = new AST::BinaryExpr($1, $3, _ADD);}
     | factor MINUS term
 
 term:
@@ -179,8 +205,16 @@ tail:
     | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET // function call
     
 expressionlist:
-    expression
-    | expressionlist COMMA expression
+    expression 
+        {
+            $$ = new AST::ExpressionList($1);
+        }
+    | expressionlist COMMA expression 
+        {
+            $1->add_expression($3);
+            $$ = $1;
+        }
+    ;
 
 typeIndicator:
     INT | REAL | BOOL | STRING
@@ -190,13 +224,14 @@ typeIndicator:
     | FUNC        // functional type
 
 literal:
-    integerliteral
+    integerliteral { $$ = new AST::IntLiteral($1);}
     | realliteral
     | booleanliteral
     | stringLiteral
     | arrayLiteral
     | tupleLiteral
     | functionLiteral
+    ;
 
 arrayLiteral:
     LEFTSQUAREBRACKET RIGHTSQUAREBRACKET
@@ -256,6 +291,9 @@ main (int argc, char *argv[])
             printf("STDIN is used\n");
         }
         yyparse();
+        
+        Interpreter my;
+        root->accept(my);
     }
 
     if(argc == 2)

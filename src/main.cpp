@@ -9,10 +9,13 @@
 #include <iostream>
 #include "visitor/Interpreter.h"
 #include "ast/Print.h"
+#include "ast/StatementList.h"
+
+using namespace AST;
 
 int main() {
 
-    IntLiteral a(5);
+    /*IntLiteral a(5);
     IntLiteral b(3);
     IntLiteral c(10);
     BinaryExpr bop;
@@ -30,5 +33,9 @@ int main() {
     p.addExpr(a);
     p.addExpr(b);
     p.accept(my);
+
+    AST::StatementList* stlistval;
+    AST::Statement* stval;
+    (stlistval) = new AST::StatementList((stval));*/
     return 0;
 }

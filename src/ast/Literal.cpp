@@ -4,22 +4,27 @@
 
 #include "Literal.h"
 
-std::string Literal::to_string()
+namespace AST
 {
-    return "empty";
-}
 
-Literal& Literal::evaluate()
-{
-    //exception
-}
+    std::string Literal::to_string()
+    {
+        return "empty";
+    }
 
-Literal& Literal::operator+(Literal& rhs)
-{
-    //exception
-}
+    Literal& Literal::evaluate()
+    {
+        //exception
+    }
 
-Literal& Literal::add_operator(IntLiteral* rhs)
-{
-    //exception
+    Literal& Literal::operator+(Literal& rhs)
+    {
+        //exception
+    }
+
+    Literal& Literal::add_operator(IntLiteral* rhs)
+    {
+        //exception
+    }
+
 }

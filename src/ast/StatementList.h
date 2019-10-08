@@ -8,19 +8,24 @@
 
 #include "Node.h"
 #include <vector>
-class Statement;
+
 class AbstractVisitor;
 
-class StatementList: public Node {
+namespace AST{
+    class Statement;
 
-public:
-    std::vector<Statement*> statements;
-public:
-    StatementList(Statement &);
-    ~StatementList() = default;
+    class StatementList: public Node {
 
-    virtual void accept(AbstractVisitor &);
-};
+    public:
+        std::vector<Statement*> statements;
+    public:
+        StatementList(Statement *);
+        ~StatementList() = default;
+
+        virtual void accept(AbstractVisitor &);
+        void add_statement(Statement *);
+    };
+}
 
 
 #endif //PROJECTD_STATEMENTLIST_H
