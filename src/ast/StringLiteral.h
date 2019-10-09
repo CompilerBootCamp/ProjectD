@@ -9,23 +9,18 @@
 #include <utility>
 #include "Literal.h"
 
-namespace AST
-{
+class StringLiteral: public Literal {
+private:
+    std::string str;
+public:
+    StringLiteral(std::string str) : str(std::move(str)) {}
 
-    class StringLiteral: public Literal
-    {
-    private:
-        std::string str;
-    public:
-        StringLiteral(std::string str) : str(std::move(str)) {}
-
-    private:
+private:
 
 
-    public:
+public:
 
-    };
-}
+};
 
 
 #endif //PROJECTD_STRINGLITERAL_H

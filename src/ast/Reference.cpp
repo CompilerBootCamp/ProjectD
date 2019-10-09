@@ -5,9 +5,6 @@
 #include "Reference.h"
 #include "../visitor/AbstractVisitor.h"
 
-namespace AST{
-
-    void Reference::accept(AbstractVisitor &visitor) const {
-        visitor.visit(*this);
-    }
+void Reference::accept(AbstractVisitor &visitor) const {
+    visitor.visit(*this);
 }

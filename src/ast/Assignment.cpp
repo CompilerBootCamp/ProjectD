@@ -3,5 +3,3 @@
 //
 
 #include "Assignment.h"
-
-namespace AST {}

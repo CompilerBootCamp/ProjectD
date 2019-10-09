@@ -1,28 +1,25 @@
 
 #include "IntLiteral.h"
 
-namespace AST
+IntLiteral::IntLiteral(int val): value(val){}
+
+std::string IntLiteral::to_string()
 {
-    IntLiteral::IntLiteral(int val): value(val) {}
+    return std::to_string(value);
+}
 
-    std::string IntLiteral::to_string()
-    {
-        return std::to_string(value);
-    }
+Literal& IntLiteral::evaluate()
+{
+    return *this;
+}
 
-    Literal& IntLiteral::evaluate()
-    {
-        return *this;
-    }
+Literal& IntLiteral::operator+(Literal& rhs)
+{
+    return rhs.add_operator(this);
+}
 
-    Literal& IntLiteral::operator+(Literal& rhs)
-    {
-        return rhs.add_operator(this);
-    }
-
-    Literal& IntLiteral::add_operator(IntLiteral* rhs)
-    {
-        auto temp = new IntLiteral(this->value + rhs->value);
-        return *temp;
-    }
+Literal& IntLiteral::add_operator(IntLiteral* rhs)
+{
+    auto temp = new IntLiteral(this->value + rhs->value);
+    return *temp;
 }

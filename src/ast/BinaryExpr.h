@@ -9,51 +9,43 @@
 #include "Expression.h"
 #include "Literal.h"
 
-namespace AST
-{
-
-    class BinaryExpr: public Expression
-    {
-    public:
-        Expression* left;
-        Expression* right;
-        Op operation;
-    public:
-        BinaryExpr(Expression*, Expression*, Op);
-
-        Literal& evaluate()
-        {
-            switch (operation)
-            {
-            case _ADD:
+class BinaryExpr: public Expression {
+public:
+    Expression* left;
+    Expression* right;
+    Op op;
+public:
+    Literal& evaluate(){
+        switch (op){
+            case ADD:
                 return left->evaluate() + right->evaluate();
-            case _DIVIDE:
+            case DIVIDE:
                 break;
-            case _MULTIPLY:
+            case MULTIPLY:
                 break;
-            case _SUB:
+            case SUB:
                 break;
-            case _AND:
+            case AND:
                 break;
-            case _OR:
+            case OR:
                 break;
-            case _XOR:
+            case XOR:
                 break;
-            case _LESS:
+            case LESS:
                 break;
-            case _GREATER:
+            case GREATER:
                 break;
-            case _LESS_OR_EQUAL:
+            case LESS_OR_EQUAL:
                 break;
-            case _EQUAL:
+            case EQUAL:
                 break;
-            case _GREATER_OR_EQUAL:
+            case GREATER_OR_EQUAL:
                 break;
-            case _DIVIDE_EQUAL:
+            case DIVIDE_EQUAL:
                 break;
-            }
         }
-    };
-}
+    }
+};
+
 
 #endif //PROJECTD_BINARYEXPR_H

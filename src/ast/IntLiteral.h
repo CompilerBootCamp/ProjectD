@@ -3,21 +3,16 @@
 
 #include "Literal.h"
 
-namespace AST
-{
+class IntLiteral: public Literal {
+public:
+    int value;
+public:
+    IntLiteral(int);
+    std::string to_string() override;
 
-    class IntLiteral: public Literal
-    {
-    public:
-        int value;
-    public:
-        IntLiteral(int);
-        std::string to_string() override;
-
-        Literal& evaluate() override;
-        Literal& operator+(Literal& rhs) override;
-        Literal& add_operator(IntLiteral*) override;
-    };
-}
+    Literal& evaluate() override;
+    Literal& operator+(Literal& rhs) override;
+    Literal& add_operator(IntLiteral*) override;
+};
 
 #endif // INTLITERAL_H_INCLUDED

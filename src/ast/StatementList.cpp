@@ -5,21 +5,13 @@
 #include "StatementList.h"
 #include "../visitor/AbstractVisitor.h"
 
-namespace AST
+StatementList::StatementList(Statement &statement): statements()
 {
+    statements.push_back(&statement);
+}
 
-    StatementList::StatementList(Statement *statement): statements()
-    {
-        statements.push_back(statement);
-    }
-
-    void StatementList::accept(AbstractVisitor &visitor)
-    {
-        visitor.visit(*this);
-    }
-
-    void StatementList::add_statement(Statement *statement)
-    {
-        statements.push_back(statement);
+void StatementList::accept(AbstractVisitor &visitor) {
+    for (auto & statement: statements) {
+        visitor.visit(*statement);
     }
 }

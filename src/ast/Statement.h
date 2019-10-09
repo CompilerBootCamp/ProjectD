@@ -7,13 +7,10 @@
 
 #include "Node.h"
 
-namespace AST{
-
-    class Statement: public Node {
-    public:
-        virtual void accept(AbstractVisitor &) = 0;
-    };
-}
+class Statement: public Node {
+public:
+    virtual void accept(AbstractVisitor &) = 0;
+};
 
 
 #endif //PROJECTD_STATEMENT_H

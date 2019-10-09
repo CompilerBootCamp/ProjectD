@@ -4,4 +4,3 @@
 
 #include "StringLiteral.h"
 
-namespace AST{}

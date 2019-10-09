@@ -8,13 +8,9 @@
 
 #include "Node.h"
 
-namespace AST
-{
+class Loop: public Node {
 
-    class Loop: public Node
-    {
+};
 
-    };
-}
 
 #endif //PROJECTD_LOOP_H

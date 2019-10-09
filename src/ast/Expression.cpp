@@ -3,5 +3,3 @@
 //
 
 #include "Expression.h"
-
-namespace AST {}

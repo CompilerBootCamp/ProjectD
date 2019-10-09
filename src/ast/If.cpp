@@ -3,5 +3,3 @@
 //
 
 #include "If.h"
-
-namespace AST {}

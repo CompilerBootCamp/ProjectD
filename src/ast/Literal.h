@@ -8,21 +8,17 @@
 #include "Expression.h"
 #include <string>
 
-namespace AST
-{
-    class IntLiteral;
+class IntLiteral;
 
-    class Literal: public Expression
-    {
-    public:
-        virtual ~Literal() = default;
-        virtual std::string to_string();
-        virtual AST::Literal& evaluate();
+class Literal: public Expression {
+public:
+    virtual ~Literal() = default;
+    virtual std::string to_string();
+    virtual Literal& evaluate();
 
-        virtual Literal& operator+(Literal& rhs);
-        virtual Literal& add_operator(IntLiteral*);
-    };
-}
+    virtual Literal& operator+(Literal& rhs);
+    virtual Literal& add_operator(IntLiteral*);
+};
 
 
 #endif //PROJECTD_LITERAL_H
