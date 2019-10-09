@@ -8,7 +8,7 @@
 
 #include "Node.h"
 
-class Loop: Node<Loop> {
+class Loop: public Node {
 
 };
 

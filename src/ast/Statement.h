@@ -5,12 +5,11 @@
 #ifndef PROJECTD_STATEMENT_H
 #define PROJECTD_STATEMENT_H
 
+#include "Node.h"
 
-#include "../visitor/Visitor.h"
-template <class T>
-class Statement: Node<T> {
+class Statement: public Node {
 public:
-    virtual void accept(Visitor visitor) = 0;
+    virtual void accept(AbstractVisitor &) = 0;
 };
 
 

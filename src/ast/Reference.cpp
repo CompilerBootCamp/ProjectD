@@ -3,7 +3,8 @@
 //
 
 #include "Reference.h"
+#include "../visitor/AbstractVisitor.h"
 
-void Reference::accept(Visitor visitor) {
-
+void Reference::accept(AbstractVisitor &visitor) const {
+    visitor.visit(*this);
 }

@@ -8,7 +8,7 @@
 
 #include "Node.h"
 
-class Assignment: Node<Assignment>{
+class Assignment: public Node{
 
 };
 

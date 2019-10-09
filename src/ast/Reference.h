@@ -5,11 +5,10 @@
 #ifndef PROJECTD_REFERENCE_H
 #define PROJECTD_REFERENCE_H
 
-
 #include "Node.h"
 
-class Reference: Node {
-    virtual void accept(Visitor visitor);
+class Reference: public Node {
+    void accept(AbstractVisitor &) const;
 };
 
 

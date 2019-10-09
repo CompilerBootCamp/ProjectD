@@ -1,0 +1,21 @@
+#ifndef OPERATION_H_INCLUDED
+#define OPERATION_H_INCLUDED
+
+enum Op{
+    ADD,
+    DIVIDE,
+    MULTIPLY,
+    SUB,
+    AND,
+    OR,
+    XOR,
+    LESS,
+    GREATER,
+    LESS_OR_EQUAL,
+    EQUAL,
+    GREATER_OR_EQUAL,
+    DIVIDE_EQUAL
+};
+
+
+#endif // OPERATION_H_INCLUDED
