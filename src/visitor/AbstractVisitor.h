@@ -7,8 +7,9 @@
 
 namespace AST
 {
-    class Print;
     class Node;
+    class EmptyNode;
+    class Print;
     class Reference;
     class Statement;
     class StatementList;
@@ -21,6 +22,7 @@ public:
     virtual ~AbstractVisitor() = default;
 
     virtual void visit(const AST::Node &) = 0;
+    virtual void visit(const AST::EmptyNode &) = 0;
     virtual void visit(const AST::Reference &) = 0;
     virtual void visit(const AST::Print &) = 0;
     virtual void visit(const AST::Statement &) = 0;

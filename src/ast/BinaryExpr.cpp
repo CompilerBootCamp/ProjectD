@@ -13,4 +13,38 @@ namespace AST
         right = r;
         operation = op;
     }
+
+    Literal& BinaryExpr::evaluate()
+    {
+        switch (operation)
+            {
+            case _ADD:
+                return left->evaluate() + right->evaluate();
+            case _DIVIDE:
+                return left->evaluate() / right->evaluate();
+            case _MULTIPLY:
+                return left->evaluate() * right->evaluate();
+            case _SUB:
+                return left->evaluate() - right->evaluate();
+            case _AND:
+                //return left->evaluate() && right->evaluate();
+                break;
+            case _OR:
+                break;
+            case _XOR:
+                break;
+            case _LESS:
+                break;
+            case _GREATER:
+                break;
+            case _LESS_OR_EQUAL:
+                break;
+            case _EQUAL:
+                break;
+            case _GREATER_OR_EQUAL:
+                break;
+            case _DIVIDE_EQUAL:
+                break;
+            }
+    }
 }

@@ -7,8 +7,7 @@
 
 #include "Node.h"
 
-namespace AST
-{
+namespace AST{
 
     class Reference: public Node
     {

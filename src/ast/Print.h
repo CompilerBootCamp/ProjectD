@@ -21,7 +21,7 @@ namespace AST{
 
     public:
         Print(ExpressionList *);
-        void accept(AbstractVisitor&);
+        void accept(AbstractVisitor&) const;
     };
 }
 

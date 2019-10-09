@@ -76,7 +76,7 @@ identifier {Alpha}{AlphaDigit}*
 ","		{ECHO; return COMMA; }
 "=>"		{ECHO; return ARROW; }
 {integerliteral} {ECHO;   yylval.u.ival = atoi(yytext);  return integerliteral;}
-{realliteral}    { ECHO;  yylval.u.ival = atof(yytext);  return realliteral;}
+{realliteral}    { ECHO;  yylval.u.dval = atof(yytext);  return realliteral;}
 {identifier}       {ECHO; yylval.u.sval = yytext; return identifier;}
 \n              {ECHO; lines++; }
 .               {ECHO; }

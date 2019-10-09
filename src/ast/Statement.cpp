@@ -3,5 +3,11 @@
 //
 
 #include "Statement.h"
+#include "../visitor/AbstractVisitor.h"
 
-namespace AST{}
+namespace AST{
+
+    /*void Statement::accept(AbstractVisitor& visitor) const{
+        visitor.visit(*this);
+    }*/
+}

@@ -21,8 +21,49 @@ namespace AST
     {
         //exception
     }
+    Literal& Literal::operator-(Literal& rhs)
+    {
+        //exception
+    }
+    Literal& Literal::operator*(Literal& rhs)
+    {
+        //exception
+    }
+    Literal& Literal::operator/(Literal& rhs)
+    {
+        //exception
+    }
 
     Literal& Literal::add_operator(IntLiteral* rhs)
+    {
+        //exception
+    }
+    Literal& Literal::sub_operator(IntLiteral* rhs)
+    {
+        //exception
+    }
+    Literal& Literal::mul_operator(IntLiteral* rhs)
+    {
+        //exception
+    }
+    Literal& Literal::div_operator(IntLiteral* rhs)
+    {
+        //exception
+    }
+
+    Literal& Literal::add_operator(RealLiteral* rhs)
+    {
+        //exception
+    }
+    Literal& Literal::sub_operator(RealLiteral* rhs)
+    {
+        //exception
+    }
+    Literal& Literal::mul_operator(RealLiteral* rhs)
+    {
+        //exception
+    }
+    Literal& Literal::div_operator(RealLiteral* rhs)
     {
         //exception
     }

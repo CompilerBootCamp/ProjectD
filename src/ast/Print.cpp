@@ -13,7 +13,7 @@ namespace AST{
         expressionsList = expressionslist;
     }
 
-    void Print::accept(AbstractVisitor &visitor)
+    void Print::accept(AbstractVisitor &visitor) const
     {
         visitor.visit(*this);
     }

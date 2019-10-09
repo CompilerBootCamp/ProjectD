@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "src/ast/Node.h"
+#include "src/ast/EmptyNode.h"
 #include "src/ast/StatementList.h"
 #include "src/ast/Statement.h"
 #include "src/ast/Expression.h"
@@ -19,6 +20,7 @@
 #include "src/ast/BinaryExpr.h"
 #include "src/ast/Literal.h"
 #include "src/ast/IntLiteral.h"
+#include "src/ast/RealLiteral.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -91,10 +93,10 @@ struct my_types
 
 %start program
 
-%type<u.stval> statement print
+%type<u.stval> statement print emptyStatement
 %type<u.stlistval> statementList //costyl
 %type<u.exlistval> expressionlist //costyl
-%type<u.exval> expression literal factor term
+%type<u.exval> expression literal factor term unary primary
 
 %%
 //-----------------------------------------------------
@@ -115,13 +117,16 @@ statementList:
     ;
     
 statement:
-    %empty         
+      emptyStatement
     | assignment
     | print         
     | return        
     | if            
     | loop          
     | declaration
+    
+emptyStatement:
+    %empty  { $$ = new AST::EmptyNode(); };
 
 assignment:
     reference ASSIGN expression
@@ -176,12 +181,12 @@ relation:
 factor:
     term
     | factor PLUS term { $$ = new AST::BinaryExpr($1, $3, _ADD);}
-    | factor MINUS term
+    | factor MINUS term { $$ = new AST::BinaryExpr($1, $3, _SUB);}
 
 term:
     unary
-    | term MULT unary
-    | term DIVIDE unary
+    | term MULT unary { $$ = new AST::BinaryExpr($1, $3, _MULTIPLY);}
+    | term DIVIDE unary { $$ = new AST::BinaryExpr($1, $3, _DIVIDE);}
 
 unary:
     reference
@@ -197,7 +202,7 @@ unary:
 primary:
       literal
     | READINT | READREAL | READSTRING //??????
-    | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET  
+    | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET  { $$ = $2; }
     
 reference:
     identifier
@@ -229,8 +234,8 @@ typeIndicator:
     | FUNC        // functional type
 
 literal:
-    integerliteral { $$ = new AST::IntLiteral($1);}
-    | realliteral
+    integerliteral  { $$ = new AST::IntLiteral($1);}
+    | realliteral   { $$ = new AST::RealLiteral($1);}
     | booleanliteral
     | stringLiteral
     | arrayLiteral

@@ -20,7 +20,8 @@ void Interpreter::visit(const AST::Print &print)
 
 void Interpreter::visit(const AST::Node &node) {}
 void Interpreter::visit(const AST::Reference &reference) {}
-void Interpreter::visit(const AST::Statement &stament) {}
+void Interpreter::visit(const AST::Statement &statement) {}
+void Interpreter::visit(const AST::EmptyNode &empty_node) {}
 
 void Interpreter::visit(const AST::StatementList &statementlist)
 {

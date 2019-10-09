@@ -11,6 +11,7 @@
 namespace AST
 {
     class IntLiteral;
+    class RealLiteral;
 
     class Literal: public Expression
     {
@@ -20,7 +21,21 @@ namespace AST
         virtual AST::Literal& evaluate();
 
         virtual Literal& operator+(Literal& rhs);
+        virtual Literal& operator-(Literal& rhs);
+        virtual Literal& operator*(Literal& rhs);
+        virtual Literal& operator/(Literal& rhs);
+
+        //IntLiteral operations
         virtual Literal& add_operator(IntLiteral*);
+        virtual Literal& sub_operator(IntLiteral*);
+        virtual Literal& mul_operator(IntLiteral*);
+        virtual Literal& div_operator(IntLiteral*);
+
+        //RealLiteral operations
+        virtual Literal& add_operator(RealLiteral*);
+        virtual Literal& sub_operator(RealLiteral*);
+        virtual Literal& mul_operator(RealLiteral*);
+        virtual Literal& div_operator(RealLiteral*);
     };
 }
 

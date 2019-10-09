@@ -11,6 +11,7 @@ public:
     void visit(const AST::Reference &);
     void visit(const AST::Statement &);
     void visit(const AST::StatementList &);
+    void visit(const AST::EmptyNode &);
 };
 
 #endif // INTERPRETER_H_INCLUDED

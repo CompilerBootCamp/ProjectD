@@ -11,7 +11,7 @@ namespace AST{
 
     class Statement: public Node {
     public:
-        virtual void accept(AbstractVisitor &) = 0;
+        virtual void accept(AbstractVisitor &) const = 0;
     };
 }
 
