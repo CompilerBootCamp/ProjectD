@@ -1,4 +1,9 @@
+/* require bison version */
 %require  "3.0"
+
+/* increase usefulness of error messages */
+%define parse.error verbose
+
 
 %{
 #include <stdio.h>
@@ -277,7 +282,7 @@ body:
 void
 yyerror (char const *s)
 {
-    printf ("\n%s: '%s' in line %d\n", s, yytext, yylineno);
+    printf ("\n%s('%s' in line %d)\n", s, yytext, yylineno);
 }
 
 int

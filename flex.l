@@ -1,9 +1,12 @@
 /*
-*   flex tlex.l
-*   gcc -o tlex lex.yy.c
-*   ./tlex tlex.l
-*/
-
+    c++                 generate C++ parser class
+    8bit                don't fail on 8-bit input characters
+    warn                warn about inconsistencies
+    nodefault           don't create default echo-all rule
+    noyywrap            don't use yywrap() function
+    yylineno            store number of line in yylineno variable
+ */
+%option 8bit warn nodefault
 %option noyywrap
 %option yylineno
 
