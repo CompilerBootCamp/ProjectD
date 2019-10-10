@@ -33,7 +33,20 @@ namespace AST
     {
         //exception
     }
+    Literal& Literal::operator&&(Literal& rhs)
+    {
+        //exception
+    }
+    Literal& Literal::operator||(Literal& rhs)
+    {
+        //exception
+    }
+    Literal& Literal::operator^(Literal& rhs)
+    {
+        //exception
+    }
 
+    //Int
     Literal& Literal::add_operator(IntLiteral* rhs)
     {
         //exception
@@ -51,6 +64,7 @@ namespace AST
         //exception
     }
 
+    //Real
     Literal& Literal::add_operator(RealLiteral* rhs)
     {
         //exception
@@ -68,4 +82,23 @@ namespace AST
         //exception
     }
 
+    //Bool
+    Literal& Literal::and_operator(BooleanLiteral* rhs)
+    {
+        //exception
+    }
+    Literal& Literal::or_operator(BooleanLiteral* rhs)
+    {
+        //exception
+    }
+    Literal& Literal::xor_operator(BooleanLiteral* rhs)
+    {
+        //exception
+    }
+
+    //String
+    Literal& Literal::add_operator(StringLiteral* rhs)
+    {
+        //exception
+    }
 }

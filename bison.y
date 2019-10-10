@@ -20,7 +20,9 @@
 #include "src/ast/BinaryExpr.h"
 #include "src/ast/Literal.h"
 #include "src/ast/IntLiteral.h"
-#include "src/ast/RealLiteral.h"
+#include "src/ast/realLiteral.h"
+#include "src/ast/booleanLiteral.h"
+#include "src/ast/StringLiteral.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -48,10 +50,10 @@ struct my_types
 
 %define api.value.type {my_types}
 
-%token<u.bval> booleanliteral
+%token<u.bval> booleanLiteral
 %token<u.sval> identifier // ??????
-%token<u.ival> integerliteral
-%token<u.dval> realliteral
+%token<u.ival> integerLiteral
+%token<u.dval> realLiteral
 %token<u.sval> stringLiteral
 
 // Identidier and numbers
@@ -96,7 +98,14 @@ struct my_types
 %type<u.stval> statement print emptyStatement
 %type<u.stlistval> statementList //costyl
 %type<u.exlistval> expressionlist //costyl
-%type<u.exval> expression literal factor term unary primary
+%type<u.exval> expression literal factor term unary primary andexpression relation
+
+
+%left OR XOR
+%left AND
+%left LESS GREAT EQUAL LESSOREQUAL GREATOREQUAL DIVIDEQUAL
+%left PLUS MINUS
+%left MULT DIVIDE
 
 %%
 //-----------------------------------------------------
@@ -161,13 +170,13 @@ variableDefinition:
     | identifier ASSIGN expression
 
 expression:
-    relationlist
-    
-relationlist:
-    relation
-    | relationlist AND relation
-    | relationlist OR relation
-    | relationlist XOR relation
+    expression OR andexpression     { $$ = new AST::BinaryExpr($1, $3, _OR);}
+    |expression XOR andexpression   { $$ = new AST::BinaryExpr($1, $3, _XOR);}
+    | andexpression    
+
+andexpression:
+    andexpression AND relation { $$ = new AST::BinaryExpr($1, $3, _AND);}
+    |relation;
     
 relation:
     factor
@@ -209,7 +218,7 @@ reference:
     | reference tail
 
 tail:
-    DOT integerliteral // access to unnamed tuple element
+    DOT integerLiteral // access to unnamed tuple element
     | DOT identifier // access to named tuple element
     | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET // access to array element
     | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET // function call
@@ -234,10 +243,10 @@ typeIndicator:
     | FUNC        // functional type
 
 literal:
-    integerliteral  { $$ = new AST::IntLiteral($1);}
-    | realliteral   { $$ = new AST::RealLiteral($1);}
-    | booleanliteral
-    | stringLiteral
+    integerLiteral  { $$ = new AST::IntLiteral($1);}
+    | realLiteral   { $$ = new AST::RealLiteral($1);}
+    | booleanLiteral{ $$ = new AST::BooleanLiteral($1);}
+    | stringLiteral { $$ = new AST::StringLiteral($1);}
     | arrayLiteral
     | tupleLiteral
     | functionLiteral
@@ -287,7 +296,7 @@ body:
 void
 yyerror (char const *s)
 {
-    printf ("\n%s('%s' in line %d)\n", s, yytext, yylineno);
+    printf ("\n%s but recive '%s' in line %d\n", s, yytext, yylineno);
 }
 
 int

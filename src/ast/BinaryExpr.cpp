@@ -27,12 +27,11 @@ namespace AST
             case _SUB:
                 return left->evaluate() - right->evaluate();
             case _AND:
-                //return left->evaluate() && right->evaluate();
-                break;
+                return left->evaluate() && right->evaluate();
             case _OR:
-                break;
+                return left->evaluate() || right->evaluate();
             case _XOR:
-                break;
+                return left->evaluate() ^ right->evaluate();
             case _LESS:
                 break;
             case _GREATER:
