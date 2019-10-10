@@ -45,3 +45,4 @@ var logic_test := a and b and c and d or e and f or g xor i xor not h;
 print 1 * 2 + 3 - 4;
 print true and true, false or false, false or true, false xor true, true xor true;
 print '3privet';
+print 3 >= 3;

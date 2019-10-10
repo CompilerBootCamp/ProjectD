@@ -3,6 +3,7 @@
 //
 
 #include "BinaryExpr.h"
+#include "BooleanLiteral.h"
 
 namespace AST
 {
@@ -32,17 +33,34 @@ namespace AST
                 return left->evaluate() || right->evaluate();
             case _XOR:
                 return left->evaluate() ^ right->evaluate();
-            case _LESS:
+            case _LESS:{
+                auto temp = new BooleanLiteral(left->evaluate() < right->evaluate());
+                return *temp;
+            }
+            case _GREATER:{
+                auto temp = new BooleanLiteral(left->evaluate() > right->evaluate());
+                return *temp;
+            }
                 break;
-            case _GREATER:
+            case _LESS_OR_EQUAL:{
+                auto temp = new BooleanLiteral(left->evaluate() <= right->evaluate());
+                return *temp;
+            }
                 break;
-            case _LESS_OR_EQUAL:
+            case _EQUAL:{
+                auto temp = new BooleanLiteral(left->evaluate() == right->evaluate());
+                return *temp;
+            }
                 break;
-            case _EQUAL:
+            case _GREATER_OR_EQUAL:{
+                auto temp = new BooleanLiteral(left->evaluate() >= right->evaluate());
+                return *temp;
+            }
                 break;
-            case _GREATER_OR_EQUAL:
-                break;
-            case _DIVIDE_EQUAL:
+            case _DIVIDE_EQUAL:{
+                auto temp = new BooleanLiteral(left->evaluate() != right->evaluate());
+                return *temp;
+            }
                 break;
             }
     }

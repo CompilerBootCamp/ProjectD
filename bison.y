@@ -179,13 +179,13 @@ andexpression:
     |relation;
     
 relation:
-    factor
-    | factor LESS factor
-    | factor LESSOREQUAL factor
-    | factor GREAT factor
-    | factor GREATOREQUAL factor
-    | factor EQUAL factor
-    | factor DIVIDEQUAL factor
+    factor                          { $$ = $1; }
+    | factor LESS factor            { $$ = new AST::BinaryExpr($1, $3, _LESS); }
+    | factor LESSOREQUAL factor     { $$ = new AST::BinaryExpr($1, $3, _LESS_OR_EQUAL); }
+    | factor GREAT factor           { $$ = new AST::BinaryExpr($1, $3, _GREATER); }
+    | factor GREATOREQUAL factor    { $$ = new AST::BinaryExpr($1, $3, _GREATER_OR_EQUAL); }
+    | factor EQUAL factor           { $$ = new AST::BinaryExpr($1, $3, _EQUAL); }
+    | factor DIVIDEQUAL factor      { $$ = new AST::BinaryExpr($1, $3, _DIVIDE_EQUAL); }
 
 factor:
     term

@@ -22,13 +22,21 @@ namespace AST
         virtual std::string to_string();
         virtual AST::Literal& evaluate();
 
-        virtual Literal& operator+(Literal& rhs);
-        virtual Literal& operator-(Literal& rhs);
-        virtual Literal& operator*(Literal& rhs);
-        virtual Literal& operator/(Literal& rhs);
-        virtual Literal& operator&&(Literal& rhs);
-        virtual Literal& operator||(Literal& rhs);
-        virtual Literal& operator^(Literal& rhs);
+        virtual Literal& operator+(Literal&);
+        virtual Literal& operator-(Literal&);
+        virtual Literal& operator*(Literal&);
+        virtual Literal& operator/(Literal&);
+
+        virtual Literal& operator&&(Literal&);
+        virtual Literal& operator||(Literal&);
+        virtual Literal& operator^(Literal&);
+
+        virtual bool operator<(Literal&);
+        virtual bool operator>(Literal&);
+        virtual bool operator<=(Literal&);
+        virtual bool operator>=(Literal&);
+        virtual bool operator==(Literal&);
+        virtual bool operator!=(Literal&);
 
         //IntLiteral operations
         virtual Literal& add_operator(IntLiteral*);
@@ -36,11 +44,25 @@ namespace AST
         virtual Literal& mul_operator(IntLiteral*);
         virtual Literal& div_operator(IntLiteral*);
 
+        virtual bool less_operator(IntLiteral*);
+        virtual bool great_operator(IntLiteral*);
+        virtual bool lesseq_operator(IntLiteral*);
+        virtual bool greateq_operator(IntLiteral*);
+        virtual bool eq_operator(IntLiteral*);
+        virtual bool neq_operator(IntLiteral*);
+
         //RealLiteral operations
         virtual Literal& add_operator(RealLiteral*);
         virtual Literal& sub_operator(RealLiteral*);
         virtual Literal& mul_operator(RealLiteral*);
         virtual Literal& div_operator(RealLiteral*);
+
+        virtual bool less_operator(RealLiteral*);
+        virtual bool great_operator(RealLiteral*);
+        virtual bool lesseq_operator(RealLiteral*);
+        virtual bool greateq_operator(RealLiteral*);
+        virtual bool eq_operator(RealLiteral*);
+        virtual bool neq_operator(RealLiteral*);
 
         //BooleanLiteral
         virtual Literal& and_operator(BooleanLiteral*);

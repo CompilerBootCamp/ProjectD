@@ -46,6 +46,25 @@ namespace AST
         //exception
     }
 
+    bool Literal::operator<(Literal &rhs){
+        //exception
+    }
+    bool Literal::operator>(Literal &rhs){
+        //exception
+    }
+    bool Literal::operator<=(Literal& rhs){
+        //exception
+    }
+    bool Literal::operator>=(Literal& rhs){
+        //exception
+    }
+    bool Literal::operator==(Literal& rhs){
+        //exception
+    }
+    bool Literal::operator!=(Literal& rhs){
+        //exception
+    }
+
     //Int
     Literal& Literal::add_operator(IntLiteral* rhs)
     {
@@ -61,6 +80,24 @@ namespace AST
     }
     Literal& Literal::div_operator(IntLiteral* rhs)
     {
+        //exception
+    }
+    bool Literal::less_operator(IntLiteral*){
+        //exception
+    }
+    bool Literal::great_operator(IntLiteral*){
+        //exception
+    }
+    bool Literal::lesseq_operator(IntLiteral*){
+        //exception
+    }
+    bool Literal::greateq_operator(IntLiteral*){
+        //exception
+    }
+    bool Literal::eq_operator(IntLiteral*){
+        //exception
+    }
+    bool Literal::neq_operator(IntLiteral*){
         //exception
     }
 
@@ -79,6 +116,25 @@ namespace AST
     }
     Literal& Literal::div_operator(RealLiteral* rhs)
     {
+        //exception
+    }
+
+    bool Literal::less_operator(RealLiteral*){
+        //exception
+    }
+    bool Literal::great_operator(RealLiteral*){
+        //exception
+    }
+    bool Literal::lesseq_operator(RealLiteral*){
+        //exception
+    }
+    bool Literal::greateq_operator(RealLiteral*){
+        //exception
+    }
+    bool Literal::eq_operator(RealLiteral*){
+        //exception
+    }
+    bool Literal::neq_operator(RealLiteral*){
         //exception
     }
 

@@ -21,7 +21,7 @@ namespace AST
     public:
         BinaryExpr(Expression*, Expression*, Op);
 
-        Literal& evaluate();
+       Literal& evaluate();
     };
 }
 
