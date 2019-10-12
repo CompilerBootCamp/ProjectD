@@ -7,6 +7,7 @@
 
 #include "Expression.h"
 #include <string>
+#include <type_system/LiteralTypes.h>
 
 namespace AST
 {
@@ -16,12 +17,16 @@ namespace AST
     class StringLiteral;
     class ArrayLiteral;
 
+
+
     class Literal: public Expression
     {
     public:
         virtual ~Literal() = default;
         virtual std::string to_string();
         virtual AST::Literal& evaluate();
+
+        virtual Type getType() const;
 
         virtual Literal& operator+(Literal&);
         virtual Literal& operator-(Literal&);

@@ -22,6 +22,8 @@ namespace AST{
         Literal& and_operator(BooleanLiteral*) override;
         Literal& or_operator(BooleanLiteral*) override;
         Literal& xor_operator(BooleanLiteral*) override;
+
+        Type getType() const override;
     };
 }
 
