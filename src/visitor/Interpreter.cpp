@@ -33,7 +33,11 @@ void Interpreter::visit(const AST::StatementList &statementlist)
 }
 
 void Interpreter::visit(const AST::IfStatement &statement) {
-    if (dynamic_cast<AST::BooleanLiteral*>(&statement.getExpression()->evaluate())->value) {
+    auto boolLiteral = dynamic_cast<AST::BooleanLiteral*>(&statement.getExpression()->evaluate());
+    if (boolLiteral == nullptr) {
+        return;
+    }
+    if (boolLiteral->value) {
         statement.getThenStatements()->accept(*this);
     } else {
         if (statement.isElseIf()) {
