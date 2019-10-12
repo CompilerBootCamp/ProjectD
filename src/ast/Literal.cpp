@@ -64,6 +64,9 @@ namespace AST
     bool Literal::operator!=(Literal& rhs){
         //exception
     }
+    bool Literal::operator!(){
+        //exception
+    }
 
     //Int
     Literal& Literal::add_operator(IntLiteral* rhs)
@@ -154,6 +157,12 @@ namespace AST
 
     //String
     Literal& Literal::add_operator(StringLiteral* rhs)
+    {
+        //exception
+    }
+
+    //Array
+    Literal& Literal::concat(ArrayLiteral*)
     {
         //exception
     }

@@ -14,6 +14,7 @@ namespace AST
     class RealLiteral;
     class BooleanLiteral;
     class StringLiteral;
+    class ArrayLiteral;
 
     class Literal: public Expression
     {
@@ -37,6 +38,7 @@ namespace AST
         virtual bool operator>=(Literal&);
         virtual bool operator==(Literal&);
         virtual bool operator!=(Literal&);
+        virtual bool operator!();
 
         //IntLiteral operations
         virtual Literal& add_operator(IntLiteral*);
@@ -71,6 +73,9 @@ namespace AST
 
         //StringLiteral
         virtual Literal& add_operator(StringLiteral*);
+
+        //ArrayLiteral
+        virtual Literal& concat(ArrayLiteral*);
     };
 }
 

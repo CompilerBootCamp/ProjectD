@@ -1,7 +1,7 @@
 #ifndef OPERATION_H_INCLUDED
 #define OPERATION_H_INCLUDED
 
-enum Op{
+enum BinOp{
     _ADD,
     _DIVIDE,
     _MULTIPLY,
@@ -15,6 +15,12 @@ enum Op{
     _EQUAL,
     _GREATER_OR_EQUAL,
     _DIVIDE_EQUAL
+};
+
+enum UnaryOp{
+    _PLUS,
+    _MINUS,
+    _NOT
 };
 
 

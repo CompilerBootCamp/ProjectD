@@ -81,7 +81,8 @@ stringliteral '{AlphaDigit}*'
 {stringliteral}  {ECHO; yylval.u.sval = yytext; return stringLiteral;}
 {identifier}     {ECHO; yylval.u.sval = yytext; return identifier;}
 \n               {ECHO; lines++; }
-.                {ECHO; }
+[ \t\r]+       { ECHO;}
+.                {printf("unknown symbol: %s in line %d\n", yytext, yylineno);}
 
 
 %%

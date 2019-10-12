@@ -26,6 +26,10 @@ namespace AST
     {
         return rhs.xor_operator(this);
     }
+    bool BooleanLiteral::operator!()
+    {
+        return !this->value;
+    }
 
     Literal& BooleanLiteral::and_operator(BooleanLiteral* rhs)
     {

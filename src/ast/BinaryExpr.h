@@ -7,7 +7,6 @@
 
 #include "../type_system/Operation.h"
 #include "Expression.h"
-#include "Literal.h"
 
 namespace AST
 {
@@ -17,9 +16,9 @@ namespace AST
     public:
         Expression* left;
         Expression* right;
-        Op operation;
+        BinOp operation;
     public:
-        BinaryExpr(Expression*, Expression*, Op);
+        BinaryExpr(Expression*, Expression*, BinOp);
 
        Literal& evaluate();
     };

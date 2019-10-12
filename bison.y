@@ -20,9 +20,11 @@
 #include "src/ast/BinaryExpr.h"
 #include "src/ast/Literal.h"
 #include "src/ast/IntLiteral.h"
-#include "src/ast/realLiteral.h"
-#include "src/ast/booleanLiteral.h"
+#include "src/ast/RealLiteral.h"
+#include "src/ast/BooleanLiteral.h"
 #include "src/ast/StringLiteral.h"
+#include "src/ast/UnaryExpr.h"
+#include "src/ast/ArrayLiteral.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -98,7 +100,7 @@ struct my_types
 %type<u.stval> statement print emptyStatement
 %type<u.stlistval> statementList //costyl
 %type<u.exlistval> expressionlist //costyl
-%type<u.exval> expression literal factor term unary primary andexpression relation
+%type<u.exval> expression literal factor term unary primary andexpression relation arrayLiteral
 
 
 %left OR XOR
@@ -126,9 +128,9 @@ statementList:
     ;
     
 statement:
-      emptyStatement
+      emptyStatement { $$ = $1; }
     | assignment
-    | print         
+    | print          { $$ = $1; }
     | return        
     | if            
     | loop          
@@ -172,11 +174,13 @@ variableDefinition:
 expression:
     expression OR andexpression     { $$ = new AST::BinaryExpr($1, $3, _OR);}
     |expression XOR andexpression   { $$ = new AST::BinaryExpr($1, $3, _XOR);}
-    | andexpression    
-
+    | andexpression                 { $$ = $1; }
+    ;
+    
 andexpression:
-    andexpression AND relation { $$ = new AST::BinaryExpr($1, $3, _AND);}
-    |relation;
+    andexpression AND relation  { $$ = new AST::BinaryExpr($1, $3, _AND);}
+    |relation                   { $$ = $1; }
+    ;
     
 relation:
     factor                          { $$ = $1; }
@@ -188,13 +192,13 @@ relation:
     | factor DIVIDEQUAL factor      { $$ = new AST::BinaryExpr($1, $3, _DIVIDE_EQUAL); }
 
 factor:
-    term
-    | factor PLUS term { $$ = new AST::BinaryExpr($1, $3, _ADD);}
+    term                { $$ = $1; }
+    | factor PLUS term  { $$ = new AST::BinaryExpr($1, $3, _ADD);}
     | factor MINUS term { $$ = new AST::BinaryExpr($1, $3, _SUB);}
 
 term:
-    unary
-    | term MULT unary { $$ = new AST::BinaryExpr($1, $3, _MULTIPLY);}
+    unary               { $$ = $1; }
+    | term MULT unary   { $$ = new AST::BinaryExpr($1, $3, _MULTIPLY);}
     | term DIVIDE unary { $$ = new AST::BinaryExpr($1, $3, _DIVIDE);}
 
 unary:
@@ -203,10 +207,10 @@ unary:
     | PLUS reference
     | MINUS reference
     | NOT reference
-    | primary
-    | PLUS primary
-    | MINUS primary
-    | NOT primary
+    | primary           { $$ = $1; }
+    | PLUS primary      { $$ = new AST::UnaryExpr($2, _PLUS); }
+    | MINUS primary     { $$ = new AST::UnaryExpr($2, _MINUS); }
+    | NOT primary       { $$ = new AST::UnaryExpr($2, _NOT); }
 
 primary:
       literal
@@ -243,18 +247,18 @@ typeIndicator:
     | FUNC        // functional type
 
 literal:
-    integerLiteral  { $$ = new AST::IntLiteral($1);}
-    | realLiteral   { $$ = new AST::RealLiteral($1);}
-    | booleanLiteral{ $$ = new AST::BooleanLiteral($1);}
-    | stringLiteral { $$ = new AST::StringLiteral($1);}
-    | arrayLiteral
+    integerLiteral  { $$ = new AST::IntLiteral($1); }
+    | realLiteral   { $$ = new AST::RealLiteral($1); }
+    | booleanLiteral{ $$ = new AST::BooleanLiteral($1); }
+    | stringLiteral { $$ = new AST::StringLiteral($1); }
+    | arrayLiteral  { $$ = $1; }
     | tupleLiteral
     | functionLiteral
     ;
 
 arrayLiteral:
-    LEFTSQUAREBRACKET RIGHTSQUAREBRACKET
-    | LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET
+    LEFTSQUAREBRACKET RIGHTSQUAREBRACKET                    { $$ = new AST::ArrayLiteral(); }
+    | LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET   { $$ = new AST::ArrayLiteral($2); }
 
 tupleLiteral :
     LEFTCURLYBRACKET RIGHTCURLYBRACKET 

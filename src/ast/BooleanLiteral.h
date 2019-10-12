@@ -17,6 +17,7 @@ namespace AST{
         Literal& operator&&(Literal& rhs) override;
         Literal& operator||(Literal& rhs) override;
         Literal& operator^(Literal& rhs) override;
+        bool operator!() override;
 
         Literal& and_operator(BooleanLiteral*) override;
         Literal& or_operator(BooleanLiteral*) override;
