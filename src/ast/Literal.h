@@ -7,7 +7,7 @@
 
 #include "Expression.h"
 #include <string>
-#include <type_system/LiteralTypes.h>
+#include "../type_system/LiteralTypes.h"
 
 namespace AST
 {
@@ -16,7 +16,6 @@ namespace AST
     class BooleanLiteral;
     class StringLiteral;
     class ArrayLiteral;
-
 
 
     class Literal: public Expression

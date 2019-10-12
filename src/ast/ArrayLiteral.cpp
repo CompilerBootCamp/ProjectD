@@ -60,6 +60,6 @@ Literal& ArrayLiteral::concat(ArrayLiteral* rhs)
     }
 
     TYPES::Type ArrayLiteral::getType() const {
-        return TYPES::ARRAY;
+        return TYPES::_ARRAY;
     }
 }

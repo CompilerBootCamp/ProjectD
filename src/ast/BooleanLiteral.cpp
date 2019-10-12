@@ -48,6 +48,6 @@ namespace AST
     }
 
     TYPES::Type BooleanLiteral::getType() const {
-        return TYPES::BOOL;
+        return TYPES::_BOOL;
     }
 }

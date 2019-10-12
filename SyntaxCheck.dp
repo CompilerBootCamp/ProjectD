@@ -59,3 +59,9 @@ print [] + [1];
 print [1,2] + [3];
 print [1 - 2 + 3 * 4, true and true, 'privet5', -10] + [1,2,3,4,5];
 print [1] + [[1,2] + [3]];
+if true then
+    print 42;
+else
+    print 69;
+end;
+print {a := 3, b := 2, c := 1 + 5, 65-67 };

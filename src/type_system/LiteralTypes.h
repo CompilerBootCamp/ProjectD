@@ -2,23 +2,21 @@
 // Created by sovereign on 10/13/19.
 //
 
-#include <map>
-
 #ifndef PROJECTD_LITERALTYPES_H
 #define PROJECTD_LITERALTYPES_H
-
-#endif //PROJECTD_LITERALTYPES_H
+#include <map>
 namespace TYPES {
     enum Type{
-        ARRAY,
-        TUPLE,
-        INT,
-        REAL,
-        BOOL,
-        STRING,
-        FUNCTION,
-        NOTHING
+        _ARRAY,
+        _TUPLE,
+        _INT,
+        _REAL,
+        _BOOL,
+        _STRING,
+        _FUNCTION,
+        _NOTHING
     };
-
+    std::string type_to_string(const Type type);
 }
+#endif //PROJECTD_LITERALTYPES_H
 

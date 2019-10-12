@@ -9,14 +9,14 @@ namespace TYPES {
 
     std::string type_to_string(const Type type) {
         std::map<Type, std::string> typeMap;
-        typeMap[ARRAY] =  "Array";
-        typeMap[TUPLE] = "Tuple";
-        typeMap[INT] = "Int";
-        typeMap[REAL] = "Real";
-        typeMap[BOOL] = "Bool";
-        typeMap[STRING] = "String";
-        typeMap[FUNCTION] = "Function";
-        typeMap[NOTHING] = "Nothing";
+        typeMap[_ARRAY] =  "Array";
+        typeMap[_TUPLE] = "Tuple";
+        typeMap[_INT] = "Int";
+        typeMap[_REAL] = "Real";
+        typeMap[_BOOL] = "Bool";
+        typeMap[_STRING] = "String";
+        typeMap[_FUNCTION] = "Function";
+        typeMap[_NOTHING] = "Nothing";
         return typeMap[type];
     }
 }

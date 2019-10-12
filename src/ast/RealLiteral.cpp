@@ -152,6 +152,6 @@ namespace AST
     }
 
     TYPES::Type RealLiteral::getType() const {
-        return TYPES::REAL;
+        return TYPES::_REAL;
     }
 }

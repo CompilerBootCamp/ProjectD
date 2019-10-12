@@ -26,6 +26,9 @@
 #include "src/ast/UnaryExpr.h"
 #include "src/ast/ArrayLiteral.h"
 #include "src/ast/IfStatement.h"
+#include "src/ast/TupleLiteral.h"
+#include "src/ast/TupleElementList.h"
+#include "src/ast/TupleElement.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -47,6 +50,8 @@ struct my_types
         AST::Statement* stval;
         AST::ExpressionList* exlistval;
         AST::Expression* exval;
+        AST::TupleElementList* tupleelementlistval;
+        AST::TupleElement*  tupleelementval;
     } u;    
   };
 %}
@@ -99,9 +104,11 @@ struct my_types
 %start program
 
 %type<u.stval> statement print emptyStatement if
-%type<u.stlistval> statementList body//costyl
+%type<u.stlistval> statementList body
 %type<u.exlistval> expressionlist //costyl
-%type<u.exval> expression literal factor term unary primary andexpression relation arrayLiteral
+%type<u.tupleelementlistval> tupleElementList //costyl
+%type<u.tupleelementval> tupleElement //costyl
+%type<u.exval> expression literal factor term unary primary andexpression relation arrayLiteral tupleLiteral
 
 
 %left OR XOR
@@ -253,25 +260,36 @@ literal:
     | booleanLiteral{ $$ = new AST::BooleanLiteral($1); }
     | stringLiteral { $$ = new AST::StringLiteral($1); }
     | arrayLiteral  { $$ = $1; }
-    | tupleLiteral  
+    | tupleLiteral  { $$ = $1; }
     | functionLiteral
     ;
 
 arrayLiteral:
     LEFTSQUAREBRACKET RIGHTSQUAREBRACKET                    { $$ = new AST::ArrayLiteral(); }
     | LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET   { $$ = new AST::ArrayLiteral($2); }
+    ;
 
 tupleLiteral :
-    LEFTCURLYBRACKET RIGHTCURLYBRACKET 
-    |LEFTCURLYBRACKET tupleElementList RIGHTCURLYBRACKET
+    LEFTCURLYBRACKET RIGHTCURLYBRACKET                      { $$ = new AST::TupleLiteral(); }
+    | LEFTCURLYBRACKET tupleElementList RIGHTCURLYBRACKET   { $$ = new AST::TupleLiteral($2); }
+    ;
     
 tupleElementList:
-    tupleElement
+    tupleElement                            
+    { 
+        $$ = new AST::TupleElementList($1);
+    }
     | tupleElementList COMMA tupleElement
+    { 
+        $1->add_tuple_element($3);
+        $$ = $1;
+    }
+    ;
 
 tupleElement:
-	expression
-	| identifier ASSIGN expression
+	expression                      { $$ = new AST::TupleElement("", $1); }
+	| identifier ASSIGN expression  { $$ = new AST::TupleElement($1, $3); }
+    ;
 
 functionLiteral:
     FUNC funBody

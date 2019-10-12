@@ -21,7 +21,7 @@ Digit   [0-9]
 AlphaDigit {Alpha}|{Digit}
 integerliteral  {Digit}+
 realliteral {integerliteral}\.{integerliteral}
-identifier {Alpha}{AlphaDigit}* 
+identifier {Alpha}{AlphaDigit}*
 stringliteral '{AlphaDigit}*'
 
 
@@ -78,8 +78,8 @@ stringliteral '{AlphaDigit}*'
 "=>"		    {ECHO; return ARROW; }
 {integerliteral} {ECHO;   yylval.u.ival = atoi(yytext);  return integerLiteral;}
 {realliteral}    {ECHO;  yylval.u.dval = atof(yytext);  return realLiteral;}
-{stringliteral}  {ECHO; yylval.u.sval = yytext; return stringLiteral;}
-{identifier}     {ECHO; yylval.u.sval = yytext; return identifier;}
+{stringliteral}  {ECHO; yylval.u.sval = strdup(yytext); return stringLiteral;}
+{identifier}     {ECHO; yylval.u.sval = strdup(yytext); return identifier;}
 \n               {ECHO; lines++; }
 [ \t\r]+       { ECHO;}
 .                {printf("unknown symbol: %s in line %d\n", yytext, yylineno);}

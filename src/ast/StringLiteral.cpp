@@ -33,6 +33,6 @@ namespace AST
     }
 
     TYPES::Type StringLiteral::getType() const {
-        return TYPES::STRING;
+        return TYPES::_STRING;
     }
 }

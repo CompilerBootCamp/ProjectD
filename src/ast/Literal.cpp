@@ -168,7 +168,7 @@ namespace AST
     }
 
     TYPES::Type Literal::getType() const {
-        return TYPES::NOTHING;
+        return TYPES::_NOTHING;
     }
 
 

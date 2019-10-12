@@ -152,7 +152,7 @@ namespace AST
     }
 
     TYPES::Type IntLiteral::getType() const {
-        return TYPES::INT;
+        return TYPES::_INT;
     }
 
 }
