@@ -12,11 +12,6 @@ public:
     void visit(const AST::Statement &);
     void visit(const AST::StatementList &);
     void visit(const AST::EmptyNode &);
-    void visit(const Print &);
-    void visit(const Node &);
-    void visit(const Reference &);
-    void visit(const Statement &);
-
     void visit(const AST::IfStatement &statement) override;
 };
 

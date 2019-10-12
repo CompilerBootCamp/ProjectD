@@ -6,13 +6,13 @@
 #define PROJECTD_IFSTATEMENT_H
 
 #include "Statement.h"
-#include "StatementList.h"
 #include <memory>
 
 namespace AST {
 
     class Expression;
     class ExpressionList;
+    class StatementList;
 
     class IfStatement: public  Statement {
     private:

@@ -7,9 +7,10 @@
 #include "../ast/Literal.h"
 #include "../ast/StatementList.h"
 #include "../ast/ExpressionList.h"
+#include "../ast/IfStatement.h"
+#include "../ast/BooleanLiteral.h"
 #include "Interpreter.h"
 #include <iostream>
-#include "BooleanLiteral.h"
 
 
 void Interpreter::visit(const AST::Print &print)

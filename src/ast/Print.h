@@ -12,7 +12,6 @@
 
 namespace AST{
 
-    class Expression;
     class ExpressionList;
 
     class Print: public Statement {

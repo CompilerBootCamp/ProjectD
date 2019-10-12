@@ -10,7 +10,7 @@ ArrayLiteral::ArrayLiteral(ExpressionList* expr_list)
 {
     for(size_t i = 0; i < expr_list->expressions.size(); ++i)
     {
-        array.insert(std::make_pair(i, &expr_list->expressions[i]->evaluate()));
+        array.insert(std::make_pair(i, expr_list->expressions[i]));
         _size++;
     }
 }
@@ -31,7 +31,7 @@ std::string ArrayLiteral::to_string()
     for(size_t i = 0; i < size(); ++i)
     {
         if(array.find(i) != array.end())
-            result += array[i]->to_string();
+            result += array[i]->evaluate().to_string();
         else
             result += "empty";
         if(i != size() - 1)

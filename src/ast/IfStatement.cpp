@@ -3,7 +3,7 @@
 //
 
 #include "IfStatement.h"
-#include "AbstractVisitor.h"
+#include "../visitor/AbstractVisitor.h"
 
 namespace AST {
 

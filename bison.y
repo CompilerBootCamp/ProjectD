@@ -98,8 +98,8 @@ struct my_types
 
 %start program
 
-%type<u.stval> statement print emptyStatement
-%type<u.stlistval> statementList //costyl
+%type<u.stval> statement print emptyStatement if
+%type<u.stlistval> statementList body//costyl
 %type<u.exlistval> expressionlist //costyl
 %type<u.exval> expression literal factor term unary primary andexpression relation arrayLiteral
 
@@ -151,8 +151,8 @@ return:
     | RETURN expression
 
 if:
-    IF expression THEN body END { $$ = new AST::IfStatement($1, $2)}
-    | IF expression THEN body ELSE body END { $$ = new AST::IFStatement($1, $2, $1)}
+    IF expression THEN body END { $$ = new AST::IfStatement($2, $4); }
+    | IF expression THEN body ELSE body END { $$ = new AST::IfStatement($2, $4, $6); }
 
 loop:
     WHILE expression loopBody
@@ -253,7 +253,7 @@ literal:
     | booleanLiteral{ $$ = new AST::BooleanLiteral($1); }
     | stringLiteral { $$ = new AST::StringLiteral($1); }
     | arrayLiteral  { $$ = $1; }
-    | tupleLiteral
+    | tupleLiteral  
     | functionLiteral
     ;
 
