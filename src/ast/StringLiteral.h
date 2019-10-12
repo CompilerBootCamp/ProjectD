@@ -6,21 +6,26 @@
 #define PROJECTD_STRINGLITERAL_H
 
 #include <string>
-#include <utility>
 #include "Literal.h"
 
-class StringLiteral: public Literal {
-private:
-    std::string str;
-public:
-    StringLiteral(std::string str) : str(std::move(str)) {}
+namespace AST{
 
-private:
+    class StringLiteral: public Literal
+    {
+    public:
+        std::string value;
+    public:
+        StringLiteral(char*);
+        StringLiteral(std::string);
+        std::string to_string() override;
 
+        Literal& evaluate() override;
+        Literal& operator+(Literal& rhs) override;
 
-public:
+        Literal& add_operator(StringLiteral*) override;
+    };
+}
 
-};
 
 
 #endif //PROJECTD_STRINGLITERAL_H

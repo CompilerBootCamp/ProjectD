@@ -3,3 +3,5 @@
 //
 
 #include "Loop.h"
+
+namespace AST {}

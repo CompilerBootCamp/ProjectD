@@ -1,18 +1,37 @@
+/* require bison version */
+%require  "3.0"
 
-/*
-* bison tbison.y
-* gcc -o tbsion tbsion.tab.c -lm
-* ./tbsion
-*   2 2 +
-* >>> 4
-*  ^D
-*/
+/* increase usefulness of error messages */
+%define parse.error verbose
+
 
 %{
 #include <stdio.h>
 #include <math.h>
+#include <vector>
+
+#include "src/ast/Node.h"
+#include "src/ast/EmptyNode.h"
+#include "src/ast/StatementList.h"
+#include "src/ast/Statement.h"
+#include "src/ast/Expression.h"
+#include "src/ast/ExpressionList.h"
+#include "src/ast/Print.h"
+#include "src/ast/BinaryExpr.h"
+#include "src/ast/Literal.h"
+#include "src/ast/IntLiteral.h"
+#include "src/ast/RealLiteral.h"
+#include "src/ast/BooleanLiteral.h"
+#include "src/ast/StringLiteral.h"
+#include "src/ast/UnaryExpr.h"
+#include "src/ast/ArrayLiteral.h"
+
+#include "src/visitor/Interpreter.h"
+
 int yylex (void);
 void yyerror (char const *);
+
+AST::StatementList* root;
 
 struct my_types
   {
@@ -21,18 +40,22 @@ struct my_types
         int     ival;
         double  dval;
         bool    bval;
-        char* sval;
-    } u;
+        char* sval; // ???
+        AST::Node* nval; // empty???
+        AST::StatementList* stlistval;
+        AST::Statement* stval;
+        AST::ExpressionList* exlistval;
+        AST::Expression* exval;
+    } u;    
   };
 %}
 
 %define api.value.type {my_types}
-%token<u.dval> NUM
 
-%token<u.bval> booleanliteral
+%token<u.bval> booleanLiteral
 %token<u.sval> identifier // ??????
-%token<u.ival> integerliteral
-%token<u.dval> realliteral
+%token<u.ival> integerLiteral
+%token<u.dval> realLiteral
 %token<u.sval> stringLiteral
 
 // Identidier and numbers
@@ -44,7 +67,7 @@ struct my_types
 %token RETURN IF THEN ELSE END WHILE FOR
 %token IN LOOP
 %token INT REAL BOOL STRING EMPTY
-%token FUNC TRUE FALSE
+%token FUNC
 
 // Delimiters
 %token LEFTCIRCLEBRACKET    // (
@@ -73,30 +96,54 @@ struct my_types
 %token DIVIDE               // /
 
 %start program
+
+%type<u.stval> statement print emptyStatement
+%type<u.stlistval> statementList //costyl
+%type<u.exlistval> expressionlist //costyl
+%type<u.exval> expression literal factor term unary primary andexpression relation arrayLiteral
+
+
+%left OR XOR
+%left AND
+%left LESS GREAT EQUAL LESSOREQUAL GREATOREQUAL DIVIDEQUAL
+%left PLUS MINUS
+%left MULT DIVIDE
+
 %%
 //-----------------------------------------------------
 
 program:
-    statementList
+    statementList { root = $1; } ;
 
 statementList:
     statement 
-    | statementList SEMICOLON statement
+        { 
+            $$ = new AST::StatementList($1);
+        }
+    | statementList SEMICOLON statement 
+        {  
+            $1->add_statement($3);
+            $$ = $1;
+        }
+    ;
     
 statement:
-    %empty
+      emptyStatement { $$ = $1; }
     | assignment
-    | print
-    | return
-    | if
-    | loop
+    | print          { $$ = $1; }
+    | return        
+    | if            
+    | loop          
     | declaration
+    
+emptyStatement:
+    %empty  { $$ = new AST::EmptyNode(); };
 
 assignment:
     reference ASSIGN expression
 
 print:
-    PRINT expressionlist
+    PRINT expressionlist { $$ = new AST::Print($2); };
 
 return:
     RETURN
@@ -125,32 +172,34 @@ variableDefinition:
     | identifier ASSIGN expression
 
 expression:
-    relationlist
+    expression OR andexpression     { $$ = new AST::BinaryExpr($1, $3, _OR);}
+    |expression XOR andexpression   { $$ = new AST::BinaryExpr($1, $3, _XOR);}
+    | andexpression                 { $$ = $1; }
+    ;
     
-relationlist:
-    relation
-    | relationlist AND relation
-    | relationlist OR relation
-    | relationlist XOR relation
+andexpression:
+    andexpression AND relation  { $$ = new AST::BinaryExpr($1, $3, _AND);}
+    |relation                   { $$ = $1; }
+    ;
     
 relation:
-    factor
-    | factor LESS factor
-    | factor LESSOREQUAL factor
-    | factor GREAT factor
-    | factor GREATOREQUAL factor
-    | factor EQUAL factor
-    | factor DIVIDEQUAL factor
+    factor                          { $$ = $1; }
+    | factor LESS factor            { $$ = new AST::BinaryExpr($1, $3, _LESS); }
+    | factor LESSOREQUAL factor     { $$ = new AST::BinaryExpr($1, $3, _LESS_OR_EQUAL); }
+    | factor GREAT factor           { $$ = new AST::BinaryExpr($1, $3, _GREATER); }
+    | factor GREATOREQUAL factor    { $$ = new AST::BinaryExpr($1, $3, _GREATER_OR_EQUAL); }
+    | factor EQUAL factor           { $$ = new AST::BinaryExpr($1, $3, _EQUAL); }
+    | factor DIVIDEQUAL factor      { $$ = new AST::BinaryExpr($1, $3, _DIVIDE_EQUAL); }
 
 factor:
-    term
-    | factor PLUS term
-    | factor MINUS term
+    term                { $$ = $1; }
+    | factor PLUS term  { $$ = new AST::BinaryExpr($1, $3, _ADD);}
+    | factor MINUS term { $$ = new AST::BinaryExpr($1, $3, _SUB);}
 
 term:
-    unary
-    | term MULT unary
-    | term DIVIDE unary
+    unary               { $$ = $1; }
+    | term MULT unary   { $$ = new AST::BinaryExpr($1, $3, _MULTIPLY);}
+    | term DIVIDE unary { $$ = new AST::BinaryExpr($1, $3, _DIVIDE);}
 
 unary:
     reference
@@ -158,29 +207,37 @@ unary:
     | PLUS reference
     | MINUS reference
     | NOT reference
-    | primary
-    | PLUS primary
-    | MINUS primary
-    | NOT primary
+    | primary           { $$ = $1; }
+    | PLUS primary      { $$ = new AST::UnaryExpr($2, _PLUS); }
+    | MINUS primary     { $$ = new AST::UnaryExpr($2, _MINUS); }
+    | NOT primary       { $$ = new AST::UnaryExpr($2, _NOT); }
 
 primary:
       literal
     | READINT | READREAL | READSTRING //??????
-    | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET  
+    | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET  { $$ = $2; }
     
 reference:
     identifier
     | reference tail
 
 tail:
-    DOT integerliteral // access to unnamed tuple element
+    DOT integerLiteral // access to unnamed tuple element
     | DOT identifier // access to named tuple element
     | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET // access to array element
     | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET // function call
     
 expressionlist:
-    expression
-    | expressionlist COMMA expression
+    expression 
+        {
+            $$ = new AST::ExpressionList($1);
+        }
+    | expressionlist COMMA expression 
+        {
+            $1->add_expression($3);
+            $$ = $1;
+        }
+    ;
 
 typeIndicator:
     INT | REAL | BOOL | STRING
@@ -190,17 +247,18 @@ typeIndicator:
     | FUNC        // functional type
 
 literal:
-    integerliteral
-    | realliteral
-    | booleanliteral
-    | stringLiteral
-    | arrayLiteral
+    integerLiteral  { $$ = new AST::IntLiteral($1); }
+    | realLiteral   { $$ = new AST::RealLiteral($1); }
+    | booleanLiteral{ $$ = new AST::BooleanLiteral($1); }
+    | stringLiteral { $$ = new AST::StringLiteral($1); }
+    | arrayLiteral  { $$ = $1; }
     | tupleLiteral
     | functionLiteral
+    ;
 
 arrayLiteral:
-    LEFTSQUAREBRACKET RIGHTSQUAREBRACKET
-    | LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET
+    LEFTSQUAREBRACKET RIGHTSQUAREBRACKET                    { $$ = new AST::ArrayLiteral(); }
+    | LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET   { $$ = new AST::ArrayLiteral($2); }
 
 tupleLiteral :
     LEFTCURLYBRACKET RIGHTCURLYBRACKET 
@@ -242,7 +300,7 @@ body:
 void
 yyerror (char const *s)
 {
-    printf ("\n%s: '%s' in line %d\n", s, yytext, yylineno);
+    printf ("\n%s but recive '%s' in line %d\n", s, yytext, yylineno);
 }
 
 int
@@ -256,6 +314,9 @@ main (int argc, char *argv[])
             printf("STDIN is used\n");
         }
         yyparse();
+        
+        Interpreter my;
+        root->accept(my);
     }
 
     if(argc == 2)

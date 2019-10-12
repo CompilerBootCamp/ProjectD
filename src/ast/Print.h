@@ -10,18 +10,20 @@
 #include <vector>
 #include <memory>
 
-class Expression;
+namespace AST{
 
-class Print: public Statement {
-public:
-    std::vector<Expression* > expressions;
+    class Expression;
+    class ExpressionList;
 
-public:
-    Print(Expression &);
-    void accept(AbstractVisitor&);
+    class Print: public Statement {
+    public:
+        ExpressionList* expressionsList;
 
-    void addExpr(Expression &);
-};
+    public:
+        Print(ExpressionList *);
+        void accept(AbstractVisitor&) const;
+    };
+}
 
 
 #endif //PROJECTD_PRINT_H

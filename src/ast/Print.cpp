@@ -3,18 +3,18 @@
 //
 
 #include "Print.h"
+#include "ExpressionList.h"
 #include "../visitor/AbstractVisitor.h"
 
-Print::Print(Expression &expression):expressions()
-{
-    expressions.push_back(&expression);
-}
+namespace AST{
 
-void Print::addExpr(Expression  &expression) {
-    this->expressions.push_back(&expression);
-}
+    Print::Print(ExpressionList *expressionslist)
+    {
+        expressionsList = expressionslist;
+    }
 
-void Print::accept(AbstractVisitor &visitor)
-{
-    visitor.visit(*this);
+    void Print::accept(AbstractVisitor &visitor) const
+    {
+        visitor.visit(*this);
+    }
 }

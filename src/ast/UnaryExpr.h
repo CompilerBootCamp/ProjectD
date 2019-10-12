@@ -7,10 +7,18 @@
 
 
 #include "Expression.h"
+#include "../type_system/Operation.h"
 
-class UnaryExpr: Expression {
+namespace AST{
 
-};
+    class UnaryExpr: public Expression {
+        Expression* expression;
+        UnaryOp operation;
+    public:
+        UnaryExpr(Expression*, UnaryOp);
+        Literal& evaluate();
+    };
+}
 
 
 #endif //PROJECTD_UNARYEXPR_H

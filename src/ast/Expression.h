@@ -7,12 +7,15 @@
 
 #include "Node.h"
 
-class Literal;
+namespace AST
+{
+    class Literal;
 
-class Expression: public Node {
-public:
-    virtual Literal& evaluate() = 0;
-};
-
+    class Expression: public Node
+    {
+    public:
+        virtual Literal& evaluate() = 0;
+    };
+}
 
 #endif //PROJECTD_EXPRESSION_H

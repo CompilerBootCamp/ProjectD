@@ -7,9 +7,13 @@
 
 #include "Node.h"
 
-class Reference: public Node {
-    void accept(AbstractVisitor &) const;
-};
+namespace AST{
+
+    class Reference: public Node
+    {
+        void accept(AbstractVisitor &) const;
+    };
+}
 
 
 #endif //PROJECTD_REFERENCE_H

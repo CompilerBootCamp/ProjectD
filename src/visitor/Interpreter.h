@@ -6,10 +6,12 @@
 class Interpreter: public AbstractVisitor
 {
 public:
-    void visit(const Print &);
-    void visit(const Node &);
-    void visit(const Reference &);
-    void visit(const Statement &);
+    void visit(const AST::Print &);
+    void visit(const AST::Node &);
+    void visit(const AST::Reference &);
+    void visit(const AST::Statement &);
+    void visit(const AST::StatementList &);
+    void visit(const AST::EmptyNode &);
 };
 
 #endif // INTERPRETER_H_INCLUDED

@@ -5,15 +5,27 @@
 #include "../ast/Print.h"
 #include "../ast/Expression.h"
 #include "../ast/Literal.h"
+#include "../ast/StatementList.h"
+#include "../ast/ExpressionList.h"
 #include "Interpreter.h"
 #include <iostream>
 
 
-void Interpreter::visit(const Print &print) {
-    for(auto expression : print.expressions)
+void Interpreter::visit(const AST::Print &print)
+{
+    //std::cout << "size of expr: " << print.expressionsList->expressions.size() << std::endl;
+    for(auto expression : print.expressionsList->expressions)
         std::cout << expression->evaluate().to_string()<< std::endl;
 }
 
-void Interpreter::visit(const Node &node) {}
-void Interpreter::visit(const Reference &reference) {}
-void Interpreter::visit(const Statement &stament) {}
+void Interpreter::visit(const AST::Node &node) {}
+void Interpreter::visit(const AST::Reference &reference) {}
+void Interpreter::visit(const AST::Statement &statement) {}
+void Interpreter::visit(const AST::EmptyNode &empty_node) {}
+
+void Interpreter::visit(const AST::StatementList &statementlist)
+{
+    //std::cout << "size of statements: " << statementlist.statements.size() << std::endl;
+    for(auto statement : statementlist.statements)
+        statement->accept(*this);
+}
