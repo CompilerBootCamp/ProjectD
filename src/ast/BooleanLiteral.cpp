@@ -46,4 +46,8 @@ namespace AST
         auto temp = new BooleanLiteral(rhs->value ^ this->value);
         return *temp;
     }
+
+    Type BooleanLiteral::getType() const {
+        return BOOL;
+    }
 }

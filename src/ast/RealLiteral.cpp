@@ -150,4 +150,8 @@ namespace AST
     {
         return rhs->value != this->value;
     }
+
+    Type RealLiteral::getType() const {
+        return REAL;
+    }
 }

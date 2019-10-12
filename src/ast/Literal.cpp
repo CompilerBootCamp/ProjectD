@@ -166,4 +166,10 @@ namespace AST
     {
         //exception
     }
+
+    Type Literal::getType() const {
+        return NOTHING;
+    }
+
+
 }

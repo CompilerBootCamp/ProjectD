@@ -25,6 +25,8 @@ public:
     size_t size();
     //Only for arrays
     Literal& concat(ArrayLiteral*) override;
+
+    Type getType() const override;
 };
 }
 

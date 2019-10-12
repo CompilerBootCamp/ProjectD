@@ -31,4 +31,8 @@ namespace AST
         auto temp = new StringLiteral(rhs->value + this->value);
         return *temp;
     }
+
+    Type StringLiteral::getType() const {
+        return STRING;
+    }
 }
