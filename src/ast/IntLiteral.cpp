@@ -151,8 +151,8 @@ namespace AST
         return rhs->value != this->value;
     }
 
-    Type IntLiteral::getType() const {
-        return INT;
+    TYPES::Type IntLiteral::getType() const {
+        return TYPES::INT;
     }
 
 }

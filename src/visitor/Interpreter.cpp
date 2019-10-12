@@ -11,6 +11,7 @@
 #include "../ast/BooleanLiteral.h"
 #include "Interpreter.h"
 #include <iostream>
+#include "LiteralTypes.cpp"
 
 
 void Interpreter::visit(const AST::Print &print)
@@ -33,7 +34,7 @@ void Interpreter::visit(const AST::StatementList &statementlist)
 }
 
 void Interpreter::visit(const AST::IfStatement &statement) {
-    if(statement.getExpression()->evaluate().getType() == Type::BOOL) {
+    if(statement.getExpression()->evaluate().getType() == TYPES::Type::BOOL) {
         auto litResult = dynamic_cast<AST::BooleanLiteral*>(&statement.getExpression()->evaluate())->value;
         if (litResult) {
             statement.getThenStatements()->accept(*this);
@@ -43,6 +44,6 @@ void Interpreter::visit(const AST::IfStatement &statement) {
             }
         }
     } else {
-        std::cout << "Cannot evaluate if, cant eval " << type_to_string(statement.getExpression()->evaluate().getType()) << "to bool" << std::endl;
+        std::cout << "Cannot evaluate if, cant eval " << TYPES::type_to_string(statement.getExpression()->evaluate().getType()) << "to bool" << std::endl;
     }
 }

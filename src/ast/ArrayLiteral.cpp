@@ -59,7 +59,7 @@ Literal& ArrayLiteral::concat(ArrayLiteral* rhs)
         return *temp;
     }
 
-    Type ArrayLiteral::getType() const {
-        return ARRAY;
+    TYPES::Type ArrayLiteral::getType() const {
+        return TYPES::ARRAY;
     }
 }

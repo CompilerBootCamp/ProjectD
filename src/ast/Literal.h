@@ -26,7 +26,7 @@ namespace AST
         virtual std::string to_string();
         virtual AST::Literal& evaluate();
 
-        virtual Type getType() const;
+        [[nodiscard]] virtual TYPES::Type getType() const;
 
         virtual Literal& operator+(Literal&);
         virtual Literal& operator-(Literal&);

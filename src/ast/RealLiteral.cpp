@@ -151,7 +151,7 @@ namespace AST
         return rhs->value != this->value;
     }
 
-    Type RealLiteral::getType() const {
-        return REAL;
+    TYPES::Type RealLiteral::getType() const {
+        return TYPES::REAL;
     }
 }

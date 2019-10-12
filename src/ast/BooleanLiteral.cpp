@@ -47,7 +47,7 @@ namespace AST
         return *temp;
     }
 
-    Type BooleanLiteral::getType() const {
-        return BOOL;
+    TYPES::Type BooleanLiteral::getType() const {
+        return TYPES::BOOL;
     }
 }

@@ -13,7 +13,7 @@ namespace AST{
         RealLiteral(double);
         std::string to_string() override;
 
-        Type getType() const override;
+        [[nodiscard]] TYPES::Type getType() const override;
 
         Literal& evaluate() override;
         Literal& operator+(Literal& rhs) override;
