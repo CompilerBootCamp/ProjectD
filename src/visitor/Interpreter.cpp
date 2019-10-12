@@ -9,6 +9,7 @@
 #include "../ast/ExpressionList.h"
 #include "Interpreter.h"
 #include <iostream>
+#include "BooleanLiteral.h"
 
 
 void Interpreter::visit(const AST::Print &print)
@@ -28,4 +29,14 @@ void Interpreter::visit(const AST::StatementList &statementlist)
     //std::cout << "size of statements: " << statementlist.statements.size() << std::endl;
     for(auto statement : statementlist.statements)
         statement->accept(*this);
+}
+
+void Interpreter::visit(const AST::IfStatement &statement) {
+    if (dynamic_cast<AST::BooleanLiteral*>(&statement.getExpression()->evaluate())->value) {
+        statement.getThenStatements()->accept(*this);
+    } else {
+        if (statement.isElseIf()) {
+            statement.getElseStatements()->accept(*this);
+        }
+    }
 }

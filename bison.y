@@ -25,6 +25,7 @@
 #include "src/ast/StringLiteral.h"
 #include "src/ast/UnaryExpr.h"
 #include "src/ast/ArrayLiteral.h"
+#include "src/ast/IfStatement.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -150,8 +151,8 @@ return:
     | RETURN expression
 
 if:
-    IF expression THEN body END
-    | IF expression THEN body ELSE body END
+    IF expression THEN body END { $$ = new AST::IfStatement($1, $2)}
+    | IF expression THEN body ELSE body END { $$ = new AST::IFStatement($1, $2, $1)}
 
 loop:
     WHILE expression loopBody
