@@ -17,6 +17,12 @@ public:
 
     Literal& evaluate() override;
     std::string to_string() override;
+
+    Literal& operator+(Literal& rhs) override;
+
+    //Only for tuples
+    Literal& concat(TupleLiteral*) override;
+
 };
 }
 

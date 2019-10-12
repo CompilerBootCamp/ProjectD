@@ -2,7 +2,8 @@
 #include "TupleElementList.h"
 #include <sstream>
 
-namespace AST{
+namespace AST
+{
 
 TupleLiteral::TupleLiteral(TupleElementList* tul)
 {
@@ -35,6 +36,28 @@ std::string TupleLiteral::to_string()
     }
     result += "}";
     return result;
+}
+
+Literal& TupleLiteral::operator+(Literal& rhs)
+{
+    return rhs.concat(this);
+}
+
+Literal& TupleLiteral::concat(TupleLiteral* rhs)
+{
+    //rhs->value + this->value
+    auto temp = new TupleLiteral();
+    temp->tu_list->elements = rhs->tu_list->elements;
+    for(auto element : this->tu_list->elements)
+    {
+        std::stringstream ss(element.first);
+        int index;
+        if(!(ss>>index).fail())
+            temp->tu_list->elements.push_back(make_pair(std::to_string(temp->tu_list->elements.size()), element.second));
+        else
+            temp->tu_list->elements.push_back(make_pair(element.first, element.second));
+    }
+    return *temp;
 }
 
 }

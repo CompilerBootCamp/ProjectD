@@ -47,19 +47,20 @@ Literal& ArrayLiteral::operator+(Literal& rhs)
 }
 
 Literal& ArrayLiteral::concat(ArrayLiteral* rhs)
-    {
-        //rhs->value + this->value
-        auto temp = new ArrayLiteral();
-        temp->_size = rhs->size() + this->size();
-        for(auto element : rhs->array)
-            temp->array.insert(element);
-        for(auto element : this->array)
-            temp->array.insert(std::make_pair(element.first + rhs->size(),element.second));
+{
+    //rhs->value + this->value
+    auto temp = new ArrayLiteral();
+    temp->_size = rhs->size() + this->size();
+    for(auto element : rhs->array)
+        temp->array.insert(element);
+    for(auto element : this->array)
+        temp->array.insert(std::make_pair(element.first + rhs->size(),element.second));
 
-        return *temp;
-    }
+    return *temp;
+}
 
-    TYPES::Type ArrayLiteral::getType() const {
-        return TYPES::_ARRAY;
-    }
+TYPES::Type ArrayLiteral::getType() const
+{
+    return TYPES::_ARRAY;
+}
 }

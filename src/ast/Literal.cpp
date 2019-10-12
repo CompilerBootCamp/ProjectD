@@ -167,6 +167,12 @@ namespace AST
         //exception
     }
 
+    //Tuple
+    Literal& Literal::concat(TupleLiteral*)
+    {
+        //exception
+    }
+
     TYPES::Type Literal::getType() const {
         return TYPES::_NOTHING;
     }

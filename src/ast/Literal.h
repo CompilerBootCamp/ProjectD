@@ -16,7 +16,7 @@ namespace AST
     class BooleanLiteral;
     class StringLiteral;
     class ArrayLiteral;
-
+    class TupleLiteral;
 
     class Literal: public Expression
     {
@@ -80,6 +80,9 @@ namespace AST
 
         //ArrayLiteral
         virtual Literal& concat(ArrayLiteral*);
+
+        //TupleLiteral
+        virtual Literal& concat(TupleLiteral*);
     };
 }
 
