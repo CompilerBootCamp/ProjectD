@@ -33,7 +33,7 @@ void Interpreter::visit(const AST::StatementList &statementlist)
 }
 
 void Interpreter::visit(const AST::IfStatement &statement) {
-    if(std::unique_ptr(statement.getExpression()->evaluate()).getType() == Type::BOOL) {
+    if(statement.getExpression()->evaluate().getType() == Type::BOOL) {
         auto litResult = dynamic_cast<AST::BooleanLiteral*>(&statement.getExpression()->evaluate())->value;
         if (litResult) {
             statement.getThenStatements()->accept(*this);
@@ -43,6 +43,6 @@ void Interpreter::visit(const AST::IfStatement &statement) {
             }
         }
     } else {
-        std::cout << "Cannot evaluate if, cant eval " << statement.getExpression()->evaluate().getType() << "to bool" << std::endl;
+        std::cout << "Cannot evaluate if, cant eval " << type_to_string(statement.getExpression()->evaluate().getType()) << "to bool" << std::endl;
     }
 }
