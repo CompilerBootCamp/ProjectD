@@ -15,6 +15,7 @@ namespace AST
     public:
         std::vector<Expression*> expressions;
     public:
+        ExpressionList();
         ExpressionList(Expression *);
         ~ExpressionList() = default;
 

@@ -32,6 +32,9 @@
 #include "src/ast/WhileStatement.h"
 #include "src/ast/DefinitionList.h"
 #include "src/ast/VarDef.h"
+#include "src/ast/Reference.h"
+#include "src/ast/ReferenceTail.h"
+#include "src/ast/ForStatement.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -57,6 +60,7 @@ struct my_types
         AST::TupleElement*  tupleelementval;
         AST::VarDef*        vardefval;
         AST::DefinitionList*    vardeflistval;
+        AST::ReferenceTail*     referencetailval;
     } u;    
   };
 %}
@@ -110,12 +114,13 @@ struct my_types
 
 %type<u.stval> statement print emptyStatement if loop declaration
 %type<u.stlistval> statementList body loopBody
-%type<u.exlistval> expressionlist //costyl
+%type<u.exlistval> expressionlist//costyl
 %type<u.tupleelementlistval> tupleElementList //costyl
 %type<u.tupleelementval> tupleElement //costyl
 %type<u.vardefval> variableDefinition //costyl
 %type<u.vardeflistval> variableDefinitionList //costyl
-%type<u.exval> expression literal factor term unary primary andExpression relation arrayLiteral tupleLiteral
+%type<u.referencetailval> tail //costyl
+%type<u.exval> expression literal factor term unary primary andExpression relation arrayLiteral tupleLiteral reference
 
 
 %left OR XOR
@@ -147,7 +152,7 @@ statement:
     | assignment
     | print             { $$ = $1; }
     | return        
-    | if                { $$ = $1; }   
+    | if                { $$ = $1; }
     | loop              { $$ = $1; }
     | declaration       { $$ = $1; }
     
@@ -205,7 +210,7 @@ andExpression:
     |relation                   { $$ = $1; }
     ;
     
-relation:
+relation:   
     factor                          { $$ = $1; }
     | factor LESS factor            { $$ = new AST::BinaryExpr($1, $3, _LESS); }
     | factor LESSOREQUAL factor     { $$ = new AST::BinaryExpr($1, $3, _LESS_OR_EQUAL); }
@@ -242,13 +247,21 @@ primary:
     
 reference:
     identifier
+    {
+        $$ = new AST::Reference($1);
+    }
     | reference tail
+    {
+        $1->add_reference($2);
+        $$ = $1;
+    }
+    ;
 
 tail:
-    DOT integerLiteral // access to unnamed tuple element
-    | DOT identifier // access to named tuple element
-    | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET // access to array element
-    | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET // function call
+    DOT integerLiteral                                      { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::IntLiteral($2)), TYPES::_TUPLE); }// access to unnamed tuple element
+    | DOT identifier                                        { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral($2)), TYPES::_TUPLE); }// access to named tuple element
+    | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET       { $$ = new AST::ReferenceTail(new AST::ExpressionList($2), TYPES::_ARRAY); }// access to array element
+    | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET   { $$ = new AST::ReferenceTail($2, TYPES::_FUNCTION); }// function call
     
 expressionlist:
     expression 

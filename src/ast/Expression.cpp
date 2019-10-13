@@ -4,4 +4,7 @@
 
 #include "Expression.h"
 
-namespace AST {}
+namespace AST {
+
+void Expression::add_reference(ReferenceTail*){}
+}

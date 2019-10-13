@@ -17,4 +17,8 @@ namespace AST
     {
         expressions.push_back(expression);
     }
+
+    ExpressionList::ExpressionList()
+    {
+    }
 }

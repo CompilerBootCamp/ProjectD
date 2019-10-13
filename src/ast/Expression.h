@@ -10,11 +10,14 @@
 namespace AST
 {
     class Literal;
+    class ReferenceTail;
 
     class Expression: public Node
     {
     public:
         virtual Literal& evaluate() = 0;
+
+        virtual void add_reference(ReferenceTail*);
     };
 }
 

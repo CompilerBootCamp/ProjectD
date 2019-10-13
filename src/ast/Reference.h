@@ -5,25 +5,34 @@
 #ifndef PROJECTD_REFERENCE_H
 #define PROJECTD_REFERENCE_H
 
-#include "Node.h"
+#include "Expression.h"
 #include "../type_system/LiteralTypes.h"
+#include <vector>
 
 namespace AST{
 
-    class Reference: public Node
-            //todo ссылка на литерал
-            //имя ноды
+    class ReferenceTail;
+
+    class Reference: public Expression
     {
-    private:
+    public:
+        std::string s_id;
         TYPES::Type type;
+        std::vector<ReferenceTail*> reference_tail;
 
     public:
+
+        Reference(const char*);
 
         void accept(AbstractVisitor &) const;
 
         TYPES::Type getType() const;
 
         void setType(TYPES::Type type);
+
+        void add_reference(ReferenceTail*) override;
+
+        Literal& evaluate() override;
     };
 }
 

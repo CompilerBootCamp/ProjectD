@@ -16,19 +16,31 @@
 #include "../ast/WhileStatement.h"
 #include "../ast/DefinitionList.h"
 #include "../ast/VarDef.h"
-#include "IntLiteral.h"
-#include "VarDef.h"
+#include "../ast/Reference.h"
+#include "../ast/IntLiteral.h"
+#include "../ast/VarDef.h"
+#include "../ast/ForStatement.h"
+#include "../ast/ReferenceTail.h"
 
 
 void Interpreter::visit(const AST::Print &print) {
     //std::cout << "size of expr: " << print.expressionsList->expressions.size() << std::endl;
-    for (auto expression : print.expressionsList->expressions)
+    for (auto expression : print.expressionsList->expressions){
+        expression->accept(*this);
         std::cout << expression->evaluate().to_string() << std::endl;
+    }
 }
 
 void Interpreter::visit(const AST::Node &node) {}
 
-void Interpreter::visit(const AST::Reference &reference) {}
+void Interpreter::visit(const AST::Reference &reference)
+{
+    if(SymbolTable::symbol_table.find(reference.s_id) == SymbolTable::symbol_table.end())
+    {
+        //exception
+        std::cout << "variable not declared: " + reference.s_id << std::endl;
+    }
+}
 
 void Interpreter::visit(const AST::Statement &statement) {}
 
@@ -78,7 +90,7 @@ void Interpreter::visit(const AST::DefinitionList &statement) {
             std::cout << std::endl << "conflict declaration: " << var->variable.first << std::endl;
         } else {
             var->variable.second->accept(*this);
-            SymbolTable::symbol_table.insert(make_pair(var->variable.first, var->variable.second));
+            SymbolTable::symbol_table.insert(make_pair(var->variable.first, &var->variable.second->evaluate()));
         }
     }
 }

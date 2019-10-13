@@ -5,8 +5,6 @@
 #ifndef PROJECTD_VISITOR_H
 #define PROJECTD_VISITOR_H
 
-#include <ast/ForStatement.h>
-
 namespace AST
 {
     class Node;
@@ -19,6 +17,7 @@ namespace AST
     class IfStatement;
     class WhileStatement;
     class DefinitionList;
+    class ForStatement;
 }
 
 class AbstractVisitor

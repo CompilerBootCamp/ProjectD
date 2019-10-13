@@ -3,11 +3,8 @@
 //
 
 #include "ForStatement.h"
-#include "AbstractVisitor.h"
+#include "../visitor/AbstractVisitor.h"
 #include "VarDef.h"
-
-AST::ForStatement::ForStatement(AST::StatementList *forStatements, AST::Expression *expression) : forStatements(
-        forStatements), expression(expression) {}
 
 AST::StatementList *AST::ForStatement::getForStatements() const {
     return forStatements;
