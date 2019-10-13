@@ -16,6 +16,7 @@ namespace AST
     class Expression;
     class IfStatement;
     class WhileStatement;
+    class DefinitionList;
 }
 
 class AbstractVisitor
@@ -31,6 +32,7 @@ public:
     virtual void visit(const AST::IfStatement&) = 0;
     virtual void visit(const AST::Statement &) = 0;
     virtual void visit(const AST::WhileStatement &) = 0;
+    virtual void visit(const AST::DefinitionList &) = 0;
 };
 
 

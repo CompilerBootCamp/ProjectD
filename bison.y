@@ -30,6 +30,8 @@
 #include "src/ast/TupleElementList.h"
 #include "src/ast/TupleElement.h"
 #include "src/ast/WhileStatement.h"
+#include "src/ast/DefinitionList.h"
+#include "src/ast/VarDef.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -53,6 +55,8 @@ struct my_types
         AST::Expression* exval;
         AST::TupleElementList* tupleelementlistval;
         AST::TupleElement*  tupleelementval;
+        AST::VarDef*        vardefval;
+        AST::DefinitionList*    vardeflistval;
     } u;    
   };
 %}
@@ -104,11 +108,13 @@ struct my_types
 
 %start program
 
-%type<u.stval> statement print emptyStatement if loop
+%type<u.stval> statement print emptyStatement if loop declaration
 %type<u.stlistval> statementList body loopBody
 %type<u.exlistval> expressionlist //costyl
 %type<u.tupleelementlistval> tupleElementList //costyl
 %type<u.tupleelementval> tupleElement //costyl
+%type<u.vardefval> variableDefinition //costyl
+%type<u.vardeflistval> variableDefinitionList //costyl
 %type<u.exval> expression literal factor term unary primary andExpression relation arrayLiteral tupleLiteral
 
 
@@ -141,9 +147,9 @@ statement:
     | assignment
     | print             { $$ = $1; }
     | return        
-    | if            
+    | if                { $$ = $1; }   
     | loop              { $$ = $1; }
-    | declaration
+    | declaration       { $$ = $1; }
     
 emptyStatement:
     %empty  { $$ = new AST::EmptyNode(); };
@@ -170,15 +176,23 @@ loopBody:
     LOOP body END { $$ = $2; }
 
 declaration:
-    VAR variableDefinitionList
+    VAR variableDefinitionList { $$ = $2; }
     
 variableDefinitionList:
     variableDefinition
+    {
+        $$ = new AST::DefinitionList($1);
+    }
     | variableDefinitionList COMMA variableDefinition 
+    {
+        $1->add_defenition($3);
+        $$ = $1;
+    }
+    ;
 
 variableDefinition:
-    identifier
-    | identifier ASSIGN expression
+    identifier                      { $$ = new AST::VarDef($1, new AST::Literal()); }
+    | identifier ASSIGN expression  { $$ = new AST::VarDef($1, $3); }
 
 expression:
     expression OR andExpression     { $$ = new AST::BinaryExpr($1, $3, _OR);}

@@ -6,14 +6,15 @@
 class Interpreter: public AbstractVisitor
 {
 public:
-    void visit(const AST::Print &);
-    void visit(const AST::Node &);
-    void visit(const AST::Reference &);
-    void visit(const AST::Statement &);
-    void visit(const AST::StatementList &);
-    void visit(const AST::EmptyNode &);
-    void visit(const AST::IfStatement &statement) override;
-    void visit(const AST::WhileStatement &statement) override;
+    void visit(const AST::Print &) override;
+    void visit(const AST::Node &) override;
+    void visit(const AST::Reference &) override;
+    void visit(const AST::Statement &) override;
+    void visit(const AST::StatementList &) override;
+    void visit(const AST::EmptyNode &) override;
+    void visit(const AST::IfStatement &) override;
+    void visit(const AST::WhileStatement &) override;
+    void visit(const AST::DefinitionList &) override;
 };
 
 #endif // INTERPRETER_H_INCLUDED

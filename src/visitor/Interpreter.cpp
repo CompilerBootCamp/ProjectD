@@ -2,6 +2,10 @@
 // Created by sovereign on 10/6/19.
 //
 
+#include "Interpreter.h"
+#include <iostream>
+#include "../type_system/LiteralTypes.h"
+#include "../ast/SymbolTable.h"
 #include "../ast/Print.h"
 #include "../ast/Expression.h"
 #include "../ast/Literal.h"
@@ -10,9 +14,9 @@
 #include "../ast/IfStatement.h"
 #include "../ast/BooleanLiteral.h"
 #include "../ast/WhileStatement.h"
-#include "Interpreter.h"
-#include <iostream>
-#include "../type_system/LiteralTypes.h"
+#include "../ast/DefinitionList.h"
+#include "../ast/VarDef.h"
+
 
 
 void Interpreter::visit(const AST::Print &print)
@@ -79,5 +83,21 @@ void Interpreter::visit(const AST::WhileStatement &statement)
     else
     {
         //exception
+    }
+}
+
+void Interpreter::visit(const AST::DefinitionList &statement)
+{
+    for(auto var : statement.var_list)
+    {
+        if(SymbolTable::symbol_table.find(var->variable.first) != SymbolTable::symbol_table.end())
+        {
+            //exception
+            std::cout << std::endl << "conflict declaration: " << var->variable.first << std::endl;
+        }
+        else{
+            var->variable.second->accept(*this);
+            SymbolTable::symbol_table.insert(make_pair(var->variable.first, var->variable.second));
+        }
     }
 }
