@@ -258,7 +258,7 @@ reference:
     ;
 
 tail:
-    DOT integerLiteral                                      { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::IntLiteral($2)), TYPES::_TUPLE); }// access to unnamed tuple element
+    DOT integerLiteral                                      { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral(std::to_string($2))), TYPES::_TUPLE); }// access to unnamed tuple element
     | DOT identifier                                        { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral($2)), TYPES::_TUPLE); }// access to named tuple element
     | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET       { $$ = new AST::ReferenceTail(new AST::ExpressionList($2), TYPES::_ARRAY); }// access to array element
     | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET   { $$ = new AST::ReferenceTail($2, TYPES::_FUNCTION); }// function call
