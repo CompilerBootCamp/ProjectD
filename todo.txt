@@ -1,8 +1,11 @@
-1. Вывод лексем.  М.
-2. Вывод ошибок.  В.
-3. Ввод из файла. М.
-4. Тест языка.  А.
-5. Классы.  С.
-6. Визитор(интерпретор) -_-
-7. add namespace for type_system + visitor
-8. finish build with cmake?
+﻿1. Вывод ошибок.  В.
+2. Тест языка.  А.
+3. Визитор(интерпретор) -_-
+4. add namespace for type_system + visitor
+5. finish build with cmake?
+6. For loop
+7. Reference
+8. Assigment
+9. Read
+10.Function
+11. Return
