@@ -104,5 +104,10 @@ void Interpreter::visit(const AST::ForStatement &statement) {
         for (int i = startForVar; i < endForVar; ++i) {
             statement.getForStatements()->accept(*this);
         }
+    } else {
+        std::cout << "Cannot evaluate for, cant eval "
+                  << TYPES::type_to_string(statement.getStartExpression()->evaluate().getType())
+                  << " OR " << TYPES::type_to_string(statement.getEndExpression()->evaluate().getType()) << " to int"
+                  << std::endl;
     }
 }
