@@ -15,7 +15,7 @@ namespace AST{
     public:
         std::string value;
     public:
-        StringLiteral(char*);
+        StringLiteral(char*, bool);
         StringLiteral(std::string);
         std::string to_string() override;
 

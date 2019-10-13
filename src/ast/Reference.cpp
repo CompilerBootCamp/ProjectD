@@ -71,23 +71,31 @@ Literal& Reference::evaluate()
         }
         case TYPES::_TUPLE:
         {
-            auto tuple = static_cast<TupleLiteral*>(value);
-            auto key = static_cast<StringLiteral*>(ref->reference_list.first->expressions[0])->value;
-            auto tuple_elements = tuple->tu_list->elements;
-            auto it = std::find_if(tuple_elements.begin(), tuple_elements.end(),
-                                   [&key](std::pair<std::string, Expression*>&element)
+            //std::cout << "value: " << value->to_string() << std::endl;
+            try
             {
-                return element.first == key;
-            });
-            if(it != tuple_elements.end())
-            {
-                value = static_cast<Literal*>((*it).second);
+                auto tuple = static_cast<TupleLiteral*>(value);
+                auto key = static_cast<StringLiteral*>(ref->reference_list.first->expressions[0])->value;
+                auto tuple_elements = tuple->tu_list->elements;
+                auto it = std::find_if(tuple_elements.begin(), tuple_elements.end(),
+                                       [&key](std::pair<std::string, Expression*>&element)
+                {
+                    return element.first == key;
+                });
+                if(it != tuple_elements.end())
+                {
+                    value = static_cast<Literal*>((*it).second);
+                }
+                else
+                {
+                    //exception
+                    value = new Literal();
+                    exception = true;
+                }
             }
-            else
+            catch(...)
             {
-                //exception
-                value = new Literal();
-                exception = true;
+                std::cout << "not here";
             }
             break;
         }

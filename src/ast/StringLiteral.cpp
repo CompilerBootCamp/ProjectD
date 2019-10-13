@@ -2,12 +2,14 @@
 // Created by sovereign on 10/6/19.
 //
 #include "StringLiteral.h"
+#include <iostream>
 
 namespace AST
 {
-    StringLiteral::StringLiteral(char* val): value(val)
+    StringLiteral::StringLiteral(char* val, bool ident): value(val)
     {
-        value = value.substr(1, value.size() - 2);
+        if(!ident)
+            value = value.substr(1, value.size() - 2);
     }
     StringLiteral::StringLiteral(std::string val): value(val) {}
 

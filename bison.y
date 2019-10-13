@@ -258,8 +258,8 @@ reference:
     ;
 
 tail:
-    DOT integerLiteral                                      { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::IntLiteral($2)), TYPES::_TUPLE); }// access to unnamed tuple element
-    | DOT identifier                                        { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral($2)), TYPES::_TUPLE); }// access to named tuple element
+    DOT integerLiteral                                      { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral(std::to_string($2))), TYPES::_TUPLE); }// access to unnamed tuple element
+    | DOT identifier                                        { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral($2, true)), TYPES::_TUPLE); }// access to named tuple element
     | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET       { $$ = new AST::ReferenceTail(new AST::ExpressionList($2), TYPES::_ARRAY); }// access to array element
     | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET   { $$ = new AST::ReferenceTail($2, TYPES::_FUNCTION); }// function call
     
@@ -286,7 +286,7 @@ literal:
     integerLiteral  { $$ = new AST::IntLiteral($1); }
     | realLiteral   { $$ = new AST::RealLiteral($1); }
     | booleanLiteral{ $$ = new AST::BooleanLiteral($1); }
-    | stringLiteral { $$ = new AST::StringLiteral($1); }
+    | stringLiteral { $$ = new AST::StringLiteral($1, false); }
     | arrayLiteral  { $$ = $1; }
     | tupleLiteral  { $$ = $1; }
     | functionLiteral
