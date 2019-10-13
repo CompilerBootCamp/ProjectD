@@ -6,7 +6,6 @@
 #define PROJECTD_IFSTATEMENT_H
 
 #include "Statement.h"
-#include <memory>
 
 namespace AST {
 

@@ -10,4 +10,12 @@ namespace AST{
     void Reference::accept(AbstractVisitor &visitor) const {
         visitor.visit(*this);
     }
+
+    TYPES::Type Reference::getType() const {
+        return type;
+    }
+
+    void Reference::setType(TYPES::Type type) {
+        Reference::type = type;
+    }
 }

@@ -108,7 +108,7 @@ struct my_types
 %type<u.exlistval> expressionlist //costyl
 %type<u.tupleelementlistval> tupleElementList //costyl
 %type<u.tupleelementval> tupleElement //costyl
-%type<u.exval> expression literal factor term unary primary andexpression relation arrayLiteral tupleLiteral
+%type<u.exval> expression literal factor term unary primary andExpression relation arrayLiteral tupleLiteral
 
 
 %left OR XOR
@@ -162,11 +162,11 @@ if:
     | IF expression THEN body ELSE body END { $$ = new AST::IfStatement($2, $4, $6); }
 
 loop:
-    WHILE expression loopBody
+    WHILE expression loopBody {$$ = new AST::WhileStatement($2, $3); }
     | FOR identifier IN expression DOUBLEDOT expression loopBody
 
 loopBody:
-    LOOP body END
+    LOOP body END { $$ = $2; }
 
 declaration:
     VAR variableDefinitionList
@@ -180,13 +180,13 @@ variableDefinition:
     | identifier ASSIGN expression
 
 expression:
-    expression OR andexpression     { $$ = new AST::BinaryExpr($1, $3, _OR);}
-    |expression XOR andexpression   { $$ = new AST::BinaryExpr($1, $3, _XOR);}
-    | andexpression                 { $$ = $1; }
+    expression OR andExpression     { $$ = new AST::BinaryExpr($1, $3, _OR);}
+    |expression XOR andExpression   { $$ = new AST::BinaryExpr($1, $3, _XOR);}
+    | andExpression                 { $$ = $1; }
     ;
     
-andexpression:
-    andexpression AND relation  { $$ = new AST::BinaryExpr($1, $3, _AND);}
+andExpression:
+    andExpression AND relation  { $$ = new AST::BinaryExpr($1, $3, _AND);}
     |relation                   { $$ = $1; }
     ;
     

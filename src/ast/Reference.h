@@ -5,13 +5,25 @@
 #ifndef PROJECTD_REFERENCE_H
 #define PROJECTD_REFERENCE_H
 
+#include <type_system/LiteralTypes.h>
 #include "Node.h"
 
 namespace AST{
 
     class Reference: public Node
+            //todo ссылка на литерал
+            //имя ноды
     {
+    private:
+        TYPES::Type type;
+
+    public:
+
         void accept(AbstractVisitor &) const;
+
+        TYPES::Type getType() const;
+
+        void setType(TYPES::Type type);
     };
 }
 

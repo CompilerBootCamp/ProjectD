@@ -5,6 +5,8 @@
 #ifndef PROJECTD_VISITOR_H
 #define PROJECTD_VISITOR_H
 
+#include <ast/WhileStatement.h>
+
 namespace AST
 {
     class Node;
@@ -29,6 +31,7 @@ public:
     virtual void visit(const AST::StatementList &) = 0;
     virtual void visit(const AST::IfStatement&) = 0;
     virtual void visit(const AST::Statement &) = 0;
+    virtual void visit(const AST::WhileStatement &) = 0;
 };
 
 

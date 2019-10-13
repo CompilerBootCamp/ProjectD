@@ -13,6 +13,7 @@ public:
     void visit(const AST::StatementList &);
     void visit(const AST::EmptyNode &);
     void visit(const AST::IfStatement &statement) override;
+    void visit(const AST::WhileStatement &statement) override;
 };
 
 #endif // INTERPRETER_H_INCLUDED
