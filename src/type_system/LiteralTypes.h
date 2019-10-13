@@ -20,5 +20,6 @@ namespace TYPES {
         NOTHING
     };
 
+    std::string type_to_string(const Type type);
 }
 

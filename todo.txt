@@ -6,3 +6,7 @@
 6. Визитор(интерпретор) -_-
 7. add namespace for type_system + visitor
 8. finish build with cmake?
+9. gtest related to: https://cmake.org/cmake/help/v3.9/module/GoogleTest.html#command:gtest_add_tests ,
+    https://cmake.org/cmake/help/v3.9/module/FindGTest.html ,
+    https://github.com/google/googletest
+

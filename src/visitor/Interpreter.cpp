@@ -11,7 +11,6 @@
 #include "../ast/BooleanLiteral.h"
 #include "Interpreter.h"
 #include <iostream>
-#include "LiteralTypes.cpp"
 
 
 void Interpreter::visit(const AST::Print &print)

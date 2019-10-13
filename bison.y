@@ -8,26 +8,25 @@
 %{
 #include <stdio.h>
 #include <math.h>
-#include <vector>
 
-#include "src/ast/Node.h"
-#include "src/ast/EmptyNode.h"
-#include "src/ast/StatementList.h"
-#include "src/ast/Statement.h"
-#include "src/ast/Expression.h"
-#include "src/ast/ExpressionList.h"
-#include "src/ast/Print.h"
-#include "src/ast/BinaryExpr.h"
-#include "src/ast/Literal.h"
-#include "src/ast/IntLiteral.h"
-#include "src/ast/RealLiteral.h"
-#include "src/ast/BooleanLiteral.h"
-#include "src/ast/StringLiteral.h"
-#include "src/ast/UnaryExpr.h"
-#include "src/ast/ArrayLiteral.h"
-#include "src/ast/IfStatement.h"
+#include "Node.h"
+#include "EmptyNode.h"
+#include "StatementList.h"
+#include "Statement.h"
+#include "Expression.h"
+#include "ExpressionList.h"
+#include "Print.h"
+#include "BinaryExpr.h"
+#include "Literal.h"
+#include "IntLiteral.h"
+#include "RealLiteral.h"
+#include "BooleanLiteral.h"
+#include "StringLiteral.h"
+#include "UnaryExpr.h"
+#include "ArrayLiteral.h"
+#include "IfStatement.h"
 
-#include "src/visitor/Interpreter.h"
+#include "Interpreter.h"
 
 int yylex (void);
 void yyerror (char const *);
@@ -296,7 +295,7 @@ body:
 %%
 
 #include <stdio.h>
-#include "lex.yy.c"
+#include "lexer.cpp"
 /* Called by yyparse on error.  */
 void
 yyerror (char const *s)

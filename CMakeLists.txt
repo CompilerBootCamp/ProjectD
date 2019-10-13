@@ -7,38 +7,69 @@ include_directories(test)
 set(CMAKE_CXX_STANDARD 17)
 
 # Download and unpack googletest at configure time
-configure_file(build/CMakeLists.txt.in googletest-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        RESULT_VARIABLE result
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-    message(FATAL_ERROR "CMake step for googletest failed: ${result}")
-endif()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        RESULT_VARIABLE result
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-    message(FATAL_ERROR "Build step for googletest failed: ${result}")
-endif()
+#configure_file(build/CMakeLists.txt.in googletest-download/CMakeLists.txt)
+#execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+#        RESULT_VARIABLE result
+#        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
+#if(result)
+#    message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+#endif()
+#execute_process(COMMAND ${CMAKE_COMMAND} --build .
+#        RESULT_VARIABLE result
+#        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
+#if(result)
+#    message(FATAL_ERROR "Build step for googletest failed: ${result}")
+#endif()
+#
+## Prevent overriding the parent project's compiler/linker
+## settings on Windows
+#set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+#
+## Add googletest directly to our build. This defines
+## the gtest and gtest_main targets.
+#add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
+#        ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
+#        EXCLUDE_FROM_ALL)
+#
+## The gtest/gtest_main targets carry header search path
+## dependencies automatically when using CMake 2.8.11 or
+## later. Otherwise we have to add them here ourselves.
+#if (CMAKE_VERSION VERSION_LESS 2.8.11)
+#    include_directories("${gtest_SOURCE_DIR}/include")
+#endif()
 
-# Prevent overriding the parent project's compiler/linker
-# settings on Windows
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+enable_testing()
+find_package(GTest REQUIRED)
 
-# Add googletest directly to our build. This defines
-# the gtest and gtest_main targets.
-add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
-        ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
-        EXCLUDE_FROM_ALL)
+file(GLOB srcs
+        "*.h"
+        "*.cpp"
+)
 
-# The gtest/gtest_main targets carry header search path
-# dependencies automatically when using CMake 2.8.11 or
-# later. Otherwise we have to add them here ourselves.
-if (CMAKE_VERSION VERSION_LESS 2.8.11)
-    include_directories("${gtest_SOURCE_DIR}/include")
-endif()
+find_package(FLEX REQUIRED)
+find_package(BISON REQUIRED)
+FLEX_TARGET(DynamicFLex flex.l ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
+BISON_TARGET(DynamicBison bison.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp)
+ADD_FLEX_BISON_DEPENDENCY(DynamicFLex DynamicBison)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+add_compile_options(-o2)
+
+add_executable(ProjectD
+        ${srcs}
+        ${BISON_DynamicBison_OUTPUTS}
+        ${FLEX_DynamicFLex_OUTPUTS}
+)
+
+TARGET_LINK_LIBRARIES(ProjectD
+        ${FLEX_LIBRARIES}
+        ${BISON_LIBRARIES}
+        )
+#target_link_libraries(ProjectD GTest::GTest GTest::Main)
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(ProjectD src/main.cpp)
+#add_executable(ProjectD src/main.cpp)
 #target_link_libraries(main.cpp gtest_main)
 #add_test(NAME example_test COMMAND example)
