@@ -15,6 +15,7 @@ public:
     void visit(const AST::IfStatement &) override;
     void visit(const AST::WhileStatement &) override;
     void visit(const AST::DefinitionList &) override;
+    void visit(const AST::ForStatement &statement) override;
 };
 
 #endif // INTERPRETER_H_INCLUDED

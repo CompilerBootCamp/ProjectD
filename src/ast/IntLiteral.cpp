@@ -155,4 +155,12 @@ namespace AST
         return TYPES::_INT;
     }
 
+    int IntLiteral::getValue() const {
+        return value;
+    }
+
+    void IntLiteral::setValue(int value) {
+        IntLiteral::value = value;
+    }
+
 }

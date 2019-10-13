@@ -169,8 +169,8 @@ if:
     | IF expression THEN body ELSE body END { $$ = new AST::IfStatement($2, $4, $6); }
 
 loop:
-    WHILE expression loopBody {$$ = new AST::WhileStatement($2, $3); }
-    | FOR identifier IN expression DOUBLEDOT expression loopBody
+    WHILE expression loopBody { $$ = new AST::WhileStatement($2, $3); }
+    | FOR identifier IN expression DOUBLEDOT expression loopBody { $$ = new AST::ForStatement($7, $4, $6, $2); }
 
 loopBody:
     LOOP body END { $$ = $2; }

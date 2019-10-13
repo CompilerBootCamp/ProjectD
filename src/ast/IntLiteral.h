@@ -55,6 +55,10 @@ namespace AST
         bool greateq_operator(RealLiteral*) override;
         bool eq_operator(RealLiteral*) override;
         bool neq_operator(RealLiteral*) override;
+
+        int getValue() const;
+
+        void setValue(int value);
     };
 }
 
