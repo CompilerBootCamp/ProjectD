@@ -3,7 +3,7 @@
 //
 
 #include "WhileStatement.h"
-#include "AbstractVisitor.h"
+#include "../visitor/AbstractVisitor.h"
 
 void AST::WhileStatement::accept(AbstractVisitor &visitor) const {
     visitor.visit(*this);

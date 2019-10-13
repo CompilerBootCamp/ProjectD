@@ -5,8 +5,8 @@
 #ifndef PROJECTD_REFERENCE_H
 #define PROJECTD_REFERENCE_H
 
-#include <type_system/LiteralTypes.h>
 #include "Node.h"
+#include "../type_system/LiteralTypes.h"
 
 namespace AST{
 

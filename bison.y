@@ -29,6 +29,7 @@
 #include "src/ast/TupleLiteral.h"
 #include "src/ast/TupleElementList.h"
 #include "src/ast/TupleElement.h"
+#include "src/ast/WhileStatement.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -103,8 +104,8 @@ struct my_types
 
 %start program
 
-%type<u.stval> statement print emptyStatement if
-%type<u.stlistval> statementList body
+%type<u.stval> statement print emptyStatement if loop
+%type<u.stlistval> statementList body loopBody
 %type<u.exlistval> expressionlist //costyl
 %type<u.tupleelementlistval> tupleElementList //costyl
 %type<u.tupleelementval> tupleElement //costyl
@@ -136,12 +137,12 @@ statementList:
     ;
     
 statement:
-      emptyStatement { $$ = $1; }
+      emptyStatement    { $$ = $1; }
     | assignment
-    | print          { $$ = $1; }
+    | print             { $$ = $1; }
     | return        
     | if            
-    | loop          
+    | loop              { $$ = $1; }
     | declaration
     
 emptyStatement:

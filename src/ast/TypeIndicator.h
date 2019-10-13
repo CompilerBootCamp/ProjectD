@@ -5,13 +5,11 @@
 #ifndef PROJECTD_TYPEINDICATOR_H
 #define PROJECTD_TYPEINDICATOR_H
 
-
-#include <type_system/LiteralTypes.h>
-#include "Expression.h"
-#include "Reference.h"
-#include "BooleanLiteral.h"
+#include "Literal.h"
 
 namespace AST{
+    class Reference;
+
     class TypeIndicator: public Literal {
 
     private:
