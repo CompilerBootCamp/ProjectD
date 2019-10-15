@@ -84,4 +84,9 @@ Expression* TupleLiteral::get_value(std::string key)
     }
 }
 
+TYPES::Type TupleLiteral::getType()
+{
+    return TYPES::_TUPLE;
+}
+
 }

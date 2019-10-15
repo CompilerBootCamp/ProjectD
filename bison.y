@@ -35,6 +35,7 @@
 #include "src/ast/Reference.h"
 #include "src/ast/ReferenceTail.h"
 #include "src/ast/ForStatement.h"
+#include "src/ast/TypeIndicator.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -61,6 +62,7 @@ struct my_types
         AST::VarDef*        vardefval;
         AST::DefinitionList*    vardeflistval;
         AST::ReferenceTail*     referencetailval;
+        TYPES::Type tval;
     } u;    
   };
 %}
@@ -122,6 +124,7 @@ struct my_types
 %type<u.vardeflistval> variableDefinitionList //costyl
 %type<u.referencetailval> tail //costyl
 %type<u.exval> expression literal factor term unary primary andExpression relation arrayLiteral tupleLiteral reference
+%type<u.tval> typeIndicator
 
 
 %left OR XOR
@@ -238,10 +241,10 @@ term:
 
 unary:
     reference           { $$ = $1; }
-    | reference IS typeIndicator
-    | PLUS reference
-    | MINUS reference
-    | NOT reference
+    | reference IS typeIndicator { $$ = new AST::TypeIndicator($1, $3); }
+    | PLUS reference    { $$ = new AST::UnaryExpr($2, _PLUS); }
+    | MINUS reference   { $$ = new AST::UnaryExpr($2, _MINUS); }
+    | NOT reference     { $$ = new AST::UnaryExpr($2, _NOT); }
     | primary           { $$ = $1; }
     | PLUS primary      { $$ = new AST::UnaryExpr($2, _PLUS); }
     | MINUS primary     { $$ = new AST::UnaryExpr($2, _MINUS); }
@@ -284,11 +287,14 @@ expressionlist:
     ;
 
 typeIndicator:
-    INT | REAL | BOOL | STRING
-    | EMPTY         // no type
-    | LEFTSQUAREBRACKET RIGHTSQUAREBRACKET // vector type
-    | LEFTCURLYBRACKET RIGHTCURLYBRACKET  // tuple type
-    | FUNC        // functional type
+    INT         { $$ = TYPES::_INT; } 
+    | REAL      { $$ = TYPES::_REAL; }
+    | BOOL      { $$ = TYPES::_BOOL; }
+    | STRING    { $$ = TYPES::_STRING; }
+    | EMPTY     { $$ = TYPES::_NOTHING; }    // no type
+    | LEFTSQUAREBRACKET RIGHTSQUAREBRACKET { $$ = TYPES::_ARRAY; } // vector type
+    | LEFTCURLYBRACKET RIGHTCURLYBRACKET   { $$ = TYPES::_TUPLE; }// tuple type
+    | FUNC      { $$ = TYPES::_FUNCTION; }// functional type
 
 literal:
     integerLiteral  { $$ = new AST::IntLiteral($1); }

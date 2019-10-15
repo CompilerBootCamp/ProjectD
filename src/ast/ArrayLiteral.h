@@ -26,7 +26,7 @@ public:
     //Only for arrays
     Literal& concat(ArrayLiteral*) override;
 
-    [[nodiscard]] TYPES::Type getType() const override;
+    [[nodiscard]] TYPES::Type getType() override;
 };
 }
 

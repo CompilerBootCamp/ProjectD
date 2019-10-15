@@ -7,7 +7,6 @@
 
 #include "Expression.h"
 #include <string>
-#include "../type_system/LiteralTypes.h"
 
 namespace AST
 {
@@ -25,7 +24,7 @@ namespace AST
         virtual std::string to_string();
         virtual AST::Literal& evaluate();
 
-        [[nodiscard]] virtual TYPES::Type getType() const;
+        virtual TYPES::Type getType() override;
 
         virtual Literal& operator+(Literal&);
         virtual Literal& operator-(Literal&);

@@ -6,6 +6,7 @@
 #define PROJECTD_EXPRESSION_H
 
 #include "Node.h"
+#include "../type_system/LiteralTypes.h"
 
 namespace AST
 {
@@ -18,6 +19,8 @@ namespace AST
         virtual Literal& evaluate() = 0;
 
         virtual void add_reference(ReferenceTail*);
+
+        virtual TYPES::Type getType();
     };
 }
 

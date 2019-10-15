@@ -26,6 +26,7 @@ public:
 
     Expression* get_value(std::string);
 
+    [[nodiscard]] TYPES::Type getType() override;
 };
 }
 

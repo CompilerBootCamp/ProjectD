@@ -173,7 +173,7 @@ namespace AST
         //exception
     }
 
-    TYPES::Type Literal::getType() const {
+    TYPES::Type Literal::getType() {
         return TYPES::_NOTHING;
     }
 

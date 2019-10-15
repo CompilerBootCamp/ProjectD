@@ -5,25 +5,25 @@
 #ifndef PROJECTD_TYPEINDICATOR_H
 #define PROJECTD_TYPEINDICATOR_H
 
-#include "Literal.h"
+#include "Expression.h"
 
 namespace AST{
     class Reference;
 
-    class TypeIndicator: public Literal {
+    class TypeIndicator: public Expression {
 
     private:
-        Reference* reference;
+        Expression* reference;
         TYPES::Type type;
     public:
 
-        TypeIndicator(Reference *reference, TYPES::Type type);
+        TypeIndicator(Expression *reference, TYPES::Type type);
 
         Literal &evaluate() override;
 
-        [[nodiscard]] Reference *getReference() const;
+        [[nodiscard]] Expression *getReference() const;
 
-        void setReference(Reference *reference);
+        void setReference(Expression *reference);
 
         [[nodiscard]] TYPES::Type getType() const;
 

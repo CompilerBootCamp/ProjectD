@@ -23,7 +23,7 @@ namespace AST{
         Literal& or_operator(BooleanLiteral*) override;
         Literal& xor_operator(BooleanLiteral*) override;
 
-        [[nodiscard]] TYPES::Type getType() const override;
+        [[nodiscard]] TYPES::Type getType() override;
     };
 }
 

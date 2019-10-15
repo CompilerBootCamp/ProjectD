@@ -4,27 +4,31 @@
 
 #include "TypeIndicator.h"
 #include "BooleanLiteral.h"
+#include "Reference.h"
 
-AST::Literal &AST::TypeIndicator::evaluate() {
-//    return AST::BooleanLiteral(this->reference->getType() == getType()); //fixme
+namespace AST{
+Literal &TypeIndicator::evaluate() {
+    auto result = new BooleanLiteral(this->reference->getType() == getType()); //fixme
+    return *result;
 }
 
 
 
-AST::Reference *AST::TypeIndicator::getReference() const {
+Expression *TypeIndicator::getReference() const {
     return reference;
 }
 
-void AST::TypeIndicator::setReference(AST::Reference *reference) {
+void TypeIndicator::setReference(Expression *reference) {
     TypeIndicator::reference = reference;
 }
 
-TYPES::Type AST::TypeIndicator::getType() const {
+TYPES::Type TypeIndicator::getType() const {
     return type;
 }
 
-void AST::TypeIndicator::setType(TYPES::Type type) {
+void TypeIndicator::setType(TYPES::Type type) {
     TypeIndicator::type = type;
 }
 
-AST::TypeIndicator::TypeIndicator(AST::Reference *reference, TYPES::Type type) : reference(reference), type(type) {}
+TypeIndicator::TypeIndicator(Expression *reference, TYPES::Type type) : reference(reference), type(type) {}
+}

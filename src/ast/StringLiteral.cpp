@@ -34,7 +34,7 @@ namespace AST
         return *temp;
     }
 
-    TYPES::Type StringLiteral::getType() const {
+    TYPES::Type StringLiteral::getType() {
         return TYPES::_STRING;
     }
 }

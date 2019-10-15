@@ -14,7 +14,7 @@ namespace AST
         IntLiteral(int);
         std::string to_string() override;
 
-        [[nodiscard]] TYPES::Type getType() const override;
+        [[nodiscard]] TYPES::Type getType() override;
 
         Literal& evaluate() override;
         //For all literals
