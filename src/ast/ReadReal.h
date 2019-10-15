@@ -6,13 +6,14 @@
 #define PROJECTD_READREAL_H
 
 
-#include "Read.h"
+#include "Expression.h"
 
 namespace AST{
-    class ReadReal: public Read {
+    class ReadReal: public Expression {
 
     public:
-        void accept(AbstractVisitor &visitor) const override;
+
+        Literal &evaluate() override;
     };
 
 }

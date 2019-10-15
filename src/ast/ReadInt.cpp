@@ -2,9 +2,15 @@
 // Created by sovereign on 10/15/19.
 //
 
+#include <iostream>
 #include "ReadInt.h"
-#include "../visitor/AbstractVisitor.h"
+#include "../ast/IntLiteral.h"
 
-void AST::ReadInt::accept(AbstractVisitor &visitor) const {
-    visitor.visit(*this);
+AST::Literal &AST::ReadInt::evaluate() {
+    int value;
+    std::cin >> value;
+    IntLiteral intLiteral = value;
+    return intLiteral;
 }
+
+AST::ReadInt::ReadInt() {}

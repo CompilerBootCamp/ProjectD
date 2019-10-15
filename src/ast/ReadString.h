@@ -5,15 +5,15 @@
 #ifndef PROJECTD_READSTRING_H
 #define PROJECTD_READSTRING_H
 
-#include "Read.h"
+#include "Expression.h"
 
 namespace AST{
 
-    class ReadString: public Read {
+    class ReadString: public Expression {
 
     public:
 
-        void accept(AbstractVisitor &visitor) const override;
+        Literal &evaluate() override;
 
     };
 }

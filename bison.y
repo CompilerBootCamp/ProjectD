@@ -255,9 +255,9 @@ unary:
 
 primary:
       literal
-    | READINT { $$ = AST::ReadInt(); }
-    | READREAL { $$ = AST::ReadReal(); }
-    | READSTRING { $$ = AST::ReadString(); }
+    | READINT { $$ = new AST::ReadInt(); }
+    | READREAL { $$ = new AST::ReadReal(); }
+    | READSTRING { $$ = new AST::ReadString(); }
     | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET  { $$ = $2; }
     
 reference:

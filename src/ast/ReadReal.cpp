@@ -2,9 +2,13 @@
 // Created by sovereign on 10/15/19.
 //
 
+#include <iostream>
 #include "ReadReal.h"
-#include "../visitor/AbstractVisitor.h"
+#include "../ast/RealLiteral.h"
 
-void AST::ReadReal::accept(AbstractVisitor &visitor) const {
-    visitor.visit(*this);
+AST::Literal &AST::ReadReal::evaluate() {
+    double value;
+    std::cin >> value;
+    RealLiteral realLiteral = RealLiteral(value);
+    return realLiteral;
 }

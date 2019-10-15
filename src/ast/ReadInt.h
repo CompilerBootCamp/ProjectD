@@ -5,17 +5,15 @@
 #ifndef PROJECTD_READINT_H
 #define PROJECTD_READINT_H
 
-#include "Read.h"
+#include "Expression.h"
 
 namespace AST {
 
-
-    class ReadInt : public Read {
-
+    class ReadInt : public Expression {
     public:
+        ReadInt();
 
-        void accept(AbstractVisitor &visitor) const override;
-
+        Literal &evaluate() override;
     };
 }
 

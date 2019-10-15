@@ -1,0 +1,2672 @@
+State 37 conflicts: 1 shift/reduce
+State 39 conflicts: 8 shift/reduce
+State 40 conflicts: 2 shift/reduce
+State 111 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: statementList
+
+    2 statementList: statement
+    3              | statementList SEMICOLON statement
+
+    4 statement: emptyStatement
+    5          | assignment
+    6          | print
+    7          | return
+    8          | if
+    9          | loop
+   10          | declaration
+
+   11 emptyStatement: %empty
+
+   12 assignment: reference ASSIGN expression
+
+   13 print: PRINT expressionlist
+
+   14 return: RETURN
+   15       | RETURN expression
+
+   16 if: IF expression THEN body END
+   17   | IF expression THEN body ELSE body END
+
+   18 loop: WHILE expression loopBody
+   19     | FOR identifier IN expression DOUBLEDOT expression loopBody
+
+   20 loopBody: LOOP body END
+
+   21 declaration: VAR variableDefinitionList
+
+   22 variableDefinitionList: variableDefinition
+   23                       | variableDefinitionList COMMA variableDefinition
+
+   24 variableDefinition: identifier
+   25                   | identifier ASSIGN expression
+
+   26 expression: expression OR andExpression
+   27           | expression XOR andExpression
+   28           | andExpression
+
+   29 andExpression: andExpression AND relation
+   30              | relation
+
+   31 relation: factor
+   32         | factor LESS factor
+   33         | factor LESSOREQUAL factor
+   34         | factor GREAT factor
+   35         | factor GREATOREQUAL factor
+   36         | factor EQUAL factor
+   37         | factor DIVIDEQUAL factor
+
+   38 factor: term
+   39       | factor PLUS term
+   40       | factor MINUS term
+
+   41 term: unary
+   42     | term MULT unary
+   43     | term DIVIDE unary
+
+   44 unary: reference
+   45      | reference IS typeIndicator
+   46      | PLUS reference
+   47      | MINUS reference
+   48      | NOT reference
+   49      | primary
+   50      | PLUS primary
+   51      | MINUS primary
+   52      | NOT primary
+
+   53 primary: literal
+   54        | READINT
+   55        | READREAL
+   56        | READSTRING
+   57        | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET
+
+   58 reference: identifier
+   59          | reference tail
+
+   60 tail: DOT LESS integerLiteral GREAT
+   61     | DOT LESS identifier GREAT
+   62     | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET
+   63     | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET
+
+   64 expressionlist: expression
+   65               | expressionlist COMMA expression
+
+   66 typeIndicator: INT
+   67              | REAL
+   68              | BOOL
+   69              | STRING
+   70              | EMPTY
+   71              | LEFTSQUAREBRACKET RIGHTSQUAREBRACKET
+   72              | LEFTCURLYBRACKET RIGHTCURLYBRACKET
+   73              | FUNC
+
+   74 literal: integerLiteral
+   75        | realLiteral
+   76        | booleanLiteral
+   77        | stringLiteral
+   78        | arrayLiteral
+   79        | tupleLiteral
+   80        | functionLiteral
+
+   81 arrayLiteral: LEFTSQUAREBRACKET RIGHTSQUAREBRACKET
+   82             | LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET
+
+   83 tupleLiteral: LEFTCURLYBRACKET RIGHTCURLYBRACKET
+   84             | LEFTCURLYBRACKET tupleElementList RIGHTCURLYBRACKET
+
+   85 tupleElementList: tupleElement
+   86                 | tupleElementList COMMA tupleElement
+
+   87 tupleElement: expression
+   88             | identifier ASSIGN expression
+
+   89 functionLiteral: FUNC funBody
+   90                | FUNC Parameters funBody
+
+   91 Parameters: LEFTCIRCLEBRACKET identifierList RIGHTCIRCLEBRACKET
+
+   92 identifierList: identifier
+   93               | identifierList COMMA identifier
+
+   94 funBody: IS body END
+   95        | ARROW expression
+
+   96 body: statementList
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    booleanLiteral <u.bval> (258) 76
+    identifier <u.sval> (259) 19 24 25 58 61 88 92 93
+    integerLiteral <u.ival> (260) 60 74
+    realLiteral <u.dval> (261) 75
+    stringLiteral <u.sval> (262) 77
+    VAR (263) 21
+    AND (264) 29
+    OR (265) 26
+    XOR (266) 27
+    NOT (267) 48 52
+    IS (268) 45 94
+    READINT (269) 54
+    READREAL (270) 55
+    READSTRING (271) 56
+    PRINT (272) 13
+    RETURN (273) 14 15
+    IF (274) 16 17
+    THEN (275) 16 17
+    ELSE (276) 17
+    END (277) 16 17 20 94
+    WHILE (278) 18
+    FOR (279) 19
+    IN (280) 19
+    LOOP (281) 20
+    INT (282) 66
+    REAL (283) 67
+    BOOL (284) 68
+    STRING (285) 69
+    EMPTY (286) 70
+    FUNC (287) 73 89 90
+    LEFTCIRCLEBRACKET (288) 57 63 91
+    RIGHTCIRCLEBRACKET (289) 57 63 91
+    LEFTSQUAREBRACKET (290) 62 71 81 82
+    RIGHTSQUAREBRACKET (291) 62 71 81 82
+    LEFTCURLYBRACKET (292) 72 83 84
+    RIGHTCURLYBRACKET (293) 72 83 84
+    DOT (294) 60 61
+    DOUBLEDOT (295) 19
+    COMMA (296) 23 65 86 93
+    ARROW (297) 95
+    ASSIGN (298) 12 25 88
+    SEMICOLON (299) 3
+    LESS (300) 32 60 61
+    LESSOREQUAL (301) 33
+    GREAT (302) 34 60 61
+    GREATOREQUAL (303) 35
+    EQUAL (304) 36
+    DIVIDEQUAL (305) 37
+    PLUS (306) 39 46 50
+    MINUS (307) 40 47 51
+    MULT (308) 42
+    DIVIDE (309) 43
+
+
+Nonterminals, with rules where they appear
+
+    $accept (55)
+        on left: 0
+    program (56)
+        on left: 1
+        on right: 0
+    statementList <u.stlistval> (57)
+        on left: 2 3
+        on right: 1 3 96
+    statement <u.stval> (58)
+        on left: 4 5 6 7 8 9 10
+        on right: 2 3
+    emptyStatement <u.stval> (59)
+        on left: 11
+        on right: 4
+    assignment (60)
+        on left: 12
+        on right: 5
+    print <u.stval> (61)
+        on left: 13
+        on right: 6
+    return (62)
+        on left: 14 15
+        on right: 7
+    if <u.stval> (63)
+        on left: 16 17
+        on right: 8
+    loop <u.stval> (64)
+        on left: 18 19
+        on right: 9
+    loopBody <u.stlistval> (65)
+        on left: 20
+        on right: 18 19
+    declaration <u.stval> (66)
+        on left: 21
+        on right: 10
+    variableDefinitionList <u.vardeflistval> (67)
+        on left: 22 23
+        on right: 21 23
+    variableDefinition <u.vardefval> (68)
+        on left: 24 25
+        on right: 22 23
+    expression <u.exval> (69)
+        on left: 26 27 28
+        on right: 12 15 16 17 18 19 25 26 27 57 62 64 65 87 88 95
+    andExpression <u.exval> (70)
+        on left: 29 30
+        on right: 26 27 28 29
+    relation <u.exval> (71)
+        on left: 31 32 33 34 35 36 37
+        on right: 29 30
+    factor <u.exval> (72)
+        on left: 38 39 40
+        on right: 31 32 33 34 35 36 37 39 40
+    term <u.exval> (73)
+        on left: 41 42 43
+        on right: 38 39 40 42 43
+    unary <u.exval> (74)
+        on left: 44 45 46 47 48 49 50 51 52
+        on right: 41 42 43
+    primary <u.exval> (75)
+        on left: 53 54 55 56 57
+        on right: 49 50 51 52
+    reference <u.exval> (76)
+        on left: 58 59
+        on right: 12 44 45 46 47 48 59
+    tail <u.referencetailval> (77)
+        on left: 60 61 62 63
+        on right: 59
+    expressionlist <u.exlistval> (78)
+        on left: 64 65
+        on right: 13 63 65 82
+    typeIndicator <u.tval> (79)
+        on left: 66 67 68 69 70 71 72 73
+        on right: 45
+    literal <u.exval> (80)
+        on left: 74 75 76 77 78 79 80
+        on right: 53
+    arrayLiteral <u.exval> (81)
+        on left: 81 82
+        on right: 78
+    tupleLiteral <u.exval> (82)
+        on left: 83 84
+        on right: 79
+    tupleElementList <u.tupleelementlistval> (83)
+        on left: 85 86
+        on right: 84 86
+    tupleElement <u.tupleelementval> (84)
+        on left: 87 88
+        on right: 85 86
+    functionLiteral (85)
+        on left: 89 90
+        on right: 80
+    Parameters (86)
+        on left: 91
+        on right: 90
+    identifierList (87)
+        on left: 92 93
+        on right: 91 93
+    funBody (88)
+        on left: 94 95
+        on right: 89 90
+    body <u.stlistval> (89)
+        on left: 96
+        on right: 16 17 20 94
+
+
+State 0
+
+    0 $accept: . program $end
+
+    identifier  shift, and go to state 1
+    VAR         shift, and go to state 2
+    PRINT       shift, and go to state 3
+    RETURN      shift, and go to state 4
+    IF          shift, and go to state 5
+    WHILE       shift, and go to state 6
+    FOR         shift, and go to state 7
+
+    $default  reduce using rule 11 (emptyStatement)
+
+    program         go to state 8
+    statementList   go to state 9
+    statement       go to state 10
+    emptyStatement  go to state 11
+    assignment      go to state 12
+    print           go to state 13
+    return          go to state 14
+    if              go to state 15
+    loop            go to state 16
+    declaration     go to state 17
+    reference       go to state 18
+
+
+State 1
+
+   58 reference: identifier .
+
+    $default  reduce using rule 58 (reference)
+
+
+State 2
+
+   21 declaration: VAR . variableDefinitionList
+
+    identifier  shift, and go to state 19
+
+    variableDefinitionList  go to state 20
+    variableDefinition      go to state 21
+
+
+State 3
+
+   13 print: PRINT . expressionlist
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 36
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    expressionlist   go to state 44
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 4
+
+   14 return: RETURN .
+   15       | RETURN . expression
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    $default  reduce using rule 14 (return)
+
+    expression       go to state 49
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 5
+
+   16 if: IF . expression THEN body END
+   17   | IF . expression THEN body ELSE body END
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 50
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 6
+
+   18 loop: WHILE . expression loopBody
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 51
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 7
+
+   19 loop: FOR . identifier IN expression DOUBLEDOT expression loopBody
+
+    identifier  shift, and go to state 52
+
+
+State 8
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 53
+
+
+State 9
+
+    1 program: statementList .
+    3 statementList: statementList . SEMICOLON statement
+
+    SEMICOLON  shift, and go to state 54
+
+    $default  reduce using rule 1 (program)
+
+
+State 10
+
+    2 statementList: statement .
+
+    $default  reduce using rule 2 (statementList)
+
+
+State 11
+
+    4 statement: emptyStatement .
+
+    $default  reduce using rule 4 (statement)
+
+
+State 12
+
+    5 statement: assignment .
+
+    $default  reduce using rule 5 (statement)
+
+
+State 13
+
+    6 statement: print .
+
+    $default  reduce using rule 6 (statement)
+
+
+State 14
+
+    7 statement: return .
+
+    $default  reduce using rule 7 (statement)
+
+
+State 15
+
+    8 statement: if .
+
+    $default  reduce using rule 8 (statement)
+
+
+State 16
+
+    9 statement: loop .
+
+    $default  reduce using rule 9 (statement)
+
+
+State 17
+
+   10 statement: declaration .
+
+    $default  reduce using rule 10 (statement)
+
+
+State 18
+
+   12 assignment: reference . ASSIGN expression
+   59 reference: reference . tail
+
+    LEFTCIRCLEBRACKET  shift, and go to state 55
+    LEFTSQUAREBRACKET  shift, and go to state 56
+    DOT                shift, and go to state 57
+    ASSIGN             shift, and go to state 58
+
+    tail  go to state 59
+
+
+State 19
+
+   24 variableDefinition: identifier .
+   25                   | identifier . ASSIGN expression
+
+    ASSIGN  shift, and go to state 60
+
+    $default  reduce using rule 24 (variableDefinition)
+
+
+State 20
+
+   21 declaration: VAR variableDefinitionList .
+   23 variableDefinitionList: variableDefinitionList . COMMA variableDefinition
+
+    COMMA  shift, and go to state 61
+
+    $default  reduce using rule 21 (declaration)
+
+
+State 21
+
+   22 variableDefinitionList: variableDefinition .
+
+    $default  reduce using rule 22 (variableDefinitionList)
+
+
+State 22
+
+   76 literal: booleanLiteral .
+
+    $default  reduce using rule 76 (literal)
+
+
+State 23
+
+   74 literal: integerLiteral .
+
+    $default  reduce using rule 74 (literal)
+
+
+State 24
+
+   75 literal: realLiteral .
+
+    $default  reduce using rule 75 (literal)
+
+
+State 25
+
+   77 literal: stringLiteral .
+
+    $default  reduce using rule 77 (literal)
+
+
+State 26
+
+   48 unary: NOT . reference
+   52      | NOT . primary
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+
+    primary          go to state 62
+    reference        go to state 63
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 27
+
+   54 primary: READINT .
+
+    $default  reduce using rule 54 (primary)
+
+
+State 28
+
+   55 primary: READREAL .
+
+    $default  reduce using rule 55 (primary)
+
+
+State 29
+
+   56 primary: READSTRING .
+
+    $default  reduce using rule 56 (primary)
+
+
+State 30
+
+   89 functionLiteral: FUNC . funBody
+   90                | FUNC . Parameters funBody
+
+    IS                 shift, and go to state 64
+    LEFTCIRCLEBRACKET  shift, and go to state 65
+    ARROW              shift, and go to state 66
+
+    Parameters  go to state 67
+    funBody     go to state 68
+
+
+State 31
+
+   57 primary: LEFTCIRCLEBRACKET . expression RIGHTCIRCLEBRACKET
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 69
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 32
+
+   81 arrayLiteral: LEFTSQUAREBRACKET . RIGHTSQUAREBRACKET
+   82             | LEFTSQUAREBRACKET . expressionlist RIGHTSQUAREBRACKET
+
+    booleanLiteral      shift, and go to state 22
+    identifier          shift, and go to state 1
+    integerLiteral      shift, and go to state 23
+    realLiteral         shift, and go to state 24
+    stringLiteral       shift, and go to state 25
+    NOT                 shift, and go to state 26
+    READINT             shift, and go to state 27
+    READREAL            shift, and go to state 28
+    READSTRING          shift, and go to state 29
+    FUNC                shift, and go to state 30
+    LEFTCIRCLEBRACKET   shift, and go to state 31
+    LEFTSQUAREBRACKET   shift, and go to state 32
+    RIGHTSQUAREBRACKET  shift, and go to state 70
+    LEFTCURLYBRACKET    shift, and go to state 33
+    PLUS                shift, and go to state 34
+    MINUS               shift, and go to state 35
+
+    expression       go to state 36
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    expressionlist   go to state 71
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 33
+
+   83 tupleLiteral: LEFTCURLYBRACKET . RIGHTCURLYBRACKET
+   84             | LEFTCURLYBRACKET . tupleElementList RIGHTCURLYBRACKET
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 72
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    RIGHTCURLYBRACKET  shift, and go to state 73
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression        go to state 74
+    andExpression     go to state 37
+    relation          go to state 38
+    factor            go to state 39
+    term              go to state 40
+    unary             go to state 41
+    primary           go to state 42
+    reference         go to state 43
+    literal           go to state 45
+    arrayLiteral      go to state 46
+    tupleLiteral      go to state 47
+    tupleElementList  go to state 75
+    tupleElement      go to state 76
+    functionLiteral   go to state 48
+
+
+State 34
+
+   46 unary: PLUS . reference
+   50      | PLUS . primary
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+
+    primary          go to state 77
+    reference        go to state 78
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 35
+
+   47 unary: MINUS . reference
+   51      | MINUS . primary
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+
+    primary          go to state 79
+    reference        go to state 80
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 36
+
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+   64 expressionlist: expression .
+
+    OR   shift, and go to state 81
+    XOR  shift, and go to state 82
+
+    $default  reduce using rule 64 (expressionlist)
+
+
+State 37
+
+   28 expression: andExpression .
+   29 andExpression: andExpression . AND relation
+
+    AND  shift, and go to state 83
+
+    AND       [reduce using rule 28 (expression)]
+    $default  reduce using rule 28 (expression)
+
+
+State 38
+
+   30 andExpression: relation .
+
+    $default  reduce using rule 30 (andExpression)
+
+
+State 39
+
+   31 relation: factor .
+   32         | factor . LESS factor
+   33         | factor . LESSOREQUAL factor
+   34         | factor . GREAT factor
+   35         | factor . GREATOREQUAL factor
+   36         | factor . EQUAL factor
+   37         | factor . DIVIDEQUAL factor
+   39 factor: factor . PLUS term
+   40       | factor . MINUS term
+
+    LESS          shift, and go to state 84
+    LESSOREQUAL   shift, and go to state 85
+    GREAT         shift, and go to state 86
+    GREATOREQUAL  shift, and go to state 87
+    EQUAL         shift, and go to state 88
+    DIVIDEQUAL    shift, and go to state 89
+    PLUS          shift, and go to state 90
+    MINUS         shift, and go to state 91
+
+    LESS          [reduce using rule 31 (relation)]
+    LESSOREQUAL   [reduce using rule 31 (relation)]
+    GREAT         [reduce using rule 31 (relation)]
+    GREATOREQUAL  [reduce using rule 31 (relation)]
+    EQUAL         [reduce using rule 31 (relation)]
+    DIVIDEQUAL    [reduce using rule 31 (relation)]
+    PLUS          [reduce using rule 31 (relation)]
+    MINUS         [reduce using rule 31 (relation)]
+    $default      reduce using rule 31 (relation)
+
+
+State 40
+
+   38 factor: term .
+   42 term: term . MULT unary
+   43     | term . DIVIDE unary
+
+    MULT    shift, and go to state 92
+    DIVIDE  shift, and go to state 93
+
+    MULT      [reduce using rule 38 (factor)]
+    DIVIDE    [reduce using rule 38 (factor)]
+    $default  reduce using rule 38 (factor)
+
+
+State 41
+
+   41 term: unary .
+
+    $default  reduce using rule 41 (term)
+
+
+State 42
+
+   49 unary: primary .
+
+    $default  reduce using rule 49 (unary)
+
+
+State 43
+
+   44 unary: reference .
+   45      | reference . IS typeIndicator
+   59 reference: reference . tail
+
+    IS                 shift, and go to state 94
+    LEFTCIRCLEBRACKET  shift, and go to state 55
+    LEFTSQUAREBRACKET  shift, and go to state 56
+    DOT                shift, and go to state 57
+
+    $default  reduce using rule 44 (unary)
+
+    tail  go to state 59
+
+
+State 44
+
+   13 print: PRINT expressionlist .
+   65 expressionlist: expressionlist . COMMA expression
+
+    COMMA  shift, and go to state 95
+
+    $default  reduce using rule 13 (print)
+
+
+State 45
+
+   53 primary: literal .
+
+    $default  reduce using rule 53 (primary)
+
+
+State 46
+
+   78 literal: arrayLiteral .
+
+    $default  reduce using rule 78 (literal)
+
+
+State 47
+
+   79 literal: tupleLiteral .
+
+    $default  reduce using rule 79 (literal)
+
+
+State 48
+
+   80 literal: functionLiteral .
+
+    $default  reduce using rule 80 (literal)
+
+
+State 49
+
+   15 return: RETURN expression .
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+
+    OR   shift, and go to state 81
+    XOR  shift, and go to state 82
+
+    $default  reduce using rule 15 (return)
+
+
+State 50
+
+   16 if: IF expression . THEN body END
+   17   | IF expression . THEN body ELSE body END
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+
+    OR    shift, and go to state 81
+    XOR   shift, and go to state 82
+    THEN  shift, and go to state 96
+
+
+State 51
+
+   18 loop: WHILE expression . loopBody
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+
+    OR    shift, and go to state 81
+    XOR   shift, and go to state 82
+    LOOP  shift, and go to state 97
+
+    loopBody  go to state 98
+
+
+State 52
+
+   19 loop: FOR identifier . IN expression DOUBLEDOT expression loopBody
+
+    IN  shift, and go to state 99
+
+
+State 53
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 54
+
+    3 statementList: statementList SEMICOLON . statement
+
+    identifier  shift, and go to state 1
+    VAR         shift, and go to state 2
+    PRINT       shift, and go to state 3
+    RETURN      shift, and go to state 4
+    IF          shift, and go to state 5
+    WHILE       shift, and go to state 6
+    FOR         shift, and go to state 7
+
+    $default  reduce using rule 11 (emptyStatement)
+
+    statement       go to state 100
+    emptyStatement  go to state 11
+    assignment      go to state 12
+    print           go to state 13
+    return          go to state 14
+    if              go to state 15
+    loop            go to state 16
+    declaration     go to state 17
+    reference       go to state 18
+
+
+State 55
+
+   63 tail: LEFTCIRCLEBRACKET . expressionlist RIGHTCIRCLEBRACKET
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 36
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    expressionlist   go to state 101
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 56
+
+   62 tail: LEFTSQUAREBRACKET . expression RIGHTSQUAREBRACKET
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 102
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 57
+
+   60 tail: DOT . LESS integerLiteral GREAT
+   61     | DOT . LESS identifier GREAT
+
+    LESS  shift, and go to state 103
+
+
+State 58
+
+   12 assignment: reference ASSIGN . expression
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 104
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 59
+
+   59 reference: reference tail .
+
+    $default  reduce using rule 59 (reference)
+
+
+State 60
+
+   25 variableDefinition: identifier ASSIGN . expression
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 105
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 61
+
+   23 variableDefinitionList: variableDefinitionList COMMA . variableDefinition
+
+    identifier  shift, and go to state 19
+
+    variableDefinition  go to state 106
+
+
+State 62
+
+   52 unary: NOT primary .
+
+    $default  reduce using rule 52 (unary)
+
+
+State 63
+
+   48 unary: NOT reference .
+   59 reference: reference . tail
+
+    LEFTCIRCLEBRACKET  shift, and go to state 55
+    LEFTSQUAREBRACKET  shift, and go to state 56
+    DOT                shift, and go to state 57
+
+    $default  reduce using rule 48 (unary)
+
+    tail  go to state 59
+
+
+State 64
+
+   94 funBody: IS . body END
+
+    identifier  shift, and go to state 1
+    VAR         shift, and go to state 2
+    PRINT       shift, and go to state 3
+    RETURN      shift, and go to state 4
+    IF          shift, and go to state 5
+    WHILE       shift, and go to state 6
+    FOR         shift, and go to state 7
+
+    $default  reduce using rule 11 (emptyStatement)
+
+    statementList   go to state 107
+    statement       go to state 10
+    emptyStatement  go to state 11
+    assignment      go to state 12
+    print           go to state 13
+    return          go to state 14
+    if              go to state 15
+    loop            go to state 16
+    declaration     go to state 17
+    reference       go to state 18
+    body            go to state 108
+
+
+State 65
+
+   91 Parameters: LEFTCIRCLEBRACKET . identifierList RIGHTCIRCLEBRACKET
+
+    identifier  shift, and go to state 109
+
+    identifierList  go to state 110
+
+
+State 66
+
+   95 funBody: ARROW . expression
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 111
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 67
+
+   90 functionLiteral: FUNC Parameters . funBody
+
+    IS     shift, and go to state 64
+    ARROW  shift, and go to state 66
+
+    funBody  go to state 112
+
+
+State 68
+
+   89 functionLiteral: FUNC funBody .
+
+    $default  reduce using rule 89 (functionLiteral)
+
+
+State 69
+
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+   57 primary: LEFTCIRCLEBRACKET expression . RIGHTCIRCLEBRACKET
+
+    OR                  shift, and go to state 81
+    XOR                 shift, and go to state 82
+    RIGHTCIRCLEBRACKET  shift, and go to state 113
+
+
+State 70
+
+   81 arrayLiteral: LEFTSQUAREBRACKET RIGHTSQUAREBRACKET .
+
+    $default  reduce using rule 81 (arrayLiteral)
+
+
+State 71
+
+   65 expressionlist: expressionlist . COMMA expression
+   82 arrayLiteral: LEFTSQUAREBRACKET expressionlist . RIGHTSQUAREBRACKET
+
+    RIGHTSQUAREBRACKET  shift, and go to state 114
+    COMMA               shift, and go to state 95
+
+
+State 72
+
+   58 reference: identifier .
+   88 tupleElement: identifier . ASSIGN expression
+
+    ASSIGN  shift, and go to state 115
+
+    $default  reduce using rule 58 (reference)
+
+
+State 73
+
+   83 tupleLiteral: LEFTCURLYBRACKET RIGHTCURLYBRACKET .
+
+    $default  reduce using rule 83 (tupleLiteral)
+
+
+State 74
+
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+   87 tupleElement: expression .
+
+    OR   shift, and go to state 81
+    XOR  shift, and go to state 82
+
+    $default  reduce using rule 87 (tupleElement)
+
+
+State 75
+
+   84 tupleLiteral: LEFTCURLYBRACKET tupleElementList . RIGHTCURLYBRACKET
+   86 tupleElementList: tupleElementList . COMMA tupleElement
+
+    RIGHTCURLYBRACKET  shift, and go to state 116
+    COMMA              shift, and go to state 117
+
+
+State 76
+
+   85 tupleElementList: tupleElement .
+
+    $default  reduce using rule 85 (tupleElementList)
+
+
+State 77
+
+   50 unary: PLUS primary .
+
+    $default  reduce using rule 50 (unary)
+
+
+State 78
+
+   46 unary: PLUS reference .
+   59 reference: reference . tail
+
+    LEFTCIRCLEBRACKET  shift, and go to state 55
+    LEFTSQUAREBRACKET  shift, and go to state 56
+    DOT                shift, and go to state 57
+
+    $default  reduce using rule 46 (unary)
+
+    tail  go to state 59
+
+
+State 79
+
+   51 unary: MINUS primary .
+
+    $default  reduce using rule 51 (unary)
+
+
+State 80
+
+   47 unary: MINUS reference .
+   59 reference: reference . tail
+
+    LEFTCIRCLEBRACKET  shift, and go to state 55
+    LEFTSQUAREBRACKET  shift, and go to state 56
+    DOT                shift, and go to state 57
+
+    $default  reduce using rule 47 (unary)
+
+    tail  go to state 59
+
+
+State 81
+
+   26 expression: expression OR . andExpression
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    andExpression    go to state 118
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 82
+
+   27 expression: expression XOR . andExpression
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    andExpression    go to state 119
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 83
+
+   29 andExpression: andExpression AND . relation
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    relation         go to state 120
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 84
+
+   32 relation: factor LESS . factor
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    factor           go to state 121
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 85
+
+   33 relation: factor LESSOREQUAL . factor
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    factor           go to state 122
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 86
+
+   34 relation: factor GREAT . factor
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    factor           go to state 123
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 87
+
+   35 relation: factor GREATOREQUAL . factor
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    factor           go to state 124
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 88
+
+   36 relation: factor EQUAL . factor
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    factor           go to state 125
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 89
+
+   37 relation: factor DIVIDEQUAL . factor
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    factor           go to state 126
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 90
+
+   39 factor: factor PLUS . term
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    term             go to state 127
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 91
+
+   40 factor: factor MINUS . term
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    term             go to state 128
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 92
+
+   42 term: term MULT . unary
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    unary            go to state 129
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 93
+
+   43 term: term DIVIDE . unary
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    unary            go to state 130
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 94
+
+   45 unary: reference IS . typeIndicator
+
+    INT                shift, and go to state 131
+    REAL               shift, and go to state 132
+    BOOL               shift, and go to state 133
+    STRING             shift, and go to state 134
+    EMPTY              shift, and go to state 135
+    FUNC               shift, and go to state 136
+    LEFTSQUAREBRACKET  shift, and go to state 137
+    LEFTCURLYBRACKET   shift, and go to state 138
+
+    typeIndicator  go to state 139
+
+
+State 95
+
+   65 expressionlist: expressionlist COMMA . expression
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 140
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 96
+
+   16 if: IF expression THEN . body END
+   17   | IF expression THEN . body ELSE body END
+
+    identifier  shift, and go to state 1
+    VAR         shift, and go to state 2
+    PRINT       shift, and go to state 3
+    RETURN      shift, and go to state 4
+    IF          shift, and go to state 5
+    WHILE       shift, and go to state 6
+    FOR         shift, and go to state 7
+
+    $default  reduce using rule 11 (emptyStatement)
+
+    statementList   go to state 107
+    statement       go to state 10
+    emptyStatement  go to state 11
+    assignment      go to state 12
+    print           go to state 13
+    return          go to state 14
+    if              go to state 15
+    loop            go to state 16
+    declaration     go to state 17
+    reference       go to state 18
+    body            go to state 141
+
+
+State 97
+
+   20 loopBody: LOOP . body END
+
+    identifier  shift, and go to state 1
+    VAR         shift, and go to state 2
+    PRINT       shift, and go to state 3
+    RETURN      shift, and go to state 4
+    IF          shift, and go to state 5
+    WHILE       shift, and go to state 6
+    FOR         shift, and go to state 7
+
+    $default  reduce using rule 11 (emptyStatement)
+
+    statementList   go to state 107
+    statement       go to state 10
+    emptyStatement  go to state 11
+    assignment      go to state 12
+    print           go to state 13
+    return          go to state 14
+    if              go to state 15
+    loop            go to state 16
+    declaration     go to state 17
+    reference       go to state 18
+    body            go to state 142
+
+
+State 98
+
+   18 loop: WHILE expression loopBody .
+
+    $default  reduce using rule 18 (loop)
+
+
+State 99
+
+   19 loop: FOR identifier IN . expression DOUBLEDOT expression loopBody
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 143
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 100
+
+    3 statementList: statementList SEMICOLON statement .
+
+    $default  reduce using rule 3 (statementList)
+
+
+State 101
+
+   63 tail: LEFTCIRCLEBRACKET expressionlist . RIGHTCIRCLEBRACKET
+   65 expressionlist: expressionlist . COMMA expression
+
+    RIGHTCIRCLEBRACKET  shift, and go to state 144
+    COMMA               shift, and go to state 95
+
+
+State 102
+
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+   62 tail: LEFTSQUAREBRACKET expression . RIGHTSQUAREBRACKET
+
+    OR                  shift, and go to state 81
+    XOR                 shift, and go to state 82
+    RIGHTSQUAREBRACKET  shift, and go to state 145
+
+
+State 103
+
+   60 tail: DOT LESS . integerLiteral GREAT
+   61     | DOT LESS . identifier GREAT
+
+    identifier      shift, and go to state 146
+    integerLiteral  shift, and go to state 147
+
+
+State 104
+
+   12 assignment: reference ASSIGN expression .
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+
+    OR   shift, and go to state 81
+    XOR  shift, and go to state 82
+
+    $default  reduce using rule 12 (assignment)
+
+
+State 105
+
+   25 variableDefinition: identifier ASSIGN expression .
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+
+    OR   shift, and go to state 81
+    XOR  shift, and go to state 82
+
+    $default  reduce using rule 25 (variableDefinition)
+
+
+State 106
+
+   23 variableDefinitionList: variableDefinitionList COMMA variableDefinition .
+
+    $default  reduce using rule 23 (variableDefinitionList)
+
+
+State 107
+
+    3 statementList: statementList . SEMICOLON statement
+   96 body: statementList .
+
+    SEMICOLON  shift, and go to state 54
+
+    $default  reduce using rule 96 (body)
+
+
+State 108
+
+   94 funBody: IS body . END
+
+    END  shift, and go to state 148
+
+
+State 109
+
+   92 identifierList: identifier .
+
+    $default  reduce using rule 92 (identifierList)
+
+
+State 110
+
+   91 Parameters: LEFTCIRCLEBRACKET identifierList . RIGHTCIRCLEBRACKET
+   93 identifierList: identifierList . COMMA identifier
+
+    RIGHTCIRCLEBRACKET  shift, and go to state 149
+    COMMA               shift, and go to state 150
+
+
+State 111
+
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+   95 funBody: ARROW expression .
+
+    OR   shift, and go to state 81
+    XOR  shift, and go to state 82
+
+    OR        [reduce using rule 95 (funBody)]
+    XOR       [reduce using rule 95 (funBody)]
+    $default  reduce using rule 95 (funBody)
+
+
+State 112
+
+   90 functionLiteral: FUNC Parameters funBody .
+
+    $default  reduce using rule 90 (functionLiteral)
+
+
+State 113
+
+   57 primary: LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET .
+
+    $default  reduce using rule 57 (primary)
+
+
+State 114
+
+   82 arrayLiteral: LEFTSQUAREBRACKET expressionlist RIGHTSQUAREBRACKET .
+
+    $default  reduce using rule 82 (arrayLiteral)
+
+
+State 115
+
+   88 tupleElement: identifier ASSIGN . expression
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 151
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 116
+
+   84 tupleLiteral: LEFTCURLYBRACKET tupleElementList RIGHTCURLYBRACKET .
+
+    $default  reduce using rule 84 (tupleLiteral)
+
+
+State 117
+
+   86 tupleElementList: tupleElementList COMMA . tupleElement
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 72
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 74
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    tupleElement     go to state 152
+    functionLiteral  go to state 48
+
+
+State 118
+
+   26 expression: expression OR andExpression .
+   29 andExpression: andExpression . AND relation
+
+    AND  shift, and go to state 83
+
+    $default  reduce using rule 26 (expression)
+
+
+State 119
+
+   27 expression: expression XOR andExpression .
+   29 andExpression: andExpression . AND relation
+
+    AND  shift, and go to state 83
+
+    $default  reduce using rule 27 (expression)
+
+
+State 120
+
+   29 andExpression: andExpression AND relation .
+
+    $default  reduce using rule 29 (andExpression)
+
+
+State 121
+
+   32 relation: factor LESS factor .
+   39 factor: factor . PLUS term
+   40       | factor . MINUS term
+
+    PLUS   shift, and go to state 90
+    MINUS  shift, and go to state 91
+
+    $default  reduce using rule 32 (relation)
+
+
+State 122
+
+   33 relation: factor LESSOREQUAL factor .
+   39 factor: factor . PLUS term
+   40       | factor . MINUS term
+
+    PLUS   shift, and go to state 90
+    MINUS  shift, and go to state 91
+
+    $default  reduce using rule 33 (relation)
+
+
+State 123
+
+   34 relation: factor GREAT factor .
+   39 factor: factor . PLUS term
+   40       | factor . MINUS term
+
+    PLUS   shift, and go to state 90
+    MINUS  shift, and go to state 91
+
+    $default  reduce using rule 34 (relation)
+
+
+State 124
+
+   35 relation: factor GREATOREQUAL factor .
+   39 factor: factor . PLUS term
+   40       | factor . MINUS term
+
+    PLUS   shift, and go to state 90
+    MINUS  shift, and go to state 91
+
+    $default  reduce using rule 35 (relation)
+
+
+State 125
+
+   36 relation: factor EQUAL factor .
+   39 factor: factor . PLUS term
+   40       | factor . MINUS term
+
+    PLUS   shift, and go to state 90
+    MINUS  shift, and go to state 91
+
+    $default  reduce using rule 36 (relation)
+
+
+State 126
+
+   37 relation: factor DIVIDEQUAL factor .
+   39 factor: factor . PLUS term
+   40       | factor . MINUS term
+
+    PLUS   shift, and go to state 90
+    MINUS  shift, and go to state 91
+
+    $default  reduce using rule 37 (relation)
+
+
+State 127
+
+   39 factor: factor PLUS term .
+   42 term: term . MULT unary
+   43     | term . DIVIDE unary
+
+    MULT    shift, and go to state 92
+    DIVIDE  shift, and go to state 93
+
+    $default  reduce using rule 39 (factor)
+
+
+State 128
+
+   40 factor: factor MINUS term .
+   42 term: term . MULT unary
+   43     | term . DIVIDE unary
+
+    MULT    shift, and go to state 92
+    DIVIDE  shift, and go to state 93
+
+    $default  reduce using rule 40 (factor)
+
+
+State 129
+
+   42 term: term MULT unary .
+
+    $default  reduce using rule 42 (term)
+
+
+State 130
+
+   43 term: term DIVIDE unary .
+
+    $default  reduce using rule 43 (term)
+
+
+State 131
+
+   66 typeIndicator: INT .
+
+    $default  reduce using rule 66 (typeIndicator)
+
+
+State 132
+
+   67 typeIndicator: REAL .
+
+    $default  reduce using rule 67 (typeIndicator)
+
+
+State 133
+
+   68 typeIndicator: BOOL .
+
+    $default  reduce using rule 68 (typeIndicator)
+
+
+State 134
+
+   69 typeIndicator: STRING .
+
+    $default  reduce using rule 69 (typeIndicator)
+
+
+State 135
+
+   70 typeIndicator: EMPTY .
+
+    $default  reduce using rule 70 (typeIndicator)
+
+
+State 136
+
+   73 typeIndicator: FUNC .
+
+    $default  reduce using rule 73 (typeIndicator)
+
+
+State 137
+
+   71 typeIndicator: LEFTSQUAREBRACKET . RIGHTSQUAREBRACKET
+
+    RIGHTSQUAREBRACKET  shift, and go to state 153
+
+
+State 138
+
+   72 typeIndicator: LEFTCURLYBRACKET . RIGHTCURLYBRACKET
+
+    RIGHTCURLYBRACKET  shift, and go to state 154
+
+
+State 139
+
+   45 unary: reference IS typeIndicator .
+
+    $default  reduce using rule 45 (unary)
+
+
+State 140
+
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+   65 expressionlist: expressionlist COMMA expression .
+
+    OR   shift, and go to state 81
+    XOR  shift, and go to state 82
+
+    $default  reduce using rule 65 (expressionlist)
+
+
+State 141
+
+   16 if: IF expression THEN body . END
+   17   | IF expression THEN body . ELSE body END
+
+    ELSE  shift, and go to state 155
+    END   shift, and go to state 156
+
+
+State 142
+
+   20 loopBody: LOOP body . END
+
+    END  shift, and go to state 157
+
+
+State 143
+
+   19 loop: FOR identifier IN expression . DOUBLEDOT expression loopBody
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+
+    OR         shift, and go to state 81
+    XOR        shift, and go to state 82
+    DOUBLEDOT  shift, and go to state 158
+
+
+State 144
+
+   63 tail: LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET .
+
+    $default  reduce using rule 63 (tail)
+
+
+State 145
+
+   62 tail: LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET .
+
+    $default  reduce using rule 62 (tail)
+
+
+State 146
+
+   61 tail: DOT LESS identifier . GREAT
+
+    GREAT  shift, and go to state 159
+
+
+State 147
+
+   60 tail: DOT LESS integerLiteral . GREAT
+
+    GREAT  shift, and go to state 160
+
+
+State 148
+
+   94 funBody: IS body END .
+
+    $default  reduce using rule 94 (funBody)
+
+
+State 149
+
+   91 Parameters: LEFTCIRCLEBRACKET identifierList RIGHTCIRCLEBRACKET .
+
+    $default  reduce using rule 91 (Parameters)
+
+
+State 150
+
+   93 identifierList: identifierList COMMA . identifier
+
+    identifier  shift, and go to state 161
+
+
+State 151
+
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+   88 tupleElement: identifier ASSIGN expression .
+
+    OR   shift, and go to state 81
+    XOR  shift, and go to state 82
+
+    $default  reduce using rule 88 (tupleElement)
+
+
+State 152
+
+   86 tupleElementList: tupleElementList COMMA tupleElement .
+
+    $default  reduce using rule 86 (tupleElementList)
+
+
+State 153
+
+   71 typeIndicator: LEFTSQUAREBRACKET RIGHTSQUAREBRACKET .
+
+    $default  reduce using rule 71 (typeIndicator)
+
+
+State 154
+
+   72 typeIndicator: LEFTCURLYBRACKET RIGHTCURLYBRACKET .
+
+    $default  reduce using rule 72 (typeIndicator)
+
+
+State 155
+
+   17 if: IF expression THEN body ELSE . body END
+
+    identifier  shift, and go to state 1
+    VAR         shift, and go to state 2
+    PRINT       shift, and go to state 3
+    RETURN      shift, and go to state 4
+    IF          shift, and go to state 5
+    WHILE       shift, and go to state 6
+    FOR         shift, and go to state 7
+
+    $default  reduce using rule 11 (emptyStatement)
+
+    statementList   go to state 107
+    statement       go to state 10
+    emptyStatement  go to state 11
+    assignment      go to state 12
+    print           go to state 13
+    return          go to state 14
+    if              go to state 15
+    loop            go to state 16
+    declaration     go to state 17
+    reference       go to state 18
+    body            go to state 162
+
+
+State 156
+
+   16 if: IF expression THEN body END .
+
+    $default  reduce using rule 16 (if)
+
+
+State 157
+
+   20 loopBody: LOOP body END .
+
+    $default  reduce using rule 20 (loopBody)
+
+
+State 158
+
+   19 loop: FOR identifier IN expression DOUBLEDOT . expression loopBody
+
+    booleanLiteral     shift, and go to state 22
+    identifier         shift, and go to state 1
+    integerLiteral     shift, and go to state 23
+    realLiteral        shift, and go to state 24
+    stringLiteral      shift, and go to state 25
+    NOT                shift, and go to state 26
+    READINT            shift, and go to state 27
+    READREAL           shift, and go to state 28
+    READSTRING         shift, and go to state 29
+    FUNC               shift, and go to state 30
+    LEFTCIRCLEBRACKET  shift, and go to state 31
+    LEFTSQUAREBRACKET  shift, and go to state 32
+    LEFTCURLYBRACKET   shift, and go to state 33
+    PLUS               shift, and go to state 34
+    MINUS              shift, and go to state 35
+
+    expression       go to state 163
+    andExpression    go to state 37
+    relation         go to state 38
+    factor           go to state 39
+    term             go to state 40
+    unary            go to state 41
+    primary          go to state 42
+    reference        go to state 43
+    literal          go to state 45
+    arrayLiteral     go to state 46
+    tupleLiteral     go to state 47
+    functionLiteral  go to state 48
+
+
+State 159
+
+   61 tail: DOT LESS identifier GREAT .
+
+    $default  reduce using rule 61 (tail)
+
+
+State 160
+
+   60 tail: DOT LESS integerLiteral GREAT .
+
+    $default  reduce using rule 60 (tail)
+
+
+State 161
+
+   93 identifierList: identifierList COMMA identifier .
+
+    $default  reduce using rule 93 (identifierList)
+
+
+State 162
+
+   17 if: IF expression THEN body ELSE body . END
+
+    END  shift, and go to state 164
+
+
+State 163
+
+   19 loop: FOR identifier IN expression DOUBLEDOT expression . loopBody
+   26 expression: expression . OR andExpression
+   27           | expression . XOR andExpression
+
+    OR    shift, and go to state 81
+    XOR   shift, and go to state 82
+    LOOP  shift, and go to state 97
+
+    loopBody  go to state 165
+
+
+State 164
+
+   17 if: IF expression THEN body ELSE body END .
+
+    $default  reduce using rule 17 (if)
+
+
+State 165
+
+   19 loop: FOR identifier IN expression DOUBLEDOT expression loopBody .
+
+    $default  reduce using rule 19 (loop)
