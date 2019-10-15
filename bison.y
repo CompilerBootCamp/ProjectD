@@ -36,6 +36,9 @@
 #include "src/ast/ReferenceTail.h"
 #include "src/ast/ForStatement.h"
 #include "src/ast/TypeIndicator.h"
+#include "src/ast/ReadInt.h"
+#include "src/ast/ReadReal.h"
+#include "src/ast/ReadString.h"
 
 #include "src/visitor/Interpreter.h"
 
@@ -252,7 +255,9 @@ unary:
 
 primary:
       literal
-    | READINT | READREAL | READSTRING //??????
+    | READINT { $$ = AST::ReadInt(); }
+    | READREAL { $$ = AST::ReadReal(); }
+    | READSTRING { $$ = AST::ReadString(); }
     | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET  { $$ = $2; }
     
 reference:

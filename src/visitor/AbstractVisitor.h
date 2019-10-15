@@ -5,36 +5,65 @@
 #ifndef PROJECTD_VISITOR_H
 #define PROJECTD_VISITOR_H
 
-namespace AST
-{
+namespace AST {
     class Node;
+
     class EmptyNode;
+
     class Print;
+
     class Reference;
+
     class Statement;
+
     class StatementList;
+
     class Expression;
+
     class IfStatement;
+
     class WhileStatement;
+
     class DefinitionList;
+
     class ForStatement;
+
+    class ReadInt;
+
+    class ReadString;
+
+    class ReadReal;
 }
 
-class AbstractVisitor
-{
+class AbstractVisitor {
 public:
     virtual ~AbstractVisitor() = default;
 
     virtual void visit(const AST::Node &) = 0;
+
     virtual void visit(const AST::EmptyNode &) = 0;
+
     virtual void visit(const AST::Reference &) = 0;
+
     virtual void visit(const AST::Print &) = 0;
+
     virtual void visit(const AST::StatementList &) = 0;
-    virtual void visit(const AST::IfStatement&) = 0;
+
+    virtual void visit(const AST::IfStatement &) = 0;
+
     virtual void visit(const AST::Statement &) = 0;
+
     virtual void visit(const AST::WhileStatement &) = 0;
+
     virtual void visit(const AST::DefinitionList &) = 0;
+
     virtual void visit(const AST::ForStatement &) = 0;
+
+    virtual void visit(const AST::ReadInt &) = 0;
+
+    virtual void visit(const AST::ReadString &) = 0;
+
+    virtual void visit(const AST::ReadReal &) = 0;
 };
 
 

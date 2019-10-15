@@ -21,11 +21,13 @@
 #include "../ast/VarDef.h"
 #include "../ast/ForStatement.h"
 #include "../ast/ReferenceTail.h"
-
+#include "../ast/ReadInt.h"
+#include "../ast/ReadString.h"
+#include "../ast/ReadReal.h"
 
 void Interpreter::visit(const AST::Print &print) {
     //std::cout << "size of expr: " << print.expressionsList->expressions.size() << std::endl;
-    for (auto expression : print.expressionsList->expressions){
+    for (auto expression : print.expressionsList->expressions) {
         expression->accept(*this);
         std::cout << expression->evaluate().to_string() << std::endl;
     }
@@ -33,10 +35,8 @@ void Interpreter::visit(const AST::Print &print) {
 
 void Interpreter::visit(const AST::Node &node) {}
 
-void Interpreter::visit(const AST::Reference &reference)
-{
-    if(SymbolTable::symbol_table.find(reference.s_id) == SymbolTable::symbol_table.end())
-    {
+void Interpreter::visit(const AST::Reference &reference) {
+    if (SymbolTable::symbol_table.find(reference.s_id) == SymbolTable::symbol_table.end()) {
         //exception
         std::cout << "variable not declared: " + reference.s_id << std::endl;
     }
@@ -109,4 +109,22 @@ void Interpreter::visit(const AST::ForStatement &statement) {
                   << " OR " << TYPES::type_to_string(statement.getEndExpression()->evaluate().getType()) << " to int"
                   << std::endl;
     }
+}
+
+void Interpreter::visit(const AST::ReadInt &statement) {
+    int readInt;
+    std::cin >> readInt;
+    statement.accept(*this);
+}
+
+void Interpreter::visit(const AST::ReadString &statement) {
+    std::string readStr;
+    std::cin >> readStr;
+    statement.accept(*this);
+}
+
+void Interpreter::visit(const AST::ReadReal &statement) {
+    double readReal;
+    std::cin >> readReal;
+    statement.accept(*this);
 }
