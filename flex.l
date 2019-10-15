@@ -76,7 +76,7 @@ stringliteral '{AlphaDigit}*'
 "false"		    {ECHO; yylval.u.bval = false; return booleanLiteral; }
 ","		        {ECHO; return COMMA; }
 "=>"		    {ECHO; return ARROW; }
-{integerliteral} {ECHO;   yylval.u.ival = atoi(yytext);  return integerLiteral;}
+{integerliteral} {ECHO;  yylval.u.ival = atoi(yytext);  return integerLiteral;}
 {realliteral}    {ECHO;  yylval.u.dval = atof(yytext);  return realLiteral;}
 {stringliteral}  {ECHO; yylval.u.sval = strdup(yytext); return stringLiteral;}
 {identifier}     {ECHO; yylval.u.sval = strdup(yytext); return identifier;}

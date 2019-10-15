@@ -2,6 +2,7 @@
 #define TUPLELITERAL_H_INCLUDED
 
 #include "Literal.h"
+#include <vector>
 
 namespace AST{
 
@@ -10,7 +11,7 @@ class TupleElementList;
 class TupleLiteral: public Literal
 {
 public:
-    TupleElementList* tu_list;
+    std::vector<std::pair<std::string, Expression*> > tu_list;
 public:
     TupleLiteral();
     TupleLiteral(TupleElementList* tul);
@@ -22,6 +23,8 @@ public:
 
     //Only for tuples
     Literal& concat(TupleLiteral*) override;
+
+    Expression* get_value(std::string);
 
 };
 }

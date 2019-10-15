@@ -85,12 +85,12 @@ void Interpreter::visit(const AST::WhileStatement &statement) {
 
 void Interpreter::visit(const AST::DefinitionList &statement) {
     for (auto var : statement.var_list) {
-        if (SymbolTable::symbol_table.find(var->variable.first) != SymbolTable::symbol_table.end()) {
+        if (SymbolTable::symbol_table.find(var.first) != SymbolTable::symbol_table.end()) {
             //exception
-            std::cout << std::endl << "conflict declaration: " << var->variable.first << std::endl;
+            std::cout << std::endl << "conflict declaration: " << var.first << std::endl;
         } else {
-            var->variable.second->accept(*this);
-            SymbolTable::symbol_table.insert(make_pair(var->variable.first, &var->variable.second->evaluate()));
+            var.second->accept(*this);
+            SymbolTable::symbol_table.insert(make_pair(var.first, &var.second->evaluate()));
         }
     }
 }
@@ -99,8 +99,7 @@ void Interpreter::visit(const AST::ForStatement &statement) {
     if (statement.getStartExpression()->evaluate().getType() == TYPES::_INT
         && statement.getEndExpression()->evaluate().getType() == TYPES::_INT) {
         auto startForVar = dynamic_cast<AST::IntLiteral *>(&statement.getStartExpression()->evaluate())->getValue();
-        auto endForVar = dynamic_cast<AST::IntLiteral *>(&statement.getStartExpression()->evaluate())->getValue();
-        auto newLiteral = new AST::IntLiteral(startForVar);
+        auto endForVar = dynamic_cast<AST::IntLiteral *>(&statement.getEndExpression()->evaluate())->getValue();
         for (int i = startForVar; i < endForVar; ++i) {
             statement.getForStatements()->accept(*this);
         }

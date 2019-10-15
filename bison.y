@@ -110,6 +110,7 @@ struct my_types
 %token MULT                 // *
 %token DIVIDE               // /
 
+
 %start program
 
 %type<u.stval> statement print emptyStatement if loop declaration
@@ -172,16 +173,18 @@ return:
 if:
     IF expression THEN body END { $$ = new AST::IfStatement($2, $4); }
     | IF expression THEN body ELSE body END { $$ = new AST::IfStatement($2, $4, $6); }
+    ;
 
 loop:
     WHILE expression loopBody { $$ = new AST::WhileStatement($2, $3); }
     | FOR identifier IN expression DOUBLEDOT expression loopBody { $$ = new AST::ForStatement($7, $4, $6, $2); }
+    ;
 
 loopBody:
-    LOOP body END { $$ = $2; }
+    LOOP body END { $$ = $2; };
 
 declaration:
-    VAR variableDefinitionList { $$ = $2; }
+    VAR variableDefinitionList { $$ = $2; };
     
 variableDefinitionList:
     variableDefinition
@@ -198,6 +201,7 @@ variableDefinitionList:
 variableDefinition:
     identifier                      { $$ = new AST::VarDef($1, new AST::Literal()); }
     | identifier ASSIGN expression  { $$ = new AST::VarDef($1, $3); }
+    ;
 
 expression:
     expression OR andExpression     { $$ = new AST::BinaryExpr($1, $3, _OR);}
@@ -218,19 +222,22 @@ relation:
     | factor GREATOREQUAL factor    { $$ = new AST::BinaryExpr($1, $3, _GREATER_OR_EQUAL); }
     | factor EQUAL factor           { $$ = new AST::BinaryExpr($1, $3, _EQUAL); }
     | factor DIVIDEQUAL factor      { $$ = new AST::BinaryExpr($1, $3, _DIVIDE_EQUAL); }
+    ;
 
 factor:
     term                { $$ = $1; }
     | factor PLUS term  { $$ = new AST::BinaryExpr($1, $3, _ADD);}
     | factor MINUS term { $$ = new AST::BinaryExpr($1, $3, _SUB);}
+    ;
 
 term:
     unary               { $$ = $1; }
     | term MULT unary   { $$ = new AST::BinaryExpr($1, $3, _MULTIPLY);}
     | term DIVIDE unary { $$ = new AST::BinaryExpr($1, $3, _DIVIDE);}
+    ;
 
 unary:
-    reference
+    reference           { $$ = $1; }
     | reference IS typeIndicator
     | PLUS reference
     | MINUS reference
@@ -258,10 +265,11 @@ reference:
     ;
 
 tail:
-    DOT integerLiteral                                      { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral(std::to_string($2))), TYPES::_TUPLE); }// access to unnamed tuple element
-    | DOT identifier                                        { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral($2, true)), TYPES::_TUPLE); }// access to named tuple element
+    DOT LESS integerLiteral GREAT                         { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral(std::to_string($3))), TYPES::_TUPLE); }// access to unnamed tuple element
+    | DOT LESS identifier GREAT                             { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral($3, true)), TYPES::_TUPLE); }// access to named tuple element
     | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET       { $$ = new AST::ReferenceTail(new AST::ExpressionList($2), TYPES::_ARRAY); }// access to array element
     | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET   { $$ = new AST::ReferenceTail($2, TYPES::_FUNCTION); }// function call
+    ;
     
 expressionlist:
     expression 

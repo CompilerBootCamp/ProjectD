@@ -41,7 +41,7 @@ void Reference::setType(TYPES::Type type)
 
 void Reference::add_reference(ReferenceTail* rt)
 {
-    reference_tail.push_back(rt);
+    reference_tail.push_back(rt->reference_list);
 }
 
 Literal& Reference::evaluate()
@@ -53,17 +53,18 @@ Literal& Reference::evaluate()
         if(exception)
             break;
 
-        switch(ref->reference_list.second)
+        switch(ref.second)
         {
         case TYPES::_ARRAY:
         {
             auto arr = static_cast<ArrayLiteral*>(value);
-            auto index = static_cast<IntLiteral*>(ref->reference_list.first->expressions[0])->value;
-            if(index < arr->array.size())
-                value = static_cast<Literal*>(arr ->array[index]);
+            auto index = static_cast<IntLiteral*>(&ref.first->expressions[0]->evaluate())->value;
+            if(index < arr->array.size()){
+                value = &arr ->array[index]->evaluate();
+            }
             else
             {
-                //esception
+                //exception
                 value = new Literal();
                 exception = true;
             }
@@ -71,31 +72,19 @@ Literal& Reference::evaluate()
         }
         case TYPES::_TUPLE:
         {
-            //std::cout << "value: " << value->to_string() << std::endl;
-            try
+
+            auto tuple = static_cast<TupleLiteral*>(value);
+            auto key = static_cast<StringLiteral*>(ref.first->expressions[0])->value;
+            auto tuple_value = tuple->get_value(key);
+            if(tuple_value == nullptr)
             {
-                auto tuple = static_cast<TupleLiteral*>(value);
-                auto key = static_cast<StringLiteral*>(ref->reference_list.first->expressions[0])->value;
-                auto tuple_elements = tuple->tu_list->elements;
-                auto it = std::find_if(tuple_elements.begin(), tuple_elements.end(),
-                                       [&key](std::pair<std::string, Expression*>&element)
-                {
-                    return element.first == key;
-                });
-                if(it != tuple_elements.end())
-                {
-                    value = static_cast<Literal*>((*it).second);
-                }
-                else
-                {
-                    //exception
-                    value = new Literal();
-                    exception = true;
-                }
+                //exception
+                value = new Literal();
+                exception = true;
             }
-            catch(...)
+            else
             {
-                std::cout << "not here";
+                value = &tuple_value->evaluate();
             }
             break;
         }

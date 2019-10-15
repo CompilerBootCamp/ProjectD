@@ -14,7 +14,7 @@ namespace AST
 
     Literal& Literal::evaluate()
     {
-        //exception
+        return *this;
     }
 
     Literal& Literal::operator+(Literal& rhs)

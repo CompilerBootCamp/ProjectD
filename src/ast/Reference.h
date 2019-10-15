@@ -12,13 +12,14 @@
 namespace AST{
 
     class ReferenceTail;
+    class ExpressionList;
 
     class Reference: public Expression
     {
     public:
         std::string s_id;
         TYPES::Type type;
-        std::vector<ReferenceTail*> reference_tail;
+        std::vector< std::pair<ExpressionList*, TYPES::Type>> reference_tail;
 
     public:
 

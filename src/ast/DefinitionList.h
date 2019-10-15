@@ -3,15 +3,17 @@
 
 #include "Statement.h"
 #include <vector>
+#include <string>
 
 namespace AST{
 
 class VarDef;
+class Expression;
 
 class DefinitionList: public Statement
 {
 public:
-    std::vector<VarDef*> var_list;
+    std::vector<std::pair<std::string, Expression*>> var_list;
 public:
     DefinitionList();
     DefinitionList(VarDef*);
