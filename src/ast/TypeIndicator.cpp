@@ -8,7 +8,7 @@
 
 namespace AST{
 Literal &TypeIndicator::evaluate() {
-    auto result = new BooleanLiteral(this->reference->getType() == getType()); //fixme
+    auto result = new BooleanLiteral(this->reference->getType() == getType());
     return *result;
 }
 

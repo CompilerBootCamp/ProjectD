@@ -5,10 +5,13 @@
 #include <iostream>
 #include "ReadReal.h"
 #include "../ast/RealLiteral.h"
-
-AST::Literal &AST::ReadReal::evaluate() {
+namespace AST
+{
+Literal &ReadReal::evaluate()
+{
     double value;
     std::cin >> value;
-    RealLiteral realLiteral = RealLiteral(value);
-    return realLiteral;
+    RealLiteral* realLiteral = new RealLiteral(value);
+    return *realLiteral;
+}
 }

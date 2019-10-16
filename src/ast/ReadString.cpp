@@ -6,9 +6,11 @@
 #include "ReadString.h"
 #include "../ast/StringLiteral.h"
 
-AST::Literal &AST::ReadString::evaluate() {
+namespace AST{
+Literal& ReadString::evaluate() {
     std::string value;
     std::cin >> value;
-    StringLiteral stringLiteral = value;
-    return stringLiteral;
+    StringLiteral* stringLiteral = new StringLiteral(value);
+    return *stringLiteral;
+}
 }

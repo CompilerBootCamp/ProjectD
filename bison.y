@@ -254,9 +254,9 @@ unary:
     | NOT primary       { $$ = new AST::UnaryExpr($2, _NOT); }
 
 primary:
-      literal
-    | READINT { $$ = new AST::ReadInt(); }
-    | READREAL { $$ = new AST::ReadReal(); }
+      literal   { $$ = $1; }
+    | READINT   { $$ = new AST::ReadInt(); }
+    | READREAL  { $$ = new AST::ReadReal(); }
     | READSTRING { $$ = new AST::ReadString(); }
     | LEFTCIRCLEBRACKET expression RIGHTCIRCLEBRACKET  { $$ = $2; }
     
