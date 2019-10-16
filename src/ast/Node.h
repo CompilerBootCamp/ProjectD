@@ -6,6 +6,7 @@
 #define PROJECTD_NODE_H
 
 class AbstractVisitor;
+class Scope;
 
 namespace AST
 {
@@ -15,6 +16,7 @@ namespace AST
     public:
         virtual ~Node() = default;
         virtual void accept(AbstractVisitor &) const;
+        Scope* scope;
     };
 }
 

@@ -5,7 +5,6 @@
 #include "Reference.h"
 #include "../visitor/AbstractVisitor.h"
 #include "Literal.h"
-#include "SymbolTable.h"
 #include "ReferenceTail.h"
 #include "TupleLiteral.h"
 #include "StringLiteral.h"
@@ -14,6 +13,7 @@
 #include "Expression.h"
 #include "IntLiteral.h"
 #include "TupleElementList.h"
+#include "Scope.h"
 #include <iostream>
 #include <algorithm>
 
@@ -22,6 +22,7 @@ namespace AST
 
 Reference::Reference(const char* id): s_id(id)
 {
+
 }
 
 void Reference::accept(AbstractVisitor &visitor) const
@@ -31,7 +32,7 @@ void Reference::accept(AbstractVisitor &visitor) const
 
 TYPES::Type Reference::getType() const
 {
-    return SymbolTable::symbol_table[s_id]->getType();
+    return scope->find_in_scope(s_id)->getType();
 }
 
 void Reference::setType(TYPES::Type type)
@@ -46,7 +47,7 @@ void Reference::add_reference(ReferenceTail* rt)
 
 Literal& Reference::evaluate()
 {
-    auto value = SymbolTable::symbol_table[s_id];
+    auto value = scope->find_in_scope(s_id);
     bool exception = false;
     for(auto ref: reference_tail)
     {

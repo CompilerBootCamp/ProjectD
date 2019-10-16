@@ -20,6 +20,7 @@ namespace AST
     class Literal: public Expression
     {
     public:
+        Literal();
         virtual ~Literal() = default;
         virtual std::string to_string();
         virtual AST::Literal& evaluate();

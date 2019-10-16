@@ -5,6 +5,8 @@
 #include "ForStatement.h"
 #include "../visitor/AbstractVisitor.h"
 #include "VarDef.h"
+#include "StatementList.h"
+#include "Scope.h"
 
 AST::StatementList *AST::ForStatement::getForStatements() const {
     return forStatements;
@@ -23,6 +25,7 @@ AST::ForStatement::ForStatement(AST::StatementList *forStatements, AST::Expressi
                                                                                       startExpression(startExpression),
                                                                                       endExpression(endExpression) {
     def = new VarDef(define, startExpression);
+    this->forStatements->scope->topScope = scope->topScope;
 }
 
 AST::Expression *AST::ForStatement::getStartExpression() const {

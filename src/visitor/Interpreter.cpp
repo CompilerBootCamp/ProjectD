@@ -5,7 +5,6 @@
 #include "Interpreter.h"
 #include <iostream>
 #include "../type_system/LiteralTypes.h"
-#include "../ast/SymbolTable.h"
 #include "../ast/Print.h"
 #include "../ast/Expression.h"
 #include "../ast/Literal.h"
@@ -24,6 +23,7 @@
 #include "../ast/ReadInt.h"
 #include "../ast/ReadString.h"
 #include "../ast/ReadReal.h"
+#include "../ast/Scope.h"
 
 void Interpreter::visit(const AST::Print &print) {
     //std::cout << "size of expr: " << print.expressionsList->expressions.size() << std::endl;
@@ -36,7 +36,7 @@ void Interpreter::visit(const AST::Print &print) {
 void Interpreter::visit(const AST::Node &node) {}
 
 void Interpreter::visit(const AST::Reference &reference) {
-    if (SymbolTable::symbol_table.find(reference.s_id) == SymbolTable::symbol_table.end()) {
+    if (reference.scope->find_in_scope(reference.s_id) == nullptr) {
         //exception
         std::cout << "variable not declared: " + reference.s_id << std::endl;
     }
@@ -85,12 +85,12 @@ void Interpreter::visit(const AST::WhileStatement &statement) {
 
 void Interpreter::visit(const AST::DefinitionList &statement) {
     for (auto var : statement.var_list) {
-        if (SymbolTable::symbol_table.find(var.first) != SymbolTable::symbol_table.end()) {
+        if (statement.scope->find_in_scope(var.first) != nullptr) {
             //exception
             std::cout << std::endl << "conflict declaration: " << var.first << std::endl;
         } else {
             var.second->accept(*this);
-            SymbolTable::symbol_table.insert(make_pair(var.first, &var.second->evaluate()));
+            statement.scope->topScope->symbols.insert(make_pair(var.first, &var.second->evaluate()));
         }
     }
 }

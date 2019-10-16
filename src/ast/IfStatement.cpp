@@ -4,6 +4,8 @@
 
 #include "IfStatement.h"
 #include "../visitor/AbstractVisitor.h"
+#include "../ast/StatementList.h"
+#include "Scope.h"
 
 namespace AST {
 
@@ -12,7 +14,11 @@ namespace AST {
     }
 
     IfStatement::IfStatement(Expression *expression, StatementList *thenStatements, StatementList *elseStatements)
-            : expression(expression), thenStatements(thenStatements), elseStatements(elseStatements), elseIf(true) {}
+            : expression(expression), thenStatements(thenStatements), elseStatements(elseStatements), elseIf(true) {
+        this->thenStatements->scope->topScope = scope->topScope;
+        this->elseStatements->scope->topScope = scope->topScope;
+
+    }
 
     StatementList *IfStatement::getThenStatements() const {
         return thenStatements;
@@ -39,7 +45,10 @@ namespace AST {
     }
 
     IfStatement::IfStatement(Expression *expression, StatementList *thenStatements) : expression(expression),
-                                                                                      thenStatements(thenStatements), elseIf(false) {}
+                                                                                      thenStatements(thenStatements), elseIf(false)
+    {
+        this->thenStatements->scope->topScope = scope->topScope;
+    }
 
     bool IfStatement::isElseIf() const {
         return elseIf;

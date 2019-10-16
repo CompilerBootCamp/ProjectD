@@ -4,6 +4,7 @@
 
 #include "Expression.h"
 #include "Literal.h"
+#include "Scope.h"
 
 namespace AST {
 
