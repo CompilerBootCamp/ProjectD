@@ -64,4 +64,12 @@ if true then
 else
     print 69;
 end;
-print {a := 3, b := 2, c := 1 + 5, 65-67 };
+
+var gt := 4;
+print h is int;
+
+var yy := false;
+print +gt;
+print not yy;
+
+print readInt + 4;

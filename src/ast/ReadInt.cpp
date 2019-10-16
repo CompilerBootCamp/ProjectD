@@ -5,12 +5,15 @@
 #include <iostream>
 #include "ReadInt.h"
 #include "../ast/IntLiteral.h"
-
-AST::Literal &AST::ReadInt::evaluate() {
+namespace AST
+{
+Literal &ReadInt::evaluate()
+{
     int value;
     std::cin >> value;
-    IntLiteral intLiteral = value;
-    return intLiteral;
+    IntLiteral* intLiteral = new IntLiteral(value);
+    return *intLiteral;
 }
 
-AST::ReadInt::ReadInt() {}
+ReadInt::ReadInt() {}
+}
