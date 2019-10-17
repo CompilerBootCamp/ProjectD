@@ -51,6 +51,8 @@ void Interpreter::visit(const AST::Print &print)
 void Interpreter::visit(const AST::Node &node)
 {
     //exception
+    std::cerr << "Not Implemented" << std::endl;
+    exit(1);
 }
 
 void Interpreter::visit(const AST::Expression &node) {}
@@ -59,14 +61,15 @@ void Interpreter::visit(const AST::Reference &reference)
 {
     if(reference.scope==nullptr)
     {
-        std::cout << "scope not found in visit ref" << std::endl;
-        return;
+        std::cerr << "Scope not found in visit ref" << std::endl;
+        exit(1);
     }
 
     if (reference.scope->find_in_scope(reference.s_id) == nullptr)
     {
         //exception
-        std::cout << "variable not declared: " + reference.s_id << std::endl;
+        std::cerr << "variable not declared: " + reference.s_id << std::endl;
+        exit(1);
     }
     else
     {
@@ -152,12 +155,16 @@ void Interpreter::visit(const AST::WhileStatement &statement)
             else
             {
                 //exception
+                std::cerr << "Expression type should be boolean" << std::endl;
+                exit(1);
             }
         }
     }
     else
     {
         //exception
+        std::cerr << "Expression type should be boolean" << std::endl;
+        exit(1);
     }
 }
 
@@ -168,7 +175,8 @@ void Interpreter::visit(const AST::DefinitionList &statement)
         if (statement.scope->find_only_in_scope(var.first) != nullptr)
         {
             //exception
-            std::cout << std::endl << "conflict declaration: " << var.first << std::endl;
+            std::cerr  << "Conflict declaration: " << var.first << std::endl;
+            exit(1);
         }
         else
         {
@@ -325,14 +333,14 @@ void Interpreter::visit(const AST::Assign &as)
                     {
                         //exception
                         std::cerr << "Error in assigning the identifier (tuple)" << std::endl;
-                            exit(1);
+                         exit(1);
                     }
                     break;
                 }
                 case TYPES::_FUNCTION:
                 {
-                    std::cout << "you cant assign function" << std::endl;
-                    return;
+                    std::cerr << "You cant assign function" << std::endl;
+                    exit(1);
                 }
                 }
             }
