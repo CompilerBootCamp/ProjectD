@@ -1,0 +1,42 @@
+swap(a, b) is
+	var tmp := a;
+	a := b;
+	b : = tmp;
+end;
+	
+partition(arr, low , high) is
+	var pivot := arr[high];
+	var i := low - 1;
+	
+	for j in low .. high - 1
+	loop
+		if (arr[j] < pivot) then
+			i = i + 1;
+			swap(arr[i], arr[j]);
+		end;	
+	end;
+
+	swap(arr[i+1], arr[high]);
+	return (i+1);
+end;
+
+quickSort(arr, low, high) is
+	if (low < high) then
+		var p:= partition(arr, low, high);
+		
+		quickSort(arr, low, p-1);
+		quickSort(arr, p+1, high);
+	end;
+end;
+
+arr_print(arr, size) is
+	for i in 0 .. size - 1
+	loop
+		print arr[i];
+	end;
+end;
+
+var array := [3,6,4,5,6,1337,1,2,7,9,8];
+var n:= 11;
+quickSort(array, 0, n - 1);
+arr_print(arr,n);
