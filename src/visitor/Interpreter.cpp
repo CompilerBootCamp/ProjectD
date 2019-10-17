@@ -324,8 +324,8 @@ void Interpreter::visit(const AST::Assign &as)
                     else
                     {
                         //exception
-                        std::cout << "error in assign identifier(tuple)" << std::endl;
-                        return;
+                        std::cerr << "Error in assigning the identifier (tuple)" << std::endl;
+                            exit(1);
                     }
                     break;
                 }
