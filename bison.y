@@ -39,7 +39,7 @@
 #include "src/ast/ReadInt.h"
 #include "src/ast/ReadReal.h"
 #include "src/ast/ReadString.h"
-#include "src/ast/Assign.h"
+#include "src/ast/Assignment.h"
 
 
 #include "src/visitor/Interpreter.h"
@@ -169,7 +169,7 @@ emptyStatement:
     %empty  { $$ = new AST::EmptyNode(); };
 
 assignment:
-    reference ASSIGN expression { $$ = new AST::Assign($1, $3); }
+    reference ASSIGN expression { $$ = new AST::Assignment($1, $3); }
 
 print:
     PRINT expressionlist { $$ = new AST::Print($2); };
