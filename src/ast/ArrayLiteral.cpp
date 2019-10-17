@@ -10,7 +10,7 @@ ArrayLiteral::ArrayLiteral(ExpressionList* expr_list)
 {
     for(size_t i = 0; i < expr_list->expressions.size(); ++i)
     {
-        array.insert(std::make_pair(i, expr_list->expressions[i]));
+        array.insert(std::make_pair(i, &expr_list->expressions[i]->evaluate()));
         _size++;
     }
 }

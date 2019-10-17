@@ -12,9 +12,8 @@ Scope::Scope(bool block):in_block(block)
 
 
 AST::Literal* Scope::find_in_scope(std::string name) {
-    if(symbols.find(name) != symbols.end()){
+    if(symbols.find(name) != symbols.end())
         return symbols[name];
-    }
     else{
         if(topScope == nullptr)
             return nullptr;

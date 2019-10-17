@@ -66,10 +66,36 @@ else
 end;
 
 var gt := 4;
-print h is int;
+print gt is int;
 
 var yy := false;
 print +gt;
 print not yy;
 
 print readInt + 4;
+
+var a := 3;
+a := 1;
+a := 2;
+a := 17;
+a := {f := 5, v := 6, b := 7};
+a := 's';
+a := true;
+print a;
+
+for i in 0..10
+loop
+ print i;
+end;
+
+var b := [1,2,3];
+print b;
+b[1] := 69;
+print b;
+
+var c := {f := 5, v := 6, b := 7};
+print c;
+c.<f> := 1;
+c.<v> := 2;
+c.<b> := 3;
+print c;

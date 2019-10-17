@@ -13,7 +13,7 @@ class ArrayLiteral: public Literal
 private:
     size_t _size;
 public:
-    std::map<int, Expression*> array;
+    std::map<int, Literal*> array;
 public:
     ArrayLiteral();
     ArrayLiteral(ExpressionList*);

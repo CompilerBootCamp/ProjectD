@@ -11,7 +11,7 @@ class TupleElementList;
 class TupleLiteral: public Literal
 {
 public:
-    std::vector<std::pair<std::string, Expression*> > tu_list;
+    std::vector<std::pair<std::string, Literal*> > tu_list;
 public:
     TupleLiteral();
     TupleLiteral(TupleElementList* tul);
@@ -24,7 +24,7 @@ public:
     //Only for tuples
     Literal& concat(TupleLiteral*) override;
 
-    Expression* get_value(std::string);
+    Literal** get_value(std::string);
 
     [[nodiscard]] TYPES::Type getType() override;
 };

@@ -61,15 +61,15 @@ Literal& TupleLiteral::concat(TupleLiteral* rhs)
     return *temp;
 }
 
-Expression* TupleLiteral::get_value(std::string key)
+Literal** TupleLiteral::get_value(std::string key)
 {
     std::stringstream ss(key);
     int index;
     if((ss>>index).fail())
     {
-        for(auto element : tu_list)
-            if(element.first == key)
-                return element.second;
+        for(int i = 0; i < tu_list.size(); ++i)
+            if(tu_list[i].first == key)
+                return &tu_list[i].second;
         //exception
         std::cout << "tuple key: " + key + " not exist" << std::endl;
         return nullptr;
@@ -77,7 +77,7 @@ Expression* TupleLiteral::get_value(std::string key)
     else
     {
         if(index < tu_list.size())
-            return tu_list[index].second;
+            return &tu_list[index].second;
         //exception
         std::cout << "index of tuple out of range" << std::endl;
         return nullptr;

@@ -47,7 +47,19 @@ void Reference::add_reference(ReferenceTail* rt)
 
 Literal& Reference::evaluate()
 {
+    if(scope == nullptr){
+        std::cout << "scope not found:" + s_id << std::endl;
+        auto temp = new Literal();
+        return *temp;
+    }
+
+
     auto value = scope->find_in_scope(s_id);
+    if(value == nullptr){
+        std::cout << "variable not found:" + s_id << std::endl;
+        value = new Literal();
+        return *value;
+    }
 
     bool exception = false;
     for(auto ref: reference_tail)
@@ -60,9 +72,10 @@ Literal& Reference::evaluate()
         case TYPES::_ARRAY:
         {
             auto arr = static_cast<ArrayLiteral*>(value);
-            auto index = static_cast<IntLiteral*>(&ref.first->expressions[0]->evaluate())->value;
+            auto index_expr = &ref.first->expressions[0]->evaluate();
+            auto index = static_cast<IntLiteral*>(index_expr)->value;
             if(index < arr->array.size()){
-                value = &arr ->array[index]->evaluate();
+                value = arr ->array[index];
             }
             else
             {
@@ -85,9 +98,8 @@ Literal& Reference::evaluate()
                 exception = true;
             }
             else
-            {
-                value = &tuple_value->evaluate();
-            }
+                value = *tuple_value;
+
             break;
         }
         case TYPES::_FUNCTION:

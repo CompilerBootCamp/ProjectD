@@ -30,6 +30,9 @@
 #include "../ast/UnaryExpr.h"
 #include "../ast/Assign.h"
 #include "../ast/Reference.h"
+#include "../ast/ArrayLiteral.h"
+#include "../ast/TupleLiteral.h"
+#include "../ast/StringLiteral.h"
 
 void Interpreter::visit(const AST::Print &print)
 {
@@ -54,10 +57,26 @@ void Interpreter::visit(const AST::Expression &node) {}
 
 void Interpreter::visit(const AST::Reference &reference)
 {
+    if(reference.scope==nullptr)
+    {
+        std::cout << "scope not found in visit ref" << std::endl;
+        return;
+    }
+
     if (reference.scope->find_in_scope(reference.s_id) == nullptr)
     {
         //exception
         std::cout << "variable not declared: " + reference.s_id << std::endl;
+    }
+    else
+    {
+        for(auto ref: reference.reference_tail){
+            ref.first->scope = reference.scope;
+            for(auto ref_expr : ref.first->expressions){
+                ref_expr->scope = reference.scope;
+                ref_expr->accept(*this);
+            }
+        }
     }
 }
 
@@ -82,7 +101,7 @@ void Interpreter::visit(AST::StatementList &statementlist)
 void Interpreter::visit(const AST::IfStatement &statement)
 {
     statement.getExpression()->scope = statement.scope;
-    //statement.getExpression()->accept(*this);
+    statement.getExpression()->accept(*this);
 
     if (statement.getExpression()->evaluate().getType() == TYPES::Type::_BOOL)
     {
@@ -116,7 +135,7 @@ void Interpreter::visit(const AST::WhileStatement &statement)
 {
     statement.getExpression()->scope = new Scope(false);
     statement.getExpression()->scope->topScope = statement.scope->topScope;
-    //statement.getExpression()->accept(*this);
+    statement.getExpression()->accept(*this);
 
     if (statement.getExpression()->evaluate().getType() == TYPES::Type::_BOOL)
     {
@@ -151,7 +170,9 @@ void Interpreter::visit(const AST::DefinitionList &statement)
         }
         else
         {
+            var.second->scope = statement.scope;
             var.second->accept(*this);
+
             statement.scope->topScope->symbols.insert(make_pair(var.first, &var.second->evaluate()));
         }
     }
@@ -165,8 +186,8 @@ void Interpreter::visit(const AST::ForStatement &statement)
     statement.getEndExpression()->scope = temp;
     statement.getStartExpression()->scope->topScope = statement.scope->topScope;
     statement.getEndExpression()->scope->topScope = statement.scope->topScope;
-    //statement.getStartExpression()->accept(*this);
-    //statement.getEndExpression()->accept(*this);
+    statement.getStartExpression()->accept(*this);
+    statement.getEndExpression()->accept(*this);
 
 
     if (statement.getStartExpression()->evaluate().getType() == TYPES::_INT
@@ -174,12 +195,15 @@ void Interpreter::visit(const AST::ForStatement &statement)
     {
         auto startForVar = dynamic_cast<AST::IntLiteral *>(&statement.getStartExpression()->evaluate())->getValue();
         auto endForVar = dynamic_cast<AST::IntLiteral *>(&statement.getEndExpression()->evaluate())->getValue();
+
+        statement.getForStatements()->scope = new Scope(true);
+        statement.getForStatements()->scope->topScope = statement.scope;
+        statement.getForStatements()->scope->symbols.insert(make_pair(statement.getDef()->variable.first, &statement.getDef()->variable.second->evaluate()));
         for (int i = startForVar; i < endForVar; ++i)
         {
-            statement.getForStatements()->scope = new Scope(true);
-            statement.getForStatements()->scope->topScope = statement.scope;
-
             statement.getForStatements()->accept(*this);
+            statement.getForStatements()->scope->symbols.clear();
+            statement.getForStatements()->scope->symbols[statement.getDef()->variable.first] = new AST::IntLiteral(i+1);
         }
     }
     else
@@ -239,18 +263,82 @@ void Interpreter::visit(const AST::UnaryExpr &un_expr)
     un_expr.expression->accept(*this);
 }
 
+void swap_spec(AST::Literal &a, AST::Literal &b) {
+    AST::Literal tmp = a;
+
+    a = b; // Since you are using references, this will actually modify test[0] at its memory location
+    b = tmp;
+}
+
 void Interpreter::visit(const AST::Assign &as)
 {
+    as.ref_variable->scope = as.scope;
+    as.ref_variable->accept(*this);
+    as.expression->scope = as.scope;
+    as.expression->accept(*this);
+
     auto r = static_cast<AST::Reference*>(as.ref_variable);
     auto da = as.scope;
 
     while(da != nullptr)
     {
+
         if(da->symbols.find(r->s_id) != da->symbols.end())
         {
-            da->symbols[r->s_id] = &as.expression->evaluate();
-            break;
+            auto value = &da->symbols[r->s_id]->evaluate();
+            auto inner_ref = &da->symbols[r->s_id];//
+
+            for(auto ref: r->reference_tail)
+            {
+                switch(ref.second)
+                {
+                    case TYPES::_ARRAY:
+                    {
+                        auto arr = static_cast<AST::ArrayLiteral*>(value);
+                        auto index = static_cast<AST::IntLiteral*>(&ref.first->expressions[0]->evaluate())->value;
+                        if(index < arr->array.size()){
+                            value = arr ->array[index];
+                            inner_ref = &arr ->array[index];
+                        }
+                        else
+                        {
+                            //exception
+                            std::cout << "error in assign identifier(out of range)" + std::to_string(index) << std::endl;
+                            return;
+                        }
+                        break;
+                    }
+                    case TYPES::_TUPLE:
+                    {
+
+                        auto tuple = static_cast<AST::TupleLiteral*>(value);
+                        auto key = static_cast<AST::StringLiteral*>(ref.first->expressions[0])->value;
+                        auto tuple_value = tuple->get_value(key);
+                        if(tuple_value != nullptr){
+                            value = *tuple_value;
+                            inner_ref = tuple_value;
+                        }
+                        else
+                        {
+                            //exception
+                            std::cout << "error in assign identifier(tuple)" << std::endl;
+                            return;
+                        }
+                        break;
+                    }
+                    case TYPES::_FUNCTION:
+                    {
+                        std::cout << "you cant assign function" << std::endl;
+                        return;
+                    }
+                }
+            }
+            *inner_ref = &as.expression->evaluate();
+            //swap_spec(*value, as.expression->evaluate());
+            //&inner_ref = &as.expression->evaluate();
         }
         da = da->topScope;
     }
+
+
 }

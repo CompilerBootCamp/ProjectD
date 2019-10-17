@@ -7,11 +7,12 @@
 namespace AST
 {
     class Expression;
+    class Literal;
 
     class TupleElement
     {
     public:
-        std::pair<std::string, Expression*> element;
+        std::pair<std::string, Literal*> element;
     public:
         TupleElement(const char*, Expression*);
     };

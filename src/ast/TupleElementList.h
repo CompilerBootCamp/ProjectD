@@ -9,11 +9,12 @@ namespace AST
 {
 class Expression;
 class TupleElement;
+class Literal;
 
 class TupleElementList: public Node
 {
 public:
-    std::vector<std::pair<std::string, Expression*> > elements;
+    std::vector<std::pair<std::string, Literal*> > elements;
 public:
     TupleElementList();
     TupleElementList(TupleElement*);
