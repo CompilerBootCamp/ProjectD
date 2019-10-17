@@ -51,6 +51,8 @@ void Interpreter::visit(const AST::Print &print)
 void Interpreter::visit(const AST::Node &node)
 {
     //exception
+    std::cerr << "Not Implemented" << std::endl;
+    exit(1);
 }
 
 void Interpreter::visit(const AST::Expression &node) {}
@@ -150,12 +152,16 @@ void Interpreter::visit(const AST::WhileStatement &statement)
             else
             {
                 //exception
+                std::cerr << "Expression type should be boolean" << std::endl;
+                exit(1);
             }
         }
     }
     else
     {
         //exception
+        std::cerr << "Expression type should be boolean" << std::endl;
+        exit(1);
     }
 }
 
@@ -166,7 +172,8 @@ void Interpreter::visit(const AST::DefinitionList &statement)
         if (statement.scope->find_only_in_scope(var.first) != nullptr)
         {
             //exception
-            std::cout << std::endl << "conflict declaration: " << var.first << std::endl;
+            std::cerr  << "Conflict declaration: " << var.first << std::endl;
+            exit(1);
         }
         else
         {
@@ -303,8 +310,8 @@ void Interpreter::visit(const AST::Assign &as)
                         else
                         {
                             //exception
-                            std::cout << "error in assign identifier(out of range)" + std::to_string(index) << std::endl;
-                            return;
+                            std::cerr << "Error in assigning the identifier(array index out of range)" + std::to_string(index) << std::endl;
+                            exit(1);
                         }
                         break;
                     }
@@ -321,8 +328,8 @@ void Interpreter::visit(const AST::Assign &as)
                         else
                         {
                             //exception
-                            std::cout << "error in assign identifier(tuple)" << std::endl;
-                            return;
+                            std::cerr << "Error in assigning the identifier (tuple)" << std::endl;
+                            exit(1);
                         }
                         break;
                     }
