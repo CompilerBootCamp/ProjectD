@@ -13,7 +13,7 @@ public:
 
     void visit(const AST::Statement &) override;
 
-    void visit(const AST::StatementList &) override;
+    void visit(AST::StatementList &) override; // need const
 
     void visit(const AST::EmptyNode &) override;
 
@@ -23,13 +23,23 @@ public:
 
     void visit(const AST::DefinitionList &) override;
 
-    void visit(const AST::ForStatement &statement) override;
+    void visit(const AST::ForStatement &) override;
 
-    void visit(const AST::ReadInt &statement) override;
+    void visit(const AST::ReadInt &) override;
 
-    void visit(const AST::ReadString &statement) override;
+    void visit(const AST::ReadString &) override;
 
-    void visit(const AST::ReadReal &statement) override;
+    void visit(const AST::ReadReal &) override;
+
+    void visit(const AST::BinaryExpr &) override;
+
+    void visit(const AST::Expression &) override;
+
+    void visit(const AST::TypeIndicator &) override;
+
+    void visit(const AST::UnaryExpr &) override;
+
+    void visit(const AST::Assign &) override;
 };
 
 #endif // INTERPRETER_H_INCLUDED

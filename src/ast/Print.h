@@ -12,11 +12,13 @@
 
 namespace AST{
 
+    class Expression;
+
     class ExpressionList;
 
     class Print: public Statement {
     public:
-        ExpressionList* expressionsList;
+        std::vector<Expression*> expressionsList;
 
     public:
         Print(ExpressionList *);

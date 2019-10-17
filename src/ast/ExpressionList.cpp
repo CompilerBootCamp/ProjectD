@@ -3,7 +3,7 @@
 
 namespace AST
 {
-    ExpressionList::ExpressionList(Expression *expression): expressions()
+    ExpressionList::ExpressionList(Expression *expression)
     {
         expressions.push_back(expression);
     }

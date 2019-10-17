@@ -4,6 +4,7 @@
 
 #include "BinaryExpr.h"
 #include "BooleanLiteral.h"
+#include "../visitor/AbstractVisitor.h"
 
 namespace AST
 {
@@ -13,6 +14,11 @@ BinaryExpr::BinaryExpr(Expression* l, Expression* r, BinOp op)
     left = l;
     right = r;
     operation = op;
+}
+
+void BinaryExpr::accept(AbstractVisitor & visitor) const
+{
+    visitor.visit(*this);
 }
 
 Literal& BinaryExpr::evaluate()

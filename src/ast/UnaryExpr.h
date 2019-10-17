@@ -12,11 +12,13 @@
 namespace AST{
 
     class UnaryExpr: public Expression {
+    public:
         Expression* expression;
         UnaryOp operation;
     public:
         UnaryExpr(Expression*, UnaryOp);
         Literal& evaluate();
+        void accept(AbstractVisitor&) const;
     };
 }
 

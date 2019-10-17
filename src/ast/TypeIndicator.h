@@ -28,6 +28,8 @@ namespace AST{
         [[nodiscard]] TYPES::Type getType() const;
 
         void setType(TYPES::Type type);
+
+        void accept(AbstractVisitor&) const;
     };
 }
 

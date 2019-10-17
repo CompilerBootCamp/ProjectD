@@ -33,6 +33,16 @@ namespace AST {
     class ReadString;
 
     class ReadReal;
+
+    class BinaryExpr;
+
+    class Expression;
+
+    class TypeIndicator;
+
+    class UnaryExpr;
+
+    class Assign;
 }
 
 class AbstractVisitor {
@@ -47,7 +57,7 @@ public:
 
     virtual void visit(const AST::Print &) = 0;
 
-    virtual void visit(const AST::StatementList &) = 0;
+    virtual void visit(AST::StatementList &) = 0;
 
     virtual void visit(const AST::IfStatement &) = 0;
 
@@ -64,6 +74,16 @@ public:
     virtual void visit(const AST::ReadString &) = 0;
 
     virtual void visit(const AST::ReadReal &) = 0;
+
+    virtual void visit(const AST::BinaryExpr &) = 0;
+
+    virtual void visit(const AST::Expression &) = 0;
+
+    virtual void visit(const AST::TypeIndicator &) = 0;
+
+    virtual void visit(const AST::UnaryExpr &) = 0;
+
+    virtual void visit(const AST::Assign &) = 0;
 };
 
 

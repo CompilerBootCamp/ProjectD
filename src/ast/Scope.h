@@ -15,10 +15,12 @@ namespace AST
 
 class Scope {
 public:
+    bool in_block = false;
     Scope* topScope = nullptr;
     std::map<std::string, AST::Literal*> symbols;
-    Scope();
+    Scope(bool);
     AST::Literal* find_in_scope(std::string);
+    AST::Literal* find_only_in_scope(std::string);
 };
 
 

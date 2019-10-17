@@ -39,6 +39,8 @@
 #include "src/ast/ReadInt.h"
 #include "src/ast/ReadReal.h"
 #include "src/ast/ReadString.h"
+#include "src/ast/Assign.h"
+
 
 #include "src/visitor/Interpreter.h"
 
@@ -118,7 +120,7 @@ struct my_types
 
 %start program
 
-%type<u.stval> statement print emptyStatement if loop declaration
+%type<u.stval> statement print emptyStatement if loop declaration assignment
 %type<u.stlistval> statementList body loopBody
 %type<u.exlistval> expressionlist//costyl
 %type<u.tupleelementlistval> tupleElementList //costyl
@@ -156,7 +158,7 @@ statementList:
     
 statement:
       emptyStatement    { $$ = $1; }
-    | assignment
+    | assignment        { $$ = $1; }
     | print             { $$ = $1; }
     | return        
     | if                { $$ = $1; }
@@ -167,7 +169,7 @@ emptyStatement:
     %empty  { $$ = new AST::EmptyNode(); };
 
 assignment:
-    reference ASSIGN expression
+    reference ASSIGN expression { $$ = new AST::Assign($1, $3); }
 
 print:
     PRINT expressionlist { $$ = new AST::Print($2); };
@@ -273,7 +275,7 @@ reference:
     ;
 
 tail:
-    DOT LESS integerLiteral GREAT                         { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral(std::to_string($3))), TYPES::_TUPLE); }// access to unnamed tuple element
+    DOT LESS integerLiteral GREAT                           { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral(std::to_string($3))), TYPES::_TUPLE); }// access to unnamed tuple element
     | DOT LESS identifier GREAT                             { $$ = new AST::ReferenceTail(new AST::ExpressionList(new AST::StringLiteral($3, true)), TYPES::_TUPLE); }// access to named tuple element
     | LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET       { $$ = new AST::ReferenceTail(new AST::ExpressionList($2), TYPES::_ARRAY); }// access to array element
     | LEFTCIRCLEBRACKET expressionlist RIGHTCIRCLEBRACKET   { $$ = new AST::ReferenceTail($2, TYPES::_FUNCTION); }// function call

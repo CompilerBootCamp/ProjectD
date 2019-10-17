@@ -4,6 +4,7 @@
 
 #include "../visitor/AbstractVisitor.h"
 #include "Node.h"
+#include "Scope.h"
 
 namespace AST {
 

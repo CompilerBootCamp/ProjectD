@@ -6,7 +6,6 @@
 
 namespace AST
 {
-    Literal::Literal():Expression() {}
 
     std::string Literal::to_string()
     {

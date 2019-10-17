@@ -11,17 +11,18 @@
 namespace AST
 {
 
-    class BinaryExpr: public Expression
-    {
-    public:
-        Expression* left;
-        Expression* right;
-        BinOp operation;
-    public:
-        BinaryExpr(Expression*, Expression*, BinOp);
+class BinaryExpr: public Expression
+{
+public:
+    Expression* left;
+    Expression* right;
+    BinOp operation;
+public:
+    BinaryExpr(Expression*, Expression*, BinOp);
 
-       Literal& evaluate();
-    };
+    void accept(AbstractVisitor&) const;
+    Literal& evaluate();
+};
 }
 
 #endif //PROJECTD_BINARYEXPR_H

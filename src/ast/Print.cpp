@@ -10,7 +10,7 @@ namespace AST{
 
     Print::Print(ExpressionList *expressionslist)
     {
-        expressionsList = expressionslist;
+        expressionsList = expressionslist->expressions;
     }
 
     void Print::accept(AbstractVisitor &visitor) const

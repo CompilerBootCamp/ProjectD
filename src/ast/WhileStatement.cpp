@@ -4,8 +4,6 @@
 
 #include "WhileStatement.h"
 #include "../visitor/AbstractVisitor.h"
-#include "StatementList.h"
-#include "Scope.h"
 
 void AST::WhileStatement::accept(AbstractVisitor &visitor) const {
     visitor.visit(*this);
@@ -25,7 +23,6 @@ AST::StatementList *AST::WhileStatement::getWhileStatement() const {
 
 void AST::WhileStatement::setWhileStatement(AST::StatementList *whileStatement) {
     WhileStatement::whileStatement = whileStatement;
-    this->whileStatement->scope->topScope = scope->topScope;
 }
 
 AST::WhileStatement::WhileStatement(AST::Expression *expression, AST::StatementList *whileStatement) : expression(

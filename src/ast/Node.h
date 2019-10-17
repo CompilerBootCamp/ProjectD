@@ -16,7 +16,7 @@ namespace AST
     public:
         virtual ~Node() = default;
         virtual void accept(AbstractVisitor &) const;
-        Scope* scope;
+        Scope* scope = nullptr;
     };
 }
 

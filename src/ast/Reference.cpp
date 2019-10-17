@@ -48,6 +48,7 @@ void Reference::add_reference(ReferenceTail* rt)
 Literal& Reference::evaluate()
 {
     auto value = scope->find_in_scope(s_id);
+
     bool exception = false;
     for(auto ref: reference_tail)
     {

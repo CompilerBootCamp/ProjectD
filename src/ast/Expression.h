@@ -16,7 +16,6 @@ namespace AST
     class Expression: public Node
     {
     public:
-
         virtual Literal& evaluate() = 0;
 
         virtual void add_reference(ReferenceTail*);
