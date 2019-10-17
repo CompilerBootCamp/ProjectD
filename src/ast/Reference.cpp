@@ -74,9 +74,8 @@ Literal& Reference::evaluate()
             auto arr = static_cast<ArrayLiteral*>(value);
             auto index_expr = &ref.first->expressions[0]->evaluate();
             auto index = static_cast<IntLiteral*>(index_expr)->value;
-            if(index < arr->array.size()){
-                value = arr ->array[index];
-            }
+            if(arr->array.find(index) != arr->array.end())
+                value = arr->array[index];
             else
             {
                 //exception

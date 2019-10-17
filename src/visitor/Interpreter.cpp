@@ -70,9 +70,11 @@ void Interpreter::visit(const AST::Reference &reference)
     }
     else
     {
-        for(auto ref: reference.reference_tail){
+        for(auto ref: reference.reference_tail)
+        {
             ref.first->scope = reference.scope;
-            for(auto ref_expr : ref.first->expressions){
+            for(auto ref_expr : ref.first->expressions)
+            {
                 ref_expr->scope = reference.scope;
                 ref_expr->accept(*this);
             }
@@ -263,7 +265,8 @@ void Interpreter::visit(const AST::UnaryExpr &un_expr)
     un_expr.expression->accept(*this);
 }
 
-void swap_spec(AST::Literal &a, AST::Literal &b) {
+void swap_spec(AST::Literal &a, AST::Literal &b)
+{
     AST::Literal tmp = a;
 
     a = b; // Since you are using references, this will actually modify test[0] at its memory location
@@ -292,45 +295,45 @@ void Interpreter::visit(const AST::Assign &as)
             {
                 switch(ref.second)
                 {
-                    case TYPES::_ARRAY:
-                    {
-                        auto arr = static_cast<AST::ArrayLiteral*>(value);
-                        auto index = static_cast<AST::IntLiteral*>(&ref.first->expressions[0]->evaluate())->value;
-                        if(index < arr->array.size()){
-                            value = arr ->array[index];
-                            inner_ref = &arr ->array[index];
-                        }
-                        else
-                        {
-                            //exception
-                            std::cout << "error in assign identifier(out of range)" + std::to_string(index) << std::endl;
-                            return;
-                        }
-                        break;
-                    }
-                    case TYPES::_TUPLE:
-                    {
+                case TYPES::_ARRAY:
+                {
+                    auto arr = static_cast<AST::ArrayLiteral*>(value);
+                    auto index = static_cast<AST::IntLiteral*>(&ref.first->expressions[0]->evaluate())->value;
 
-                        auto tuple = static_cast<AST::TupleLiteral*>(value);
-                        auto key = static_cast<AST::StringLiteral*>(ref.first->expressions[0])->value;
-                        auto tuple_value = tuple->get_value(key);
-                        if(tuple_value != nullptr){
-                            value = *tuple_value;
-                            inner_ref = tuple_value;
-                        }
-                        else
-                        {
-                            //exception
-                            std::cout << "error in assign identifier(tuple)" << std::endl;
-                            return;
-                        }
-                        break;
-                    }
-                    case TYPES::_FUNCTION:
+                    if(index >= arr->_size)
+                        arr->_size = index + 1;
+
+                    if(arr->array.find(index) == arr->array.end())
+                        arr->array[index] = new AST::Literal();
+                    value = arr ->array[index];
+                    inner_ref = &arr ->array[index];
+
+                    break;
+                }
+                case TYPES::_TUPLE:
+                {
+
+                    auto tuple = static_cast<AST::TupleLiteral*>(value);
+                    auto key = static_cast<AST::StringLiteral*>(ref.first->expressions[0])->value;
+                    auto tuple_value = tuple->get_value(key);
+                    if(tuple_value != nullptr)
                     {
-                        std::cout << "you cant assign function" << std::endl;
+                        value = *tuple_value;
+                        inner_ref = tuple_value;
+                    }
+                    else
+                    {
+                        //exception
+                        std::cout << "error in assign identifier(tuple)" << std::endl;
                         return;
                     }
+                    break;
+                }
+                case TYPES::_FUNCTION:
+                {
+                    std::cout << "you cant assign function" << std::endl;
+                    return;
+                }
                 }
             }
             *inner_ref = &as.expression->evaluate();

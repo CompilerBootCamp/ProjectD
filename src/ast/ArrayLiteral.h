@@ -10,7 +10,7 @@ class ExpressionList;
 
 class ArrayLiteral: public Literal
 {
-private:
+public:
     size_t _size;
 public:
     std::map<int, Literal*> array;
