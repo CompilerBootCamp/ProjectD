@@ -34,7 +34,7 @@ namespace AST{
 
         void setIdentifierList(IdentifierList *identifierList);
 
-        [[nodiscard]] TYPES::Type getType() const override;
+        [[nodiscard]] TYPES::Type getType() override;
     };
 }
 

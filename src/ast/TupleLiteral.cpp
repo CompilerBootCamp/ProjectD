@@ -55,8 +55,15 @@ Literal& TupleLiteral::concat(TupleLiteral* rhs)
         int index;
         if(!(ss>>index).fail())
             temp->tu_list.push_back(make_pair(std::to_string(temp->tu_list.size()), element.second));
-        else
-            temp->tu_list.push_back(make_pair(element.first, element.second));
+        else{
+            if(temp->get_value(element.first) == nullptr)
+                temp->tu_list.push_back(make_pair(element.first, element.second));
+            else
+            {
+                std::cout << "Name in tuple not unique " + element.first << std::endl;
+                exit(0);
+            }
+        }
     }
     return *temp;
 }
@@ -71,7 +78,7 @@ Literal** TupleLiteral::get_value(std::string key)
             if(tu_list[i].first == key)
                 return &tu_list[i].second;
         //exception
-        std::cout << "tuple key: " + key + " not exist" << std::endl;
+        //std::cout << "tuple key: " + key + " not exist" << std::endl;
         return nullptr;
     }
     else

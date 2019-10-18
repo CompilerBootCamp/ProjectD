@@ -51,8 +51,8 @@ void Interpreter::visit(const AST::Print &print)
 void Interpreter::visit(const AST::Node &node)
 {
     //exception
-    std::cerr << "Not Implemented" << std::endl;
-    exit(1);
+    //std::cerr << "Not Implemented" << std::endl;
+    //exit(1);
 }
 
 void Interpreter::visit(const AST::Expression &node) {}

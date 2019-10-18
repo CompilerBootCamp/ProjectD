@@ -33,6 +33,6 @@ AST::FunctionLiteral::FunctionLiteral(AST::StatementList *statementList, AST::Ex
                                                                              expression(expression),
                                                                              identifierList(identifierList) {}
 
-TYPES::Type AST::FunctionLiteral::getType() const {
+TYPES::Type AST::FunctionLiteral::getType() {
     return TYPES::_FUNCTION;
 }

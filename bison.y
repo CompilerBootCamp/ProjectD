@@ -8,7 +8,6 @@
 %{
 #include <stdio.h>
 #include <math.h>
-#include <vector>
 
 #include "src/ast/Node.h"
 #include "src/ast/EmptyNode.h"
