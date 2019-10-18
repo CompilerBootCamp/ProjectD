@@ -7,20 +7,24 @@
 
 
 #include "Literal.h"
+#include <vector>
+#include <string>
 
 namespace AST{
 
     class StatementList;
     class IdentifierList;
     class Expression;
+    class FuncBody;
 
     class FunctionLiteral: public Literal {
     private:
         StatementList* statementList;
         Expression* expression;
-        IdentifierList* identifierList;
+        std::vector<std::string> identifierList;
     public:
-        FunctionLiteral(StatementList *statementList, Expression *expression, IdentifierList *identifierList);
+        FunctionLiteral(FuncBody*);
+        FunctionLiteral(IdentifierList*, FuncBody*);
 
         [[nodiscard]] StatementList *getStatementList() const;
 

@@ -16,13 +16,11 @@ namespace AST{
         std::vector<std::string> identifiers;
 
     public:
-        IdentifierList(std::vector<std::string> identifiers);
+        IdentifierList(const char* identifiers);
 
         [[nodiscard]] const std::vector<std::string> &getIdentifiers() const;
 
-        void setIdentifiers(const std::vector<std::string> &identifiers);
-
-        void addIdentifier(const std::string &identifier);
+        void addIdentifier(const char* identifier);
     };
 }
 

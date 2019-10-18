@@ -39,6 +39,9 @@
 #include "src/ast/ReadReal.h"
 #include "src/ast/ReadString.h"
 #include "src/ast/Assign.h"
+#include "src/ast/FunctionLiteral.h"
+#include "src/ast/IdentifierList.h"
+#include "src/ast/FuncBody.h"
 
 
 #include "src/visitor/Interpreter.h"
@@ -67,6 +70,8 @@ struct my_types
         AST::DefinitionList*    vardeflistval;
         AST::ReferenceTail*     referencetailval;
         TYPES::Type tval;
+        AST::IdentifierList* identifierlistval;
+        AST::FuncBody* funcbodyval;
     } u;    
   };
 %}
@@ -127,7 +132,9 @@ struct my_types
 %type<u.vardefval> variableDefinition //costyl
 %type<u.vardeflistval> variableDefinitionList //costyl
 %type<u.referencetailval> tail //costyl
-%type<u.exval> expression literal factor term unary primary andExpression relation arrayLiteral tupleLiteral reference
+%type<u.identifierlistval> Parameters identifierList //costyl
+%type<u.funcbodyval> funBody //costyl
+%type<u.exval> expression literal factor term unary primary andExpression relation arrayLiteral tupleLiteral reference functionLiteral
 %type<u.tval> typeIndicator
 
 
@@ -309,7 +316,7 @@ literal:
     | stringLiteral { $$ = new AST::StringLiteral($1, false); }
     | arrayLiteral  { $$ = $1; }
     | tupleLiteral  { $$ = $1; }
-    | functionLiteral
+    | functionLiteral { $$ = $1; }
     ;
 
 arrayLiteral:
@@ -340,22 +347,30 @@ tupleElement:
     ;
 
 functionLiteral:
-    FUNC funBody
-    | FUNC Parameters funBody
+    FUNC funBody                    { $$ = new AST::FunctionLiteral($2); }
+    | FUNC Parameters funBody       { $$ = new AST::FunctionLiteral($2,$3); }
 
 Parameters:
-    LEFTCIRCLEBRACKET identifierList RIGHTCIRCLEBRACKET
+    LEFTCIRCLEBRACKET identifierList RIGHTCIRCLEBRACKET { $$ = $2; }
 
 identifierList:
     identifier
+    {
+        $$ = new AST::IdentifierList($1);
+    }
     | identifierList COMMA identifier
+    {
+        $1->addIdentifier($3);
+        $$ = $1;
+    }
+    ;
     
 funBody:
-    IS body END
-    | ARROW expression
+    IS body END         { $$ = new AST::FuncBody($2); }
+    | ARROW expression  { $$ = new AST::FuncBody($2); }
 
 body: 
-    statementList
+    statementList   { $$ = $1; }
 
 //    ---------------------------------------------------------------------------
 

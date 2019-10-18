@@ -20,18 +20,15 @@ void AST::FunctionLiteral::setExpression(AST::Expression *expression) {
     FunctionLiteral::expression = expression;
 }
 
-AST::IdentifierList *AST::FunctionLiteral::getIdentifierList() const {
-    return identifierList;
+AST::FunctionLiteral::FunctionLiteral(FuncBody* func_body)
+{
+
 }
 
-void AST::FunctionLiteral::setIdentifierList(AST::IdentifierList *identifierList) {
-    FunctionLiteral::identifierList = identifierList;
-}
+AST::FunctionLiteral::FunctionLiteral(IdentifierList* identifierList, FuncBody* func_body)
+{
 
-AST::FunctionLiteral::FunctionLiteral(AST::StatementList *statementList, AST::Expression *expression,
-                                      AST::IdentifierList *identifierList) : statementList(statementList),
-                                                                             expression(expression),
-                                                                             identifierList(identifierList) {}
+}
 
 TYPES::Type AST::FunctionLiteral::getType() {
     return TYPES::_FUNCTION;
